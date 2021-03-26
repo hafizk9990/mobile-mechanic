@@ -4,6 +4,6 @@ MobileMechanic is a cross-platform mobile application built using React-Native, 
 
 The project relies on the following dependencies:
 
-1. Firebase real-time NoSQL database (quick ref: npm install firebase --save)
-2. Formik forms for React-Native (quick ref: npm install react-native-formik --save)
-3. Yup for Formik form validation (quick ref: npm install yup --save)
+1. Firebase real-time NoSQL database (npm install firebase --save)
+2. Formik forms for React-Native (npm install react-native-formik --save)
+3. Yup for Formik form validation (npm install yup --save)
