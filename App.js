@@ -1,15 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import './snippets/firebaseInit'
+import './components/screenSnippets/FirebaseInit'
+import SignUp from './components/screens/SignUp'
 
-export default function App() {
-  return (
-    <View style = {styles.container}>
-      <Text> Hello, World! </Text>
-      <StatusBar style = "auto" />
-    </View>
-  );
+const App = () => {
+    return (
+        <SignUp />
+    );
 }
 
 const styles = StyleSheet.create({
@@ -20,3 +18,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+export default App
