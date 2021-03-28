@@ -1,12 +1,10 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
 import './components/screenSnippets/FirebaseInit'
-import SignUp from './components/screens/SignUp'
+import StackNavigator from './routes/ScreensAndStacksWrapper'
 
 const App = () => {
     return (
-        <SignUp />
+        <StackNavigator />
     );
 }
 

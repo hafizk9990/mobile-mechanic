@@ -5,9 +5,6 @@ import SignUpForm from '../screenSnippets/SignUpForm'
 const SignUp = () => {
     return(
         <React.Fragment>
-            <View style = { myStyles.header }> 
-                <Text> Step 1 of 3 </Text>
-            </View>
             <View style = { myStyles.pageTop }>
                 <Text> MobileMechanic </Text>
                 <Text> Sign Up </Text>
@@ -15,12 +12,12 @@ const SignUp = () => {
             <SignUpForm />
             <Text>
                 <Text> By continuing, you agree to our </Text> 
-                <Text style = { myStyles.linking }
+                <Text style = { myStyles.urlLinking }
                     onPress = { () => Linking.openURL('http://www.uzair-reviews.com/MobileMechanic/privacy-policy.html') }>
                     PRIVACY POLICY
                 </Text>
                 <Text> and </Text>
-                <Text style = { myStyles.linking }
+                <Text style = { myStyles.urlLinking }
                     onPress = { () => {Linking.openURL('http://www.uzair-reviews.com/MobileMechanic/terms-of-service.html')} }>
                     TERMS OF SERVICE
                 </Text> 
@@ -33,16 +30,13 @@ const SignUp = () => {
 }
 
 const myStyles = StyleSheet.create({
-    header: {
-        marginTop: 20
-    },
     pageTop: {
-        
+        marginTop: 20    
     }, 
     pageBottom: {
 
     }, 
-    linking: {
+    urlLinking: {
         color: 'blue',
         fontSize: 12
     }, 
