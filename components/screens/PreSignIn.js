@@ -8,20 +8,20 @@ const PreSignUp = (navigationProps) => {
                 <Text> MobileMechanic </Text>
             </View>
             <View style = { myStyles.signUp }> 
-                <Text> Sign Up </Text>
+                <Text> Sign In </Text>
             </View>
             <View> 
                 <Button
                     title = "Customer"
-                    onPress = { () => navigationProps.navigation.navigate('SignUpCust') }
+                    onPress = { () => navigationProps.navigation.navigate('SignInCust') }
                 />
                 <Button 
                     title = 'Mechanic' 
-                    onPress = { () => navigationProps.navigation.navigate('SignUpMech') }
+                    onPress = { () => navigationProps.navigation.navigate('SignInMech') }
                 />
             </View>
             <Text> 
-                Already Have an Account? <Text style = { {color: 'blue'} } onPress = { () => navigationProps.navigation.navigate('PreSignIn') }> SIGN IN </Text>
+                Do Not Have an Account? <Text style = { {color: 'blue'} } onPress = { () => navigationProps.navigation.navigate('PreSignUp') }> SIGN UP </Text>
             </Text>
         </React.Fragment>
     );

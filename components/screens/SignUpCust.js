@@ -1,8 +1,8 @@
 import React from 'react'
 import { View, Text, StyleSheet, Linking } from 'react-native' 
-import SignUpForm from '../screenSnippets/SignUpForm'
+import SignUpForm from '../screenSnippets/SignUpCustForm'
 
-const SignUp = () => {
+const SignUp = (navigationProps) => {
     return(
         <React.Fragment>
             <View style = { myStyles.pageTop }>
@@ -23,7 +23,7 @@ const SignUp = () => {
                 </Text> 
             </Text>
             <View style = { myStyles.pageBottom }> 
-                <Text> Already Have an Account? SIGN IN </Text>
+                <Text> Already Have an Account? <Text style = { {color: 'blue'} } onPress = { () => navigationProps.navigation.navigate('PreSignIn') }> SIGN IN </Text> </Text>
             </View>
         </React.Fragment>
     );

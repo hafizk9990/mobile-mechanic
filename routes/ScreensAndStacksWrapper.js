@@ -1,36 +1,55 @@
 import { createAppContainer } from 'react-navigation' 
 import { createStackNavigator } from 'react-navigation-stack'
+
+// FOLLOWING FILES WILL BE SET-UP IN THIS NAVIGATION STACK
+
+// import SplashScreen from '../components/screens/SplashScreen'
+import PreSignIn from '../components/screens/PreSignIn'
 import PreSignUp from '../components/screens/PreSignUp'
-import SplashScreen from '../components/screens/SplashScreen'
-import CustomerStack from './CustomerScreenStack'
-import MechanicStack from './MechanicScreenStack'
+import SignUpCust from '../components/screens/SignUpCust'
+import SignUpMech from '../components/screens/SignUpMech'
+import SignInCust from '../components/screens/SignInCust'
+import SignInMech from '../components/screens/SignInMech'
 
 const screens = {
-    
+
     // Add Splash Screen Here. It should lead to the PreSignUp screen down below (after 2 seconds)
     
+    PreSignIn: {
+        screen: PreSignIn, 
+        navigationOptions: {
+            title: 'MobileMechanic (Pre-Sign In)', 
+            // headerShown: false
+        }
+    },
     PreSignUp: {
         screen: PreSignUp, 
         navigationOptions: {
-            title: 'MobileMechanic', 
-            header: null
-        }
-    }, 
-
-    // Here, a sign in screen should be implemented (not stack)
-    // This screen will also have access to both the stacks down below
-    // This screen gives the option of signing in as Mechanic or Customer
-
-    FullCustomerStack: {
-        screen: CustomerStack, 
-        navigationOptions: {
-            header: null
+            title: 'MobileMechanic (Pre-Sign Up)',
         }
     },
-    FullMechanicStack: {
-        screen: MechanicStack, 
+    SignUpCust: {
+        screen: SignUpCust, 
         navigationOptions: {
-            header: null
+            title: 'Sign Up Customer (SignUpCust)'
+        }
+    }, 
+    SignUpMech: {
+        screen: SignUpMech, 
+        navigationOptions: {
+            title: 'Sign Up Mechanic (SignUpMech)'
+        }
+    }, 
+    SignInCust: {
+        screen: SignInCust, 
+        navigationOptions: {
+            title: 'Sign In Customer (SignInCust)'
+        }
+    }, 
+    SignInMech: {
+        screen: SignInMech, 
+        navigationOptions: {
+            title: 'Sign In Mechanic (SignInMech)'
         }
     }
 }
@@ -39,3 +58,19 @@ const stack = createStackNavigator(screens);
 const appContainer = createAppContainer(stack);
 
 export default appContainer
+
+
+// DO NOT DELETE THE FOLLOWING COMMENTED OUT CODE ....
+ 
+// FullMechanicStack: { // All mechanic screens here
+//     screen: MechanicStack, 
+//     navigationOptions: {
+//         header: null
+//     }
+// },
+// FullCustomerStack: { // All customer screens here
+//     screen: CustomerStack, 
+//     navigationOptions: {
+//         header: null
+//     }
+// },

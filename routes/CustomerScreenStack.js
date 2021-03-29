@@ -1,10 +1,9 @@
-import SignUp from '../components/screens/SignUp'
-import { createAppContainer } from 'react-navigation' 
+import SignUpCustomer from '../components/screens/SignUpCust'
 import { createStackNavigator } from 'react-navigation-stack'
 
 const screens = {
-    SignUp: {
-        screen: SignUp, 
+    SignUpCustomer: {
+        screen: SignUpCustomer, 
         navigationOptions: {
             title: 'Sign Up (Customer)'
         }
