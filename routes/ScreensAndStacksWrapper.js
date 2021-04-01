@@ -10,6 +10,7 @@ import SignUpCust from '../components/screens/SignUpCust'
 import SignUpMech from '../components/screens/SignUpMech'
 import SignInCust from '../components/screens/SignInCust'
 import SignInMech from '../components/screens/SignInMech'
+import ServicesCust from '../components/screens/ServicesCust'
 
 const screens = {
 
@@ -50,6 +51,12 @@ const screens = {
         screen: SignInMech, 
         navigationOptions: {
             title: 'Sign In Mechanic (SignInMech)'
+        }
+    }, 
+    ServicesCust: {
+        screen: ServicesCust, 
+        navigationOptions: {
+            title: 'Customer Services (ServicesCust)'
         }
     }
 }

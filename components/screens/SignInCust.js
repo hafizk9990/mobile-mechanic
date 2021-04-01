@@ -9,7 +9,9 @@ const SignInCust = (navigationProps) => {
                 <Text> MobileMechanic </Text>
                 <Text> Sign In </Text>
             </View>
-            <SignInCustForm />
+            <SignInCustForm 
+                navigateTo = { navigationProps.navigation.navigate }
+            />
             <View style = { myStyles.pageBottom }> 
                 <Text> Do not Have an Account? <Text style = { {color: 'blue'} } onPress = { () => navigationProps.navigation.navigate('PreSignUp') }> SIGN UP </Text> </Text>
             </View>

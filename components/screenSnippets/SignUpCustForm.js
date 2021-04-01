@@ -1,7 +1,8 @@
 import React from 'react' 
-import { View, Text, StyleSheet, TextInput, Button } from 'react-native' 
+import { View, Text, StyleSheet, TextInput, Button, Alert } from 'react-native' 
 import { Formik } from 'formik'
 import * as yup from 'yup'
+import firebase from './FirebaseInit'
 
 const yupValidationSchema = yup.object({
     email: yup.string().email().required('You Must Provide an Email Address'),
@@ -13,13 +14,32 @@ const yupValidationSchema = yup.object({
     confirm: yup.string().required('You Must Confirm Your Password').oneOf([yup.ref('pass'), null], 'Passwords Must Match'),
 });
 
-const SignUpForm = () => {
+const SignUpForm = (props) => {
     return(
         <Formik 
             initialValues = { {email: '', phone: '', pass: '', confirm: ''} }
             validationSchema = { yupValidationSchema }
             onSubmit = { (formData, actions) => {
                 console.log('Form Data:', formData);
+                let userEmail = formData.email;
+                let userPhone = formData.phone;
+                let userPass = formData.pass;
+                userEmail = userEmail.replace(/\./g, ','); 
+                // Deliberating replacing "dots" in the email address with "commas" 
+                // so to avoid firebase key indexing issues
+                console.log(userEmail);
+                
+                firebase.database().ref(`mobileMechanic/Clients/${userEmail}`).set({
+                    phone: userPhone, 
+                    password: userPass
+                }).then( () => { 
+                    console.log(`Customer Sign Up Successful`);
+                    props.navigateTo('SignInCust')
+                })
+                .catch( () => { 
+                    console.log(`Oho! Customer Sign Up Failed ...`);
+                });
+                
                 actions.resetForm();
             }}> 
             {

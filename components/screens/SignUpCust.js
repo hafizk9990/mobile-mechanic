@@ -9,7 +9,9 @@ const SignUp = (navigationProps) => {
                 <Text> MobileMechanic </Text>
                 <Text> Sign Up </Text>
             </View>
-            <SignUpForm />
+            <SignUpForm 
+                navigateTo = { navigationProps.navigation.navigate }
+            />
             <Text>
                 <Text> By continuing, you agree to our </Text> 
                 <Text style = { myStyles.urlLinking }
