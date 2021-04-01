@@ -11,16 +11,23 @@ import SignUpMech from '../components/screens/SignUpMech'
 import SignInCust from '../components/screens/SignInCust'
 import SignInMech from '../components/screens/SignInMech'
 import ServicesCust from '../components/screens/ServicesCust'
+import SplashScreen from '../components/screens/splash'
 
 const screens = {
 
     // Add Splash Screen Here. It should lead to the PreSignUp screen down below (after 2 seconds)
-    
+    SplashScreen: {
+        screen: SplashScreen, 
+        navigationOptions: {
+            title: 'MobileMechanic (Splash Screen)', 
+            headerShown: false
+        }
+    },
     PreSignIn: {
         screen: PreSignIn, 
         navigationOptions: {
             title: 'MobileMechanic (Pre-Sign In)', 
-            // headerShown: false
+            headerShown: false
         }
     },
     PreSignUp: {
