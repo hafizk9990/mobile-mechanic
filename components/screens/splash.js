@@ -2,10 +2,6 @@ import React,{Component} from 'react';
 import {Image, View} from 'react-native'
 import { NavigationActions, StackActions } from 'react-navigation'
 
-
-
-
-
 var logo=require('../../assets/SplashScreen.jpeg')
 
 export default class SplashScreen extends Component {
@@ -20,7 +16,7 @@ export default class SplashScreen extends Component {
         super(props);
         setTimeout(()=> {
             this.props.navigation.dispatch(resetAction);
-        }, 5000);
+        }, 2500);
     }
     
     render() {

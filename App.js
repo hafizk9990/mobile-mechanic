@@ -1,7 +1,7 @@
 import React from 'react';
 import './components/screenSnippets/FirebaseInit'
 import StackNavigator from './routes/StackWrapper'
-import ServicesCust from './components/screens/ServicesCust'
+import TabAppCust from './components/screens/TabAppCust'
 
 const App = () => {
     return (

@@ -2,9 +2,8 @@ import React from 'react'
 import { View, Text, StyleSheet, TextInput, FlatList, TouchableOpacity } from 'react-native' 
 import { AntDesign } from '@expo/vector-icons'
 import db from '../screenSnippets/ServicesDatabase'
-import tabNavigator from '../../routes/TabsWrapper'
 
-const ServicesCust = (navigationProps) => {
+const CustHome = (navigationProps) => {
     const handleTextChange = () => {
         console.log(`You wrote something in the input text field ...`);
     }
@@ -18,7 +17,6 @@ const ServicesCust = (navigationProps) => {
             <View style = { {marginTop: 20} }> 
                 <Text> Services </Text>
             </View>
-            
             <Text> The user is: {navigationProps.navigation.getParam('userEmail')} </Text>
             <View style = { {flexDirection: 'row'} }>
                 <TextInput 
@@ -32,29 +30,25 @@ const ServicesCust = (navigationProps) => {
                     color = "gray" 
                 />
             </View>
-            
             <View>
                 {
                     <FlatList 
                         data = { db }
                         renderItem = { ( {item} ) => {
                             return(
-                                <TouchableOpacity onPress = { () => pressHandler(item.key, item.offering) }> 
-                                    <View style = { {marginTop: 10, marginBottom: 50} }> 
-                                        <View> 
-                                            <Text> { item.offering } </Text>
+                                <View> 
+                                    <TouchableOpacity onPress = { () => pressHandler(item.key, item.offering) }> 
+                                        <View style = { {marginTop: 10, marginBottom: 50} }> 
+                                            <View> 
+                                                <Text> { item.offering } </Text>
+                                            </View>
                                         </View>
-                                    </View>
-                                </TouchableOpacity>
+                                    </TouchableOpacity>
+                                </View>
+                                
                             );
                         }}
                     />
-                }
-            </View>
-            
-            <View>
-                {
-                    // Tab Navigator should go here
                 }
             </View>
         </React.Fragment>
@@ -65,4 +59,5 @@ const myStyles = StyleSheet.create({
 
 });
 
-export default ServicesCust
+export default CustHome
+
