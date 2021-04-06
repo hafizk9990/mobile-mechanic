@@ -11,4 +11,4 @@ const App = () => {
 
 export default App
 
-// Remember, you should always return stackNavigator from here
+// Remember, you should always return stackNavigator from here.
