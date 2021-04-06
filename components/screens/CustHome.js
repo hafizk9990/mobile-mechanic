@@ -33,6 +33,7 @@ const CustHome = (navigationProps) => {
             <View>
                 {
                     <FlatList 
+                        numColumns = {3}
                         data = { db }
                         renderItem = { ( {item} ) => {
                             return(
