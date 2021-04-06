@@ -60,7 +60,7 @@ const screens = {
     CustTabsWrapper: {
         screen: CustTabsWrapper, 
         navigationOptions: {
-            title: `Customer's Area`
+            headerShown: false 
         }
     }
 }
