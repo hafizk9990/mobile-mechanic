@@ -1,11 +1,11 @@
 const ServicesDatabase = [
     {
         key: 0, 
-        offering: 'Oil Service'
+        offering: 'Oil Change'
     }, 
     {
         key: 1, 
-        offering: 'Battery Check'
+        offering: 'Battery'
     },
     {
         key: 2, 
@@ -17,7 +17,7 @@ const ServicesDatabase = [
     }, 
     {
         key: 4, 
-        offering: 'Tyre Change'
+        offering: 'Tyre'
     }, 
     {
         key: 5, 
@@ -29,7 +29,7 @@ const ServicesDatabase = [
     }, 
     {
         key: 7, 
-        offering: 'Air System'
+        offering: 'A / C'
     }, 
     {
         key: 8, 

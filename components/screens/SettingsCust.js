@@ -10,7 +10,7 @@ const SettingsCust = () => {
             </View>
 
             <View style = { {flexDirection: 'row', marginBottom: 40} }>
-                <Image style = { {width: 70, height: 70, borderRadius: 35, marginLeft: 15} }source = {dummyImage} />
+                <Image style = { {width: 70, height: 70, borderRadius: 35, marginLeft: 15} } source = {dummyImage} />
                 <Text style = { {marginLeft: 25, fontWeight: 'bold', fontSize: 24} }> John Doe </Text>
                 <FontAwesome style = { {marginLeft: 170} } name = "pencil-square-o" size = { 19 } color = "gray" onPress = { () => console.log('Update Profile Clicked') }/>
             </View>
