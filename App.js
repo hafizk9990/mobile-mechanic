@@ -5,8 +5,8 @@ import TabNavigator from './routes/CustTabsWrapper'
 
 const App = () => {
     return (
-        // <StackNavigator />
-        <TabNavigator /> 
+      <StackNavigator />
+        //<TabNavigator /> 
     );
 }
 export default App
