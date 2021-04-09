@@ -5,7 +5,8 @@ import TabNavigator from './routes/CustTabsWrapper'
 import BatterySpecifications from './components/screens/BatterySpecifications'
 const App = () => {
     return (
-        <BatterySpecifications />
+        <StackNavigator />
+      //  <BatterySpecifications />
         // <TabNavigator /> 
     );
 }
