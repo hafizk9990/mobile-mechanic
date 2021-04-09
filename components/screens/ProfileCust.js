@@ -7,7 +7,9 @@ let image = require('../../assets/john-doe-girl..jpg');
 var windowHeight = Dimensions.get('window').height;
 var windowWidth = Dimensions.get('window').width;
 
-const ProfileCust = () => {
+const ProfileCust = (tabsNavigationProps) => {
+    let obtainedEmail = tabsNavigationProps.navigation.dangerouslyGetParent().getParam('userEmail');
+    console.log(obtainedEmail);
     return(
         <React.Fragment> 
             <Text style = { {marginTop: windowHeight * 0.05, textAlign: 'center'} }> Customer Profile </Text>

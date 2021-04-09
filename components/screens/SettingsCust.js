@@ -1,18 +1,21 @@
-import React from 'react' 
+import React from 'react'
 import { View, Text, Image, Dimensions } from 'react-native'
 import { FontAwesome, Ionicons, Entypo, Feather } from '@expo/vector-icons'
 
 var windowHeight = Dimensions.get('window').height;
 var windowWidth = Dimensions.get('window').width;
 
-const SettingsCust = () => {
+const SettingsCust = (tabsNavigationProps) => {
     let dummyImage = require('../../assets/john-doe.jpg');
+    let obtainedEmail = tabsNavigationProps.navigation.dangerouslyGetParent().getParam('userEmail');
+    console.log(obtainedEmail);
+
     return(
         <React.Fragment> 
             <View style = { {marginTop: windowHeight * 0.08, flexDirection: 'row', marginBottom: windowHeight * 0.06} }>
                 <Image style = { {width: windowWidth * 0.35, height: windowHeight * 0.2, borderRadius: windowWidth * 0.5, marginLeft: windowWidth * 0.05} } source = { dummyImage } />
                 <Text style = { {marginLeft: windowWidth * 0.05, fontWeight: 'bold', fontSize: 24} }> John Doe </Text>
-                <FontAwesome style = { {marginLeft: windowWidth * 0.22} } name = "pencil-square-o" size = { 19 } color = "gray" onPress = { () => console.log('Update Profile Clicked') }/>
+                <FontAwesome style = { {marginLeft: windowWidth * 0.22} } name = "pencil-square-o" size = { 19 } color = "gray" onPress = { () => tabsNavigationProps.navigation.navigate('SignInMech') }/>
             </View>
  
             <View style = { {flexDirection: 'row', marginBottom: windowHeight * 0.05} }>
