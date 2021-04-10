@@ -12,6 +12,7 @@ import SignInMech from '../components/screens/SignInMech'
 import TabAppCust from '../components/screens/TabAppCust'
 import SplashScreen from '../components/screens/splash' 
 import CustTabsWrapper from './CustTabsWrapper'
+import BatterySpecifications from '../components/screens/BatterySpecifications'
 
 const screens = {
     SplashScreen: {
@@ -60,7 +61,13 @@ const screens = {
     CustTabsWrapper: {
         screen: CustTabsWrapper, 
         navigationOptions: {
-            headerShown: false 
+            headerShown: false
+        }
+    },
+    BatterySpecifications: {
+        screen: BatterySpecifications,
+        navigationOptions: {
+            headerShown: true
         }
     }
 }

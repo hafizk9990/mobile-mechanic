@@ -14,7 +14,7 @@ const screens = {
                 return(
                     <FontAwesome5 name = "home" size = { 23 } color = { iconProps.tintColor } />
                 ); 
-            }  
+            } 
         } 
     },
     Settings: {
@@ -24,7 +24,7 @@ const screens = {
                 return(
                     <Feather name = "settings" size = { 25 } color = { iconProps.tintColor } />
                 );
-            }  
+            }
         }
     }, 
     Profile: {
@@ -34,7 +34,7 @@ const screens = {
                 return(
                     <Ionicons name = "person" size = { 25 } color = { iconProps.tintColor } />
                 );
-            }  
+            }
         }
     }
 }

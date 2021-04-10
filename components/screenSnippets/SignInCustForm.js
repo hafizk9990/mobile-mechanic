@@ -1,5 +1,5 @@
 import React from 'react' 
-import { View, Text, StyleSheet, TextInput, Button } from 'react-native' 
+import { View, Text, StyleSheet, TextInput, Button,TouchableOpacity } from 'react-native' 
 import { Formik } from 'formik'
 import firebase from './FirebaseInit'
 import { NavigationActions } from 'react-navigation'
@@ -22,14 +22,17 @@ const SignInCustForm = (props) => {
                     if (firebaseDataJSON) {
                         if (firebaseDataJSON.password === userPassword) {
                             console.log(`Login Successful .... Email and password both match`);
-                            props.navigateTo(
-                                'CustTabsWrapper',
-                                {}, 
-                                NavigationActions.navigate({
-                                    routeName: 'Home', // navigate to Home sub-route inside the nested navigator, called CustTabsWrapper on the main navigator, called StackWrapper
-                                    params: {userEmail: userEmailToPass}
-                                })
-                            );
+                            // props.navigateTo(
+                            //     'CustTabsWrapper',
+                            //     {}, 
+                            //     NavigationActions.navigate({
+                            //         routeName: 'Home', // navigate to Home sub-route inside the nested navigator, called CustTabsWrapper on the main navigator, called StackWrapper
+                            //         params: {userEmail: userEmailToPass}
+                            //     })
+                            // );
+                            props.navigateTo('CustTabsWrapper', {userEmail: userEmailToPass});
+                            // we pass these params to the tabsNavigator and then access in all 3 children
+                            // (Home, Settings, Profile)
                         } 
                         else {
                             console.log(`Login Failed ... Email matched but password did not`);
@@ -58,7 +61,13 @@ const SignInCustForm = (props) => {
                                 onChangeText = { formikProps.handleChange('pass') }
                                 value = { formikProps.values.pass }
                             />
-                            <Button margin = "20%" borderRadius = "12px" color = "#26B9B6" title = "SIGN IN" onPress = { formikProps.handleSubmit } />
+                            <TouchableOpacity
+                                    style={myStyles.loginScreenButton}
+                                    onPress={ formikProps.handleSubmit }
+                                    underlayColor='#fff'>
+                                    <Text style={myStyles.loginText}>Continue</Text>
+                            </TouchableOpacity>
+                             
                         </View>
                     );
                 }
@@ -75,10 +84,36 @@ const myStyles = StyleSheet.create({
         textAlign: 'center', 
     },
     inputField: {
-        marginTop: 15,
-        marginBottom: 5,
+        padding: 6,
         textAlign: 'center'
     },
+    continueButton: {
+        backgroundColor:"red",
+    },
+    loginScreenButton:{
+        marginRight:40,
+        marginLeft:40,
+       marginTop:10,
+        paddingTop:10,
+        paddingBottom:10,
+        backgroundColor:"#35b8b6",
+        borderRadius:10,
+        borderWidth: 1,
+        borderColor: '#fff',
+        position: 'relative'
+      },
+  loginText:{
+      color:'#fff',
+      textAlign:'center',
+      paddingLeft : 10,
+      paddingRight : 10
+  },
+   button: {
+      backgroundColor: '#00aeef',
+      borderColor: 'red',
+      borderWidth: 5,
+      borderRadius: 15       
+   },
     formError: {
         color: 'red', 
         fontSize: 12,

@@ -1,15 +1,15 @@
 import React from 'react';
 import './components/screenSnippets/FirebaseInit'
 import StackNavigator from './routes/StackWrapper'
-import SettingsCust from './components/screens/SettingsCust'
-
+import TabNavigator from './routes/CustTabsWrapper'
+import BatterySpecifications from './components/screens/BatterySpecifications'
 const App = () => {
     return (
         <StackNavigator />
-        // <SettingsCust /> 
+      //  <BatterySpecifications />
+        // <TabNavigator /> 
     );
 }
-
 export default App
 
 // Remember, you should always return stackNavigator from here.
