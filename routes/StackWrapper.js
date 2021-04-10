@@ -14,6 +14,7 @@ import CustTabsWrapper from './CustTabsWrapper'
 import BatterySpecifications from '../components/screens/BatterySpecifications'
 import CarImages from '../components/screens/CarImages'
 import CarDescription from '../components/screens/CarDescription'
+import CustLocation from '../components/screens/CustLocation'
 
 const screens = {
     SplashScreen: {
@@ -80,6 +81,12 @@ const screens = {
         screen: CarDescription, 
         navigationOptions: {
             headerShown: false 
+        }
+    }, 
+    CustLocation: {
+        screen: CustLocation, 
+        navigationOptions: {
+            headerShown: false
         }
     }
 }
