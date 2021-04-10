@@ -6,7 +6,7 @@ import BatterySpecifications from './components/screens/BatterySpecifications'
 const App = () => {
     return (
         <StackNavigator />
-      //  <BatterySpecifications />
+        // <BatterySpecifications />
         // <TabNavigator /> 
     );
 }

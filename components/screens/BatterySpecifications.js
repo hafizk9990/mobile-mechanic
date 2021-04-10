@@ -1,12 +1,11 @@
-import React, {useState} from 'react' 
-import { ScrollView, Button, CheckBox, View, Text, Dimensions, StyleSheet, TextInput, SafeAreaView, Alert ,TouchableOpacity} from 'react-native'
-import { MaterialCommunityIcons} from '@expo/vector-icons'
+import React, { useState } from 'react' 
+import { ScrollView, Button, CheckBox, View, Text, Dimensions, StyleSheet, TextInput, SafeAreaView, Alert ,TouchableOpacity } from 'react-native'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 var windowHeight = Dimensions.get('window').height;
 var windowWidth = Dimensions.get('window').width;
 
 const BatterySpecifications = (navigationProps) => {
-
     const [batteryState, setbatteryState] = useState([{k:'Gel Battery', v: false}, {k:'Calcium Battery', v: false}, {k:'AGM Battery', v: false}, {k:'Deep Cycle Battery', v: false}, {k:'Not Sure', v: false}]);
     const [num, setnum] = useState(5);
     const [description, setdescription] = useState(" ")
@@ -15,33 +14,26 @@ const BatterySpecifications = (navigationProps) => {
         setbatteryState( (prevbatteryState) => {
             var newState = {k:prevbatteryState[i].k, v: !prevbatteryState[i].v}
             var newbatteryState = [...prevbatteryState.slice(0,i), newState, ...prevbatteryState.slice(i+1, num)]
-            return  newbatteryState;
+            return newbatteryState;
         });
-      };
-
-
+    }
+    
     var battery = [];
     for(let i = 0; i < batteryState.length; i++){
-
 		battery.push(
 			<View key = {i} style = {mystyles.heading3}>
-                    <Text style = { mystyles.title2 }>{batteryState[i].k}</Text>
-                    <CheckBox style = {mystyles.checkbox}
+                <Text style = { mystyles.title2 }>{batteryState[i].k}</Text>
+                <CheckBox style = {mystyles.checkbox}
                     value= {batteryState[i].v}
                     onValueChange={(key) => pressHandler(i)}
-                    />
+                />
 			</View>
 		)
 	}
 
-
-
-    
-
+    console.log(batteryState);
     return(
-        
         <ScrollView behavior="padding"> 
-
             <View style = {mystyles.view1} behavior="padding">
                 <View style = { mystyles.heading1 }>
                     <Text style = { mystyles.title1 }> Specifications </Text>
@@ -51,7 +43,6 @@ const BatterySpecifications = (navigationProps) => {
                     {battery}
                     <View style = {mystyles.description}>
                         <Text style = { mystyles.descrption }>Description</Text>
-                        
                     </View>
                     <View style = {mystyles.heading3}>
                         <SafeAreaView>
@@ -62,24 +53,21 @@ const BatterySpecifications = (navigationProps) => {
                             onChangeText={(text) => setdescription(text)}
                             value={description}
                             style={mystyles.input}
-                            
                         />
                         </SafeAreaView>
-                        
                     </View>
                     <View style = {mystyles.heading4}>
-
                     <TouchableOpacity
-                                    style={mystyles.loginScreenButton}
-                                    onPress={()=> Alert.alert('Shopping cart is not implemented' )}
-                                    underlayColor='#fff'>
-                                    <Text style={mystyles.loginText}>Add to cart</Text>
+                        style={mystyles.loginScreenButton}
+                        onPress={ () => navigationProps.navigation.navigate('CarImages') }
+                        // This is only a temporary fix. We are not adding objects to cart,
+                        // rather we are directing the user to our next use case, i.e., adding 
+                        // their car images, their location and so on and so forth. 
+                        // The rest will be implemented later
+                        underlayColor='#fff'>
+                        <Text style={mystyles.loginText}>Add to cart</Text>
                     </TouchableOpacity>
-                        
                     </View>
-                    
-
-                    
                 </View>
             </View>
         </ScrollView>
