@@ -58,7 +58,7 @@ const SignInCustForm = (props) => {
                                 onChangeText = { formikProps.handleChange('pass') }
                                 value = { formikProps.values.pass }
                             />
-                            <Button title = "Continue" onPress = { formikProps.handleSubmit } />
+                            <Button margin = "20%" borderRadius = "12px" color = "#26B9B6" title = "SIGN IN" onPress = { formikProps.handleSubmit } />
                         </View>
                     );
                 }
@@ -69,9 +69,14 @@ const SignInCustForm = (props) => {
 
 const myStyles = StyleSheet.create({
     form: {
+        margin: '15%',
+        marginBottom: "20%",
+        marginTop: 10,
         textAlign: 'center', 
     },
     inputField: {
+        marginTop: 15,
+        marginBottom: 5,
         textAlign: 'center'
     },
     formError: {
