@@ -15,7 +15,7 @@ const CarImages = (navigationProps) => {
     return(
         <React.Fragment> 
             <View style = { {marginTop: windowWidth * 0.075} }> 
-                <Text> Select Your Car </Text>
+                <Text style = { {marginTop: '12%', marginBottom: 20, fontSize: 30, textAlign: 'center'}}> Select Your Car </Text>
             </View>
             <View style = { {marginBottom: windowHeight * 0.1, marginLeft: windowWidth * 0.1} }>
                 {
@@ -27,10 +27,10 @@ const CarImages = (navigationProps) => {
                                 <React.Fragment> 
                                     <View> 
                                         <TouchableOpacity onPress = { () => pressHandler(item.key, item.car, navigationProps) }> 
-                                            <View style = { {marginTop: windowHeight * 0.04, marginBottom: windowHeight * 0.07} }> 
+                                            <View style = { {marginTop: windowHeight * 0.04, marginBottom: windowHeight * 0.06} }> 
                                                 <View style = { {marginRight: windowWidth * 0.05} }> 
                                                     <Image style = { {width: windowWidth * 0.24,  height: windowHeight * 0.08} } source = { myStyles[item.key] } />
-                                                    <Text> { item.car } </Text>
+                                                    <Text style = { {marginTop: '15%', fontSize: 15, textAlign: 'center'}}> { item.car } </Text>
                                                 </View>
                                             </View>
                                         </TouchableOpacity>

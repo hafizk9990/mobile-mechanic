@@ -19,17 +19,17 @@ const CarDescription = (navigationProps) => {
         <React.Fragment> 
             <ScrollView> 
                 <View style = { {alignItems: 'center'}}> 
-                    <Text style = { {marginTop: 20} }> Add Car Description </Text>
+                    <Text style = { {marginTop: 70, marginBottom: 20,fontSize: 30} }> Add Car Description </Text>
                     <Image style = { {width: windowWidth * 0.6, height: windowHeight * 0.2} } source = { myStyles[carKey] } />
                 </View>
                 <View style = { {textAlign: 'center', alignItems: 'center', justifyContent: 'center', marginTop: 20} }> 
-                    <TextInput value = {carName} />
-                    <TextInput placeholder = 'Enter Car Model' onChangeText = { (text) => setCarModel(text) } />
-                    <TextInput placeholder = 'Enter Car Number Plate' onChangeText = { (text) => setNumberPlate(text) } />
+                    <TextInput style = { {marginBottom: 10, fontSize: 25, fontWeight: 'bold'}} value = {carName} />
+                    <TextInput style = { {marginBottom: 10, borderBottomWidth: 1}}  placeholder = 'Enter Car Model' onChangeText = { (text) => setCarModel(text) } />
+                    <TextInput style = { {marginBottom: 15, borderBottomWidth: 1}} placeholder = 'Enter Car Number Plate' onChangeText = { (text) => setNumberPlate(text) } />
                 </View>
-                <Text> Add More Photos </Text>
+                <Text style = { {fontSize: 20, marginLeft: "5%"}}> Add More Photos </Text>
                 <View style = { {flexDirection: 'row', marginTop: 20} }> 
-                    <Image style = { {width: windowWidth * 0.25, height: windowHeight * 0.08} } source = { myStyles[carKey] } />
+                    <Image style = { {width: windowWidth * 0.25, height: windowHeight * 0.08, marginLeft: '5%'} } source = { myStyles[carKey] } />
                     {
                         // Here, you should also figure out how to add an option to add more images (icon added. Done) 
                         // How to go to OS file system to get those images? (Not Done)
@@ -94,13 +94,16 @@ const myStyles = StyleSheet.create({
 
     input: {
         height: 50,
-        width: 0.7*windowWidth,
-        margin: 1,
+        width: 0.86*windowWidth,
+        margin: 2,
         borderWidth: 2,
-        marginLeft: windowWidth * 0.05,
+        //marginLeft: windowWidth * 0.05,
         textAlignVertical: 'top',
         color: "black",
         borderRadius: 10,
+        marginLeft: '7%',
+        marginRight: '7%',
+        marginBottom: 10
     }, 
     heading3: {
         paddingTop: 0.02*windowHeight,
@@ -110,13 +113,16 @@ const myStyles = StyleSheet.create({
         flexDirection: 'row',
     },
     descrption: {
+        fontSize: 20,
         paddingTop: 0.05 * windowHeight,
         marginLeft: windowWidth * 0.05,
         color:"#8894c3",
+        marginBottom: 5
     }, 
     loginScreenButton:{
-        marginRight:40,
-        marginLeft:40,
+        marginTop: 5,
+        marginRight:'20%',
+        marginLeft:'20%',
         marginBottom:20,
         paddingTop:10,
         paddingBottom:10,
