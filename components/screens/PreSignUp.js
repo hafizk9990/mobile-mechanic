@@ -13,22 +13,21 @@ const PreSignUp = (navigationProps) => {
             </View>
             <View style = { myStyles.signUp }> 
                 <Text style = { myStyles.signin  } > Sign Up </Text>
-                <Text style = { myStyles.useyouraccount  } > Choose your role </Text>
+                <Text style = { myStyles.useyouraccount  }> Choose your role </Text>
             </View>
             <View> 
-
-                            <TouchableOpacity
-                                    style={myStyles.loginScreenButton}
-                                    onPress={() => {() => navigationProps.navigation.navigate('SignUpCust')}}
-                                    underlayColor='#fff'>
-                                    <Text style={myStyles.loginText}>Customer</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                    style={myStyles.loginScreenButton}
-                                    onPress={() => {() => navigationProps.navigation.navigate('SignUpMech')}}
-                                    underlayColor='#fff'>
-                                    <Text style={myStyles.loginText}>Mechanic</Text>
-                            </TouchableOpacity>
+                <TouchableOpacity
+                        style={myStyles.loginScreenButton}
+                        onPress={() => { navigationProps.navigation.navigate('SignUpCust')} }
+                        underlayColor='#fff'>
+                        <Text style={myStyles.loginText}>Customer</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                        style={myStyles.loginScreenButton}
+                        onPress={() => {navigationProps.navigation.navigate('SignUpMech')}}
+                        underlayColor='#fff'>
+                        <Text style={myStyles.loginText}>Mechanic</Text>
+                </TouchableOpacity>
             </View>
             <Text style = { myStyles.pageBottom }> 
                 Already Have an Account? <Text style = { {color: '#35b8b6'} } onPress = { () => navigationProps.navigation.navigate('PreSignIn') }> SIGN IN </Text>

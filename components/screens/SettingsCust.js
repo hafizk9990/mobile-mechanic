@@ -44,9 +44,10 @@ const SettingsCust = (tabsNavigationProps) => {
             <View style = { {marginTop: windowHeight * 0.08, flexDirection: 'row', marginBottom: windowHeight * 0.06} }>
                 <Image style = { {width: windowWidth * 0.35, height: windowHeight * 0.2, borderRadius: windowWidth * 0.5, marginLeft: windowWidth * 0.05} } source = { image } />
                 <Text style = { {marginLeft: windowWidth * 0.05, fontWeight: 'bold', fontSize: 24} }> { name } </Text>
-                <FontAwesome style = { {marginLeft: windowWidth * 0.22} } name = "pencil-square-o" size = { 19 } color = "gray" onPress = { () => tabsNavigationProps.navigation.navigate('SignInMech') }/>
             </View>
- 
+            
+            <Text> userEmail (debugging print, remove later): { obtainedEmail } </Text>
+            
             <View style = { {flexDirection: 'row', marginBottom: windowHeight * 0.05} }>
                 <Ionicons style = { {marginLeft: windowWidth * 0.05} } name = "person" size = { 24 } color = "green" />
                 <Text style = { {marginLeft: windowWidth * 0.02} }> Online Status </Text>

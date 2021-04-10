@@ -61,7 +61,7 @@ const screens = {
     CustTabsWrapper: {
         screen: CustTabsWrapper, 
         navigationOptions: {
-            headerShown: false 
+            headerShown: false
         }
     },
     BatterySpecifications: {

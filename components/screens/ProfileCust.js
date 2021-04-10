@@ -18,6 +18,7 @@ const ProfileCust = (tabsNavigationProps) => {
                     style = { {width: windowWidth * 0.5, height: windowHeight * 0.27, borderRadius: 100, marginBottom: windowHeight * 0.05, marginTop: windowHeight * 0.05} } 
                     source = {image}
                 />
+                
                 <FontAwesome5 
                     style = { {marginTop: windowHeight * 0.27, marginLeft: windowWidth * -0.12} } 
                     name = "plus-circle" 
@@ -26,6 +27,7 @@ const ProfileCust = (tabsNavigationProps) => {
                     onPress = { () => console.log('You Pressed the Plus Icon ...') }
                 />
             </View>
+            <Text> userEmail (debugging print, remove later): { obtainedEmail } </Text>
             <ProfileCustForm />
         </React.Fragment>
     );

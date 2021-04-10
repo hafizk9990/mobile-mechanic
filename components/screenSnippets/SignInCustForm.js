@@ -22,14 +22,17 @@ const SignInCustForm = (props) => {
                     if (firebaseDataJSON) {
                         if (firebaseDataJSON.password === userPassword) {
                             console.log(`Login Successful .... Email and password both match`);
-                            props.navigateTo(
-                                'CustTabsWrapper',
-                                {}, 
-                                NavigationActions.navigate({
-                                    routeName: 'Home', // navigate to Home sub-route inside the nested navigator, called CustTabsWrapper on the main navigator, called StackWrapper
-                                    params: {userEmail: userEmailToPass}
-                                })
-                            );
+                            // props.navigateTo(
+                            //     'CustTabsWrapper',
+                            //     {}, 
+                            //     NavigationActions.navigate({
+                            //         routeName: 'Home', // navigate to Home sub-route inside the nested navigator, called CustTabsWrapper on the main navigator, called StackWrapper
+                            //         params: {userEmail: userEmailToPass}
+                            //     })
+                            // );
+                            props.navigateTo('CustTabsWrapper', {userEmail: userEmailToPass});
+                            // we pass these params to the tabsNavigator and then access in all 3 children
+                            // (Home, Settings, Profile)
                         } 
                         else {
                             console.log(`Login Failed ... Email matched but password did not`);
@@ -58,10 +61,9 @@ const SignInCustForm = (props) => {
                                 onChangeText = { formikProps.handleChange('pass') }
                                 value = { formikProps.values.pass }
                             />
-
                             <TouchableOpacity
                                     style={myStyles.loginScreenButton}
-                                    onPress={() => {}}
+                                    onPress={ formikProps.handleSubmit }
                                     underlayColor='#fff'>
                                     <Text style={myStyles.loginText}>Continue</Text>
                             </TouchableOpacity>
