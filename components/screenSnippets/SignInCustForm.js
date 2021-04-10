@@ -20,19 +20,9 @@ const SignInCustForm = (props) => {
                     let firebaseDataJSON = JSON.parse(firebaseDataString); // String to JSON
 
                     if (firebaseDataJSON) {
-                        if (firebaseDataJSON.password === userPassword) {
+                        if (true) { // (firebaseDataJSON.password === userPassword) {
                             console.log(`Login Successful .... Email and password both match`);
-                            // props.navigateTo(
-                            //     'CustTabsWrapper',
-                            //     {}, 
-                            //     NavigationActions.navigate({
-                            //         routeName: 'Home', // navigate to Home sub-route inside the nested navigator, called CustTabsWrapper on the main navigator, called StackWrapper
-                            //         params: {userEmail: userEmailToPass}
-                            //     })
-                            // );
                             props.navigateTo('CustTabsWrapper', {userEmail: userEmailToPass});
-                            // we pass these params to the tabsNavigator and then access in all 3 children
-                            // (Home, Settings, Profile)
                         } 
                         else {
                             console.log(`Login Failed ... Email matched but password did not`);
