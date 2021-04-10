@@ -1,5 +1,5 @@
 import React, {useState} from 'react' 
-import { ScrollView, Button, CheckBox, View, Text, Dimensions, StyleSheet, TextInput, SafeAreaView, Alert } from 'react-native'
+import { ScrollView, Button, CheckBox, View, Text, Dimensions, StyleSheet, TextInput, SafeAreaView, Alert ,TouchableOpacity} from 'react-native'
 import { MaterialCommunityIcons} from '@expo/vector-icons'
 
 var windowHeight = Dimensions.get('window').height;
@@ -26,7 +26,7 @@ const BatterySpecifications = (navigationProps) => {
 		battery.push(
 			<View key = {i} style = {mystyles.heading3}>
                     <Text style = { mystyles.title2 }>{batteryState[i].k}</Text>
-                    <CheckBox
+                    <CheckBox style = {mystyles.checkbox}
                     value= {batteryState[i].v}
                     onValueChange={(key) => pressHandler(i)}
                     />
@@ -41,9 +41,7 @@ const BatterySpecifications = (navigationProps) => {
     return(
         
         <ScrollView behavior="padding"> 
-            <View style={mystyles.heading} >
-                <Text style = {mystyles.title}>Services</Text>
-            </View >
+
             <View style = {mystyles.view1} behavior="padding">
                 <View style = { mystyles.heading1 }>
                     <Text style = { mystyles.title1 }> Specifications </Text>
@@ -52,12 +50,13 @@ const BatterySpecifications = (navigationProps) => {
                 <View style = {mystyles.heading2}>
                     {battery}
                     <View style = {mystyles.description}>
-                        <Text style = { mystyles.title2 }>Description</Text>
+                        <Text style = { mystyles.descrption }>Description</Text>
                         
                     </View>
                     <View style = {mystyles.heading3}>
                         <SafeAreaView>
                         <TextInput
+                            placeholder = "Enter Your Email"
                             multiline={true}
                             numberOfLines={2}
                             onChangeText={(text) => setdescription(text)}
@@ -69,11 +68,13 @@ const BatterySpecifications = (navigationProps) => {
                         
                     </View>
                     <View style = {mystyles.heading4}>
-                    <Button
-                        onPress={()=> Alert.alert('Shopping cart is not implemented' )}
-                        title="Add to cart"
-                        color="#841584"
-                    />
+
+                    <TouchableOpacity
+                                    style={mystyles.loginScreenButton}
+                                    onPress={()=> Alert.alert('Shopping cart is not implemented' )}
+                                    underlayColor='#fff'>
+                                    <Text style={mystyles.loginText}>Add to cart</Text>
+                    </TouchableOpacity>
                         
                     </View>
                     
@@ -89,7 +90,7 @@ export default BatterySpecifications
 const mystyles = StyleSheet.create( {
     heading: {
         height:70,
-        paddingTop: 0.05*windowHeight,
+        paddingTop: 0.005*windowHeight,
         backgroundColor: 'white',
         borderBottomWidth:2,
         borderRadius: 20,
@@ -97,7 +98,7 @@ const mystyles = StyleSheet.create( {
     title: {
         textAlign: 'center',
         color: 'black',
-        fontSize: 25,
+        fontSize: 30,
         fontWeight: 'bold',
     },
     view1: {
@@ -105,7 +106,7 @@ const mystyles = StyleSheet.create( {
         marginTop: 0.08*windowHeight,
         marginRight: 0.1*windowWidth,
         marginBottom: 0.01*windowHeight,
-        backgroundColor: '#ffe',
+        backgroundColor: '#FFFFFF',
 
     },
     heading1: {
@@ -114,9 +115,11 @@ const mystyles = StyleSheet.create( {
         flexDirection: 'row',
         borderBottomWidth:2,
         borderRadius: 20,
-        borderColor:'#111'
+        borderColor:'#35b8b6'
     },
     title1: {
+        marginLeft: windowWidth * 0.02,
+        fontWeight: 'bold',
         color: 'black',
         fontSize: 25,
     },
@@ -129,8 +132,9 @@ const mystyles = StyleSheet.create( {
         paddingTop: 0.01*windowHeight,
     },
     title2: {
+        paddingTop: 15,
         color: 'black',
-        fontSize: 20,
+        fontSize: 15,
         marginLeft: windowWidth * 0.05,
     },
     heading3: {
@@ -147,10 +151,18 @@ const mystyles = StyleSheet.create( {
         borderWidth: 2,
         marginLeft: windowWidth * 0.05,
         textAlignVertical: 'top',
+        color: "black",
+        borderRadius: 10,
 
     },
     descrption: {
-        paddingTop: 0.02*windowHeight,
+        paddingTop: 0.01*windowHeight,
+        marginLeft: windowWidth * 0.05,
+        color:"#8894c3",
+    },
+    checkbox: {
+        position: 'absolute',
+        marginLeft: windowWidth * 0.65,
     },
     heading4: {
         paddingTop: 0.02*windowHeight,
@@ -158,5 +170,23 @@ const mystyles = StyleSheet.create( {
         marginRight: windowWidth * 0.05,
 
     },
-
+    
+    loginScreenButton:{
+        marginRight:40,
+        marginLeft:40,
+       marginBottom:20,
+        paddingTop:10,
+        paddingBottom:10,
+        backgroundColor:"#35b8b6",
+        borderRadius:10,
+        borderWidth: 1,
+        borderColor: '#fff',
+        position: 'relative'
+      },
+  loginText:{
+      color:'#fff',
+      textAlign:'center',
+      paddingLeft : 10,
+      paddingRight : 10
+  }
 })

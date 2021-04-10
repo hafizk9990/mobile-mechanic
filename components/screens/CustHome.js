@@ -13,6 +13,8 @@ const CustHome = (navigationProps) => {
 
     const pressHandler = (itemKey, itemName) => {
         console.log(`Item touched ${itemKey} ${itemName}`)
+        navigationProps.navigation.navigate('BatterySpecifications');
+        
     }
 
     return(
