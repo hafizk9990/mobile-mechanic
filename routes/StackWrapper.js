@@ -9,13 +9,15 @@ import SignUpCust from '../components/screens/SignUpCust'
 import SignUpMech from '../components/screens/SignUpMech'
 import SignInCust from '../components/screens/SignInCust'
 import SignInMech from '../components/screens/SignInMech'
+import TabAppCust from '../components/screens/TabAppCust'
 import SplashScreen from '../components/screens/splash' 
 import CustTabsWrapper from './CustTabsWrapper'
 import BatterySpecifications from '../components/screens/BatterySpecifications'
+import MechanicRequests from './MechanicRequests'
+import ProfileMech from '../components/screens/ProfileMech'
 import CarImages from '../components/screens/CarImages'
 import CarDescription from '../components/screens/CarDescription'
 import CustLocation from '../components/screens/CustLocation'
-
 const screens = {
     SplashScreen: {
         screen: SplashScreen, 
@@ -26,37 +28,38 @@ const screens = {
     PreSignIn: {
         screen: PreSignIn, 
         navigationOptions: {
+            title: 'MobileMechanic (Pre-Sign In)', 
             headerShown: false
         }
     },
     PreSignUp: {
         screen: PreSignUp, 
         navigationOptions: {
-            headerShown: false
+            title: 'MobileMechanic (Pre-Sign Up)',
         }
     },
     SignUpCust: {
         screen: SignUpCust, 
         navigationOptions: {
-            headerShown: false
+            title: 'Sign Up Customer (SignUpCust)'
         }
     }, 
     SignUpMech: {
         screen: SignUpMech, 
         navigationOptions: {
-            headerShown: false
+            title: 'Sign Up Mechanic (SignUpMech)'
         }
     }, 
     SignInCust: {
         screen: SignInCust, 
         navigationOptions: {
-            headerShown: false
+            title: 'Sign In Customer (SignInCust)'
         }
     }, 
     SignInMech: {
         screen: SignInMech, 
         navigationOptions: {
-            headerShown: false
+            title: 'Sign In Mechanic (SignInMech)'
         }
     }, 
     CustTabsWrapper: {
@@ -68,9 +71,9 @@ const screens = {
     BatterySpecifications: {
         screen: BatterySpecifications,
         navigationOptions: {
-            headerShown: false
+            headerShown: true
         }
-    }, 
+    },
     CarImages: {
         screen: CarImages, 
         navigationOptions: {
@@ -88,7 +91,21 @@ const screens = {
         navigationOptions: {
             headerShown: false
         }
-    }
+    },
+    MechanicRequests: {
+        screen: MechanicRequests, 
+        navigationOptions: {
+            headerShown: false
+        }
+    },
+
+    ProfileMech: {
+        screen: ProfileMech, 
+        navigationOptions: {
+            title: 'Profile'
+            
+        }
+    },
 }
 
 const stack = createStackNavigator(screens);

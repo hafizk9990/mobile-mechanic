@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text, StyleSheet, Linking,Dimensions } from 'react-native' 
-import SignInCustForm from '../screenSnippets/SignInCustForm'
+import SignInMechanicForm from '../screenSnippets/SignInMechanicForm'
 //import { SearchBar } from 'react-native-elements';
 //import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 
@@ -15,7 +15,7 @@ const SignInCust = (navigationProps) => {
                 <Text style = { myStyles.signin  } > Sign In </Text>
                 <Text style = { myStyles.useyouraccount  } > Use your account </Text>
             </View>
-            <SignInCustForm 
+            <SignInMechanicForm 
                 navigateTo = { navigationProps.navigation.navigate }
             />
             <View style = { myStyles.termsofservice }> 
