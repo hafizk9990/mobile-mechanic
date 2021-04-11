@@ -27,7 +27,9 @@ const ProfileCust = (tabsNavigationProps) => {
                     onPress = { () => console.log('You Pressed the Plus Icon ...') }
                 />
             </View>
-            <Text> userEmail (debugging print, remove later): { obtainedEmail } </Text>
+            {
+                // <Text> userEmail (debugging print, remove later): { obtainedEmail } </Text>
+            }
             <ProfileCustForm />
         </React.Fragment>
     );

@@ -9,7 +9,6 @@ import SignUpCust from '../components/screens/SignUpCust'
 import SignUpMech from '../components/screens/SignUpMech'
 import SignInCust from '../components/screens/SignInCust'
 import SignInMech from '../components/screens/SignInMech'
-import TabAppCust from '../components/screens/TabAppCust'
 import SplashScreen from '../components/screens/splash' 
 import CustTabsWrapper from './CustTabsWrapper'
 import BatterySpecifications from '../components/screens/BatterySpecifications'
@@ -18,6 +17,7 @@ import ProfileMech from '../components/screens/ProfileMech'
 import CarImages from '../components/screens/CarImages'
 import CarDescription from '../components/screens/CarDescription'
 import CustLocation from '../components/screens/CustLocation'
+
 const screens = {
     SplashScreen: {
         screen: SplashScreen, 
@@ -28,7 +28,6 @@ const screens = {
     PreSignIn: {
         screen: PreSignIn, 
         navigationOptions: {
-            title: 'MobileMechanic (Pre-Sign In)', 
             headerShown: false
         }
     },
@@ -36,30 +35,35 @@ const screens = {
         screen: PreSignUp, 
         navigationOptions: {
             title: 'MobileMechanic (Pre-Sign Up)',
+            headerShown: false
         }
     },
     SignUpCust: {
         screen: SignUpCust, 
         navigationOptions: {
-            title: 'Sign Up Customer (SignUpCust)'
+            title: 'Sign Up Customer (SignUpCust)', 
+            headerShown: false
         }
     }, 
     SignUpMech: {
         screen: SignUpMech, 
         navigationOptions: {
-            title: 'Sign Up Mechanic (SignUpMech)'
+            title: 'Sign Up Mechanic (SignUpMech)', 
+            headerShown: false
         }
     }, 
     SignInCust: {
         screen: SignInCust, 
         navigationOptions: {
-            title: 'Sign In Customer (SignInCust)'
+            title: '', 
+            headerShown: false
         }
     }, 
     SignInMech: {
         screen: SignInMech, 
         navigationOptions: {
-            title: 'Sign In Mechanic (SignInMech)'
+            title: 'Sign In Mechanic (SignInMech)', 
+            headerShown: false
         }
     }, 
     CustTabsWrapper: {
@@ -71,7 +75,7 @@ const screens = {
     BatterySpecifications: {
         screen: BatterySpecifications,
         navigationOptions: {
-            headerShown: true
+            headerShown: false
         }
     },
     CarImages: {
@@ -102,7 +106,8 @@ const screens = {
     ProfileMech: {
         screen: ProfileMech, 
         navigationOptions: {
-            title: 'Profile'
+            title: 'Profile', 
+            headerShown: false
             
         }
     },

@@ -20,18 +20,23 @@ const CustHome = (navigationProps) => {
     return(
         <React.Fragment> 
             <View style = { {marginTop: windowWidth * 0.075} }> 
-                <Text> Services </Text>
+            <Text style = { {marginTop: '12%', marginBottom: 20, fontSize: 30, textAlign: 'center'}}> Select Services </Text>
             </View>
-            <Text> The user is: {navigationProps.navigation.getParam('userEmail')} </Text>
+            {
+                // <Text> The user is: {navigationProps.navigation.getParam('userEmail')} </Text>
+            }
             <View style = { {flexDirection: 'row'} }>
-                <TextInput
-                    style = { {} }
-                    placeholder = 'Search More Services'
-                    onChangeText = { handleTextChange }
-                />
-                <AntDesign name = "search1" size = {18} color = "gray" />
+                {
+                    // <TextInput
+                    // style = { {textAlign: 'center', alignContent: 'center', alignItems: 'center', justifyContent: 'center'} }
+                    // placeholder = 'Search More Services'
+                    // onChangeText = { handleTextChange }
+                    // />
+                    // <AntDesign name = "search1" size = {18} color = "gray" />
+                }
+                
             </View>
-            <View style = { {marginBottom: windowHeight * 0.075, marginLeft: windowWidth * 0.185} }>
+            <View style = { {marginBottom: windowHeight * 0.22, marginLeft: windowWidth * 0.185} }>
                 {
                     <FlatList 
                         numColumns = {3}

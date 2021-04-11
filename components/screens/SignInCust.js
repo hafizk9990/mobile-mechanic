@@ -9,7 +9,7 @@ var windowWidth = Dimensions.get('window').width;
 
 const SignInCust = (navigationProps) => {
     return(
-        <React.Fragment style={myStyles.all}>
+        <React.Fragment>
             <View style = { myStyles.pageTop }>
                 <Text style = { myStyles.title  } > MobileMechanic </Text>
                 <Text style = { myStyles.signin  } > Sign In </Text>

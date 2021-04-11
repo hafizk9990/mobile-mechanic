@@ -14,13 +14,13 @@ const SignInCustForm = (props) => {
                 userEmail = userEmail.replace(/\./g, ','); 
                 let userEmailToPass = userEmail.replace(/\,/g, '.'); 
                 let userPassword = formData.pass;
-                
+            
                 firebase.database().ref(`mobileMechanic/Clients/${ userEmail }`).once('value', (data) => {
                     let firebaseDataString = JSON.stringify(data); // JavaScript object to string
                     let firebaseDataJSON = JSON.parse(firebaseDataString); // String to JSON
 
                     if (firebaseDataJSON) {
-                        if (true) { // (firebaseDataJSON.password === userPassword) {
+                        if (firebaseDataJSON.password === userPassword) {
                             console.log(`Login Successful .... Email and password both match`);
                             props.navigateTo('CustTabsWrapper', {userEmail: userEmailToPass});
                         } 

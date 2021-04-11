@@ -12,7 +12,6 @@ const PreSignUp = (navigationProps) => {
             </View>
             <View style = { myStyles.signUp }> 
                 <Text style = { myStyles.signin  } > Sign In </Text>
-                <Text style = { myStyles.useyouraccount  } > Use your account </Text>
             </View>
             <View> 
 

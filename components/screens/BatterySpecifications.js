@@ -65,7 +65,7 @@ const BatterySpecifications = (navigationProps) => {
                         // their car images, their location and so on and so forth. 
                         // The rest will be implemented later
                         underlayColor='#fff'>
-                        <Text style={mystyles.loginText}>Add to cart</Text>
+                        <Text style={mystyles.loginText}> Proceed (Temporary Fix) </Text>
                     </TouchableOpacity>
                     </View>
                 </View>

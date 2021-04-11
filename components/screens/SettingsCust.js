@@ -46,7 +46,9 @@ const SettingsCust = (tabsNavigationProps) => {
                 <Text style = { {marginLeft: windowWidth * 0.05, fontWeight: 'bold', fontSize: 24} }> { name } </Text>
             </View>
             
-            <Text> userEmail (debugging print, remove later): { obtainedEmail } </Text>
+            {
+                // <Text> userEmail (debugging print, remove later): { obtainedEmail } </Text>
+            }
             
             <View style = { {flexDirection: 'row', marginBottom: windowHeight * 0.05} }>
                 <Ionicons style = { {marginLeft: windowWidth * 0.05} } name = "person" size = { 24 } color = "green" />
