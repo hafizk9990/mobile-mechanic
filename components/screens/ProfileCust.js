@@ -2,6 +2,7 @@ import React from 'react'
 import { View, Text, Dimensions, Image } from 'react-native'
 import ProfileCustForm from '../screenSnippets/ProfileCustForm'
 import { FontAwesome5 } from '@expo/vector-icons'; 
+// import * as fs from 'react-native-fs'
 
 let image = require('../../assets/john-doe-girl..jpg');
 var windowHeight = Dimensions.get('window').height;
@@ -27,10 +28,9 @@ const ProfileCust = (tabsNavigationProps) => {
                     onPress = { () => console.log('You Pressed the Plus Icon ...') }
                 />
             </View>
-            {
-                // <Text> userEmail (debugging print, remove later): { obtainedEmail } </Text>
-            }
-            <ProfileCustForm />
+            <ProfileCustForm 
+                userEmail = {obtainedEmail}
+            />
         </React.Fragment>
     );
 }

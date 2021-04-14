@@ -1,29 +1,73 @@
-import React from 'react' 
+import React, { useState } from 'react' 
 import { View, Text, StyleSheet, TextInput, Button, ScrollView } from 'react-native' 
 import { Formik, Field } from 'formik'
 import * as yup from 'yup' 
-
-// In this screen, you should use the user-provided email to check if they exist or not ... 
-// If they do, you should append their details (along with their image) to their document
-// in Firebase ... 
+import firebase from '../screenSnippets/FirebaseInit'
 
 const schema = yup.object({
     firstName: yup.string().required('First name is required'), 
     lastName: yup.string().required('Last name is required'), 
     age: yup.number().required().positive().integer(),
     creditCard: yup.string().required('Credit card number is required').length(16), 
-    email: yup.string().email().required('Email address is required')
 });
 
-const ProfileCustForm = () => {
+const ProfileCustForm = (props) => {
+    let userEmail = props.userEmail;
+    userEmail = userEmail.replace(/\./g, ',');
+    
+    const [firstNameToShow, setFirstName] = useState('Enter Your First Name');
+    const [lastNameToShow, setLastName] = useState('Enter Your Last Name');
+    const [ageToShow, setAge] = useState('Enter Your Age');
+    const [creditCardToShow, setCreditCard] = useState('Enter Your Credit Card');
+
+    const getData = () => {
+        firebase.database().ref(`mobileMechanic/Clients/${ userEmail }`).once('value', (data) => {
+            let firebaseDataString = JSON.stringify(data); // JavaScript object to string
+            let firebaseDataJSON = JSON.parse(firebaseDataString); // String to JSON
+        
+            if (firebaseDataJSON.firstName) {
+                console.log('Got data successfully ...');
+                setFirstName('FIRST NAME: ' + firebaseDataJSON.firstName);
+            }
+            if (firebaseDataJSON.lastName) {
+                setLastName('LAST NAME: ' + firebaseDataJSON.lastName);
+            }
+            if (firebaseDataJSON.age) {
+                setAge('AGE: ' + firebaseDataJSON.age);
+            }
+            if (firebaseDataJSON.creditCard) {
+                setCreditCard('CREDIT CARD NUMBER: ' + firebaseDataJSON.creditCard);
+            }
+        })
+    }
+
+    getData();
+    
     return(
         <ScrollView> 
             <Formik 
-                initialValues = { {firstName: '', lastName: '', age: '', email: '', creditCard: ''} }
+                initialValues = { {firstName: '', lastName: '', age: '', creditCard: ''} }
                 validationSchema = { schema }
                 onSubmit = { (submittedData, control) => {
-                    console.log(submittedData);
                     control.resetForm();
+
+                    let firstName = submittedData.firstName; 
+                    let lastName = submittedData.lastName; 
+                    let age = submittedData.age;
+                    let creditCardNumb = submittedData.creditCard;
+
+                    firebase.database().ref(`mobileMechanic/Clients/${userEmail}`).update({
+                        firstName: firstName, 
+                        lastName: lastName, 
+                        age: age, 
+                        creditCard: creditCardNumb
+                    }).then( () => { 
+                        console.log(`Profile updation successful ...`);
+                        getData();
+                    })
+                    .catch( () => { 
+                        console.log(`Profile updation failed ...`);
+                    });
                 }}
             > 
             {
@@ -32,7 +76,7 @@ const ProfileCustForm = () => {
                         <View>
                             <TextInput 
                                 style = { {textAlign: 'center'} }
-                                placeholder = 'Your First Name'
+                                placeholder = {firstNameToShow}
                                 onChangeText = { formikProps.handleChange('firstName') }
                                 value = { formikProps.values.firstName }
                             />
@@ -40,7 +84,7 @@ const ProfileCustForm = () => {
                             
                             <TextInput 
                                 style = { {textAlign: 'center'} }
-                                placeholder = 'Your Last Name'
+                                placeholder = {lastNameToShow}
                                 onChangeText = { formikProps.handleChange('lastName') }
                                 value = { formikProps.values.lastName }
                             />
@@ -48,7 +92,7 @@ const ProfileCustForm = () => {
 
                             <TextInput 
                                 style = { {textAlign: 'center'} }
-                                placeholder = 'Your Age'
+                                placeholder = {ageToShow}
                                 onChangeText = { formikProps.handleChange('age') }
                                 value = { formikProps.values.age }
                             />
@@ -56,15 +100,7 @@ const ProfileCustForm = () => {
 
                             <TextInput 
                                 style = { {textAlign: 'center'} }
-                                placeholder = 'Re-enter Your Email'
-                                onChangeText = { formikProps.handleChange('email') }
-                                value = { formikProps.values.email }
-                            />
-                            <Text style = { myStyles.errors }> { formikProps.touched.email && formikProps.errors.email } </Text>
-                            
-                            <TextInput 
-                                style = { {textAlign: 'center'} }
-                                placeholder = 'Enter Credit Card Number'
+                                placeholder = {creditCardToShow}
                                 onChangeText = { formikProps.handleChange('creditCard') }
                                 value = { formikProps.values.creditCard }
                             />
@@ -72,7 +108,7 @@ const ProfileCustForm = () => {
                                 
                             <Button title = 'Update Profile' onPress = { formikProps.handleSubmit  } />
                         </View>
-                    );
+                    )
                 }
             }
             </Formik>
