@@ -2,11 +2,11 @@ import React from 'react';
 import './components/screenSnippets/FirebaseInit'
 import StackNavigator from './routes/StackWrapper'
 import TabNavigator from './routes/CustTabsWrapper'
-import BatterySpecifications from './components/screens/BatterySpecifications'
+import CustLocation from './components/screens/CustLocation'
 const App = () => {
     return (
         <StackNavigator />
-        // <BatterySpecifications />
+        //<CustLocation />
         // <TabNavigator /> 
     );
 }
