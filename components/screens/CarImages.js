@@ -8,10 +8,11 @@ var windowHeight = Dimensions.get('window').height;
 
 const pressHandler = (key, car, navigationProps) => {
     console.log(`${car} selected ...`);
-    navigationProps.navigation.navigate('CarDescription', {carName: car, carKey: key});
+    navigationProps.navigation.navigate('CarDescription', {carName: car, carKey: key, userEmail: navigationProps.navigation.getParam('userEmail')});
 }
 
 const CarImages = (navigationProps) => {
+    console.log(navigationProps.navigation.getParam('userEmail'));
     return(
         <React.Fragment> 
             <View style = { {marginTop: windowWidth * 0.075} }> 

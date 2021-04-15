@@ -14,6 +14,7 @@ const CarDescription = (navigationProps) => {
     let carName = navigationProps.navigation.getParam('carName');
     let carKey = navigationProps.navigation.getParam('carKey');
     console.log(carName, carKey, carModel, numberPlate, description);
+    console.log(navigationProps.navigation.getParam('userEmail'));
     
     return(
         <React.Fragment> 
@@ -61,8 +62,16 @@ const CarDescription = (navigationProps) => {
                 <View> 
                     <TouchableOpacity
                         style = { myStyles.loginScreenButton }
-                        onPress={ () => navigationProps.navigation.navigate('CustLocation', {carName: carName, carModel: carModel, carNumber: numberPlate, carKey: carKey, carRequirements: description}) }
-                        underlayColor = '#fff'>
+                        onPress={ () => navigationProps.navigation.navigate('CustLocation', {
+                            carName: carName, 
+                            carModel: carModel, 
+                            carNumber: numberPlate, 
+                            carImageKey: carKey, 
+                            carDescriptionNote: description, 
+                            userEmail: navigationProps.navigation.getParam('userEmail')})
+                        }
+                        underlayColor = '#fff'
+                    >
                         <Text style = {myStyles.loginText}> Proceed </Text>
                     </TouchableOpacity>
                 </View>

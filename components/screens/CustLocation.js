@@ -1,21 +1,23 @@
-
-
-
 import React, {useState, useEffect} from 'react' 
 import { Text, StyleSheet, View, Dimensions, TouchableOpacity } from 'react-native' 
-import MapView from 'react-native-maps';
-//import Geolocation from '@react-native-community/geolocation';
+import MapView from 'react-native-maps'
 
 var windowHeight = Dimensions.get('window').height;
 var windowWidth = Dimensions.get('window').width;
 
-
 const CustLocation = (navigationProps) => {
-    // console.log(navigationProps.navigation.getParam('carName'));
-    // console.log(navigationProps.navigation.getParam('carKey'));
-    // console.log(navigationProps.navigation.getParam('carModel'));
-    // console.log(navigationProps.navigation.getParam('carNumber'));
-    // console.log(navigationProps.navigation.getParam('carRequirements'));
+    let carName = (navigationProps.navigation.getParam('carName'));
+    console.log(carName);
+    let carImageKey = (navigationProps.navigation.getParam('carImageKey'));
+    console.log(carImageKey);
+    let carModel = (navigationProps.navigation.getParam('carModel'));
+    let carNumber = (navigationProps.navigation.getParam('carNumber'));
+    let carDescriptionNote = (navigationProps.navigation.getParam('carDescriptionNote'));
+    let userEmail = (navigationProps.navigation.getParam('userEmail'));
+    // let shoppingCart = (navigationProps.navigation.getParam('shoppingCart'));
+
+    // More requirements to forward: shopping cart (will be implemented later on ...)
+
     const [currentLocation,setCurrentLocation] = useState({
         latitude: 0,
         longitude: 0,
@@ -44,16 +46,11 @@ const CustLocation = (navigationProps) => {
         (error) => alert(JSON.stringify(error)),
         {enableHighAccuracy: true, timeout: 20000});
     }
-
     
-
-      console.log(currentLocation)
-
-
     return(
         <View>
             <View style = { styles.heading1 }>
-                <Text style = { styles.title1 }> Customer Locaion </Text>
+                <Text style = { styles.title1 }> Customer Location </Text>
             </View>
             <View style={styles.container}>
                 <MapView
@@ -62,7 +59,8 @@ const CustLocation = (navigationProps) => {
                         latitude:currentLocation.latitude,
                         longitude:currentLocation.longitude,
                         latitudeDelta: 0.015,
-                        longitudeDelta: 0.0121,}}
+                        longitudeDelta: 0.0121,
+                    }}
                 >
                 <MapView.Marker draggable
                     coordinate={currentLocation}
@@ -72,32 +70,44 @@ const CustLocation = (navigationProps) => {
                 />
                 </MapView>
             </View>
-            <View style = {styles.heading4}>
-                <TouchableOpacity
-                    style={styles.loginScreenButton}
-                    onPress={ () => getCurrentPosition() }
-                    // This is only a temporary fix. We are not adding objects to cart,
-                    // rather we are directing the user to our next use case, i.e., adding 
-                    // their car images, their location and so on and so forth. 
-                    // The rest will be implemented later
-                    underlayColor='#fff'>
-                    <Text style={styles.loginText}> Reset </Text>
-                </TouchableOpacity>
+            <View style = { {flexDirection: 'row'} }> 
+                <View style = {styles.heading4}>
+                    <TouchableOpacity
+                        style={styles.loginScreenButton}
+                        onPress={ () => getCurrentPosition() }
+                        underlayColor='#fff'>
+                        <Text style={styles.loginText}> Reset Location </Text>
+                    </TouchableOpacity>
+                </View>
+                <View style = {styles.heading4}>
+                    <TouchableOpacity
+                        style={styles.loginScreenButton}
+                        onPress={ () => { navigationProps.navigation.navigate('ConfirmCustOrder', {
+                            locationObject: currentLocation, 
+                            carName: carName, 
+                            carImageKey: carImageKey, 
+                            carModel: carModel, 
+                            carNumber: carNumber, 
+                            carDescriptionNote: carDescriptionNote,
+                            userEmail: userEmail
+                        })}}
+                        underlayColor='#fff'>
+                        <Text style={styles.loginText}> {'Next =>'} </Text>
+                    </TouchableOpacity>
+                </View>
             </View>
         </View>
-        
-
     );
 }
 
 const styles = StyleSheet.create({
     container: {
       ...StyleSheet.absoluteFillObject,
-      height: 510,
-      width: 360,
+      height: windowHeight,
+      width: windowWidth,
       justifyContent: 'flex-end',
       alignItems: 'center',
-      marginTop:130,
+      marginTop: 140,
     },
     map: {
       ...StyleSheet.absoluteFillObject,
@@ -118,9 +128,9 @@ const styles = StyleSheet.create({
     },
     heading4: {
         paddingTop: 0.02*windowHeight,
-        marginLeft: windowWidth * 0.05,
-        marginRight: windowWidth * 0.05,
-
+        marginLeft: windowWidth * 0.01,
+        marginRight: windowWidth * 0.01,
+        width: windowWidth / 2
     },
     
     loginScreenButton:{

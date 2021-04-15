@@ -7,14 +7,16 @@ var windowWidth = Dimensions.get('window').width;
 var windowHeight = Dimensions.get('window').height;
 
 const CustHome = (navigationProps) => {
+    let obtainedEmail = navigationProps.navigation.dangerouslyGetParent().getParam('userEmail');
+    console.log(obtainedEmail);
+    
     const handleTextChange = () => {
         console.log(`You wrote something in the input text field ...`);
     }
 
     const pressHandler = (itemKey, itemName) => {
         console.log(`Item touched ${itemKey} ${itemName}`)
-        navigationProps.navigation.navigate('BatterySpecifications');
-        
+        navigationProps.navigation.navigate('BatterySpecifications', {userEmail: obtainedEmail});
     }
 
     return(

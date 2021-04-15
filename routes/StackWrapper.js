@@ -17,6 +17,7 @@ import ProfileMech from '../components/screens/ProfileMech'
 import CarImages from '../components/screens/CarImages'
 import CarDescription from '../components/screens/CarDescription'
 import CustLocation from '../components/screens/CustLocation'
+import ConfirmCustOrder from '../components/screens/ConfirmCustOrder'
 
 const screens = {
     SplashScreen: {
@@ -102,7 +103,6 @@ const screens = {
             headerShown: false
         }
     },
-
     ProfileMech: {
         screen: ProfileMech, 
         navigationOptions: {
@@ -111,6 +111,12 @@ const screens = {
             
         }
     },
+    ConfirmCustOrder: {
+        screen: ConfirmCustOrder, 
+        navigationOptions: {
+            headerShown: false 
+        }
+    }
 }
 
 const stack = createStackNavigator(screens);

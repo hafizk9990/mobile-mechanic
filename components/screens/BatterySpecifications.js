@@ -32,6 +32,7 @@ const BatterySpecifications = (navigationProps) => {
 	}
 
     console.log(batteryState);
+    console.log(navigationProps.navigation.getParam('userEmail'));
     return(
         <ScrollView behavior="padding"> 
             <View style = {mystyles.view1} behavior="padding">
@@ -59,7 +60,7 @@ const BatterySpecifications = (navigationProps) => {
                     <View style = {mystyles.heading4}>
                     <TouchableOpacity
                         style={mystyles.loginScreenButton}
-                        onPress={ () => navigationProps.navigation.navigate('CarImages') }
+                        onPress={ () => navigationProps.navigation.navigate('CarImages', {userEmail: navigationProps.navigation.getParam('userEmail') }) } // pass email here
                         // This is only a temporary fix. We are not adding objects to cart,
                         // rather we are directing the user to our next use case, i.e., adding 
                         // their car images, their location and so on and so forth. 
