@@ -11,3 +11,4 @@ The project relies on the following dependencies:
 5. Drawer-based navigation for screen components (npm install react-navigation-drawer --save)
 6. Tabs-based navigation for screen components (npm install react-navigation-tabs --save)
 7. Expo vector icons for creating icons and smart labels (npm install @expo/vector-icons --save)
+8. Google maps for react-native (react-native-maps --save)
