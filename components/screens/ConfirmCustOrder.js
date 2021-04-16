@@ -15,6 +15,7 @@ const ConfirmCustOrder = ( navigationProps ) => {
     let carDescriptionNote = (navigationProps.navigation.getParam('carDescriptionNote'));
     let userEmail = (navigationProps.navigation.getParam('userEmail')); // required by mechanic
     userEmail = userEmail.replace(/\./g, ',');
+    const [msg, setMsg] = useState('');
 
     const orderConfirmationHandler = () => {
         firebase.database().ref(`mobileMechanic/userRequests/${ userEmail }`).set({
@@ -28,15 +29,16 @@ const ConfirmCustOrder = ( navigationProps ) => {
         }).then( () => { 
             mechanicResponseCNIC = [];
             Alert.alert(
-                'Finding Mechanics',
+                'Order Confirmed!',
                 "Congratulations! Your order has been placed successfully. Please wait while we connect you to the mechanics near by .... ",
                 [ { text: "OK" } ],
             );
+            setMsg('Please be patient. We are finding you a mechanic');
         })
         .catch( () => { 
             Alert.alert(
                 'Ooops!',
-                'Some unknown error occurred. Could not place order. Please try again ...',
+                'An unknown error occurred. We could not place your order. Please try again ...',
                 [ { text: "OK" } ],
             );
         });
@@ -86,6 +88,7 @@ const ConfirmCustOrder = ( navigationProps ) => {
                     <Text style = { styles.loginText }> Confirm Order </Text>
                 </TouchableOpacity>
             </View>
+            <Text style = { {color: 'red', textAlign: 'center'} }> { msg } </Text>
         </React.Fragment>
     );
 }

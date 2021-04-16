@@ -1,6 +1,5 @@
 import React from 'react' 
 import { View, Text, StyleSheet, TextInput, FlatList, TouchableOpacity, Image, Dimensions } from 'react-native' 
-import { AntDesign } from '@expo/vector-icons'
 import db from '../screenSnippets/ServicesDatabase'
 
 var windowWidth = Dimensions.get('window').width; 
@@ -8,35 +7,16 @@ var windowHeight = Dimensions.get('window').height;
 
 const CustHome = (navigationProps) => {
     let obtainedEmail = navigationProps.navigation.dangerouslyGetParent().getParam('userEmail');
-    console.log(obtainedEmail);
     
-    const handleTextChange = () => {
-        console.log(`You wrote something in the input text field ...`);
-    }
-
     const pressHandler = (itemKey, itemName) => {
         console.log(`Item touched ${itemKey} ${itemName}`)
-        navigationProps.navigation.navigate('BatterySpecifications', {userEmail: obtainedEmail});
+        navigationProps.navigation.navigate(navigationObject[itemKey], {userEmail: obtainedEmail});
     }
 
     return(
         <React.Fragment> 
             <View style = { {marginTop: windowWidth * 0.075} }> 
-            <Text style = { {marginTop: '12%', marginBottom: 20, fontSize: 30, textAlign: 'center'}}> Select Services </Text>
-            </View>
-            {
-                // <Text> The user is: {navigationProps.navigation.getParam('userEmail')} </Text>
-            }
-            <View style = { {flexDirection: 'row'} }>
-                {
-                    // <TextInput
-                    // style = { {textAlign: 'center', alignContent: 'center', alignItems: 'center', justifyContent: 'center'} }
-                    // placeholder = 'Search More Services'
-                    // onChangeText = { handleTextChange }
-                    // />
-                    // <AntDesign name = "search1" size = {18} color = "gray" />
-                }
-                
+                <Text style = { {marginTop: '12%', marginBottom: 20, fontSize: 30, textAlign: 'center'}}> Select Services </Text>
             </View>
             <View style = { {marginBottom: windowHeight * 0.22, marginLeft: windowWidth * 0.185} }>
                 {
@@ -55,7 +35,6 @@ const CustHome = (navigationProps) => {
                                         </View>
                                     </TouchableOpacity>
                                 </View>
-                                
                             );
                         }}
                     />
@@ -63,6 +42,22 @@ const CustHome = (navigationProps) => {
             </View>
         </React.Fragment>
     );
+}
+
+const navigationObject = {
+    0: 'OilChangeSpecifications',
+    1: 'BatterySpecifications',
+    2: 'TuningSpecifications',
+    3: 'CleaningSpecifications', 
+    4: 'TyreSpecifications',
+    5: 'InspectionSpecifications', 
+    6: 'PolishSpecifications',
+    7: 'AcSpecifications',
+    8: 'PaintingSpecifications', 
+    9: 'RadiatorSpecifications', 
+    10: 'BrakeSpecifications', 
+    11: 'AccidentSpecifications', 
+    12: 'OtherSpecifications'
 }
 
 const myStyles = StyleSheet.create({
@@ -78,7 +73,7 @@ const myStyles = StyleSheet.create({
     9: require('../../assets/icons/radiator.png'), 
     10: require('../../assets/icons/brakes.png'),   
     11: require('../../assets/icons/car-repair.png'),
-    12: require('../../assets/icons/service.png') 
+    12: require('../../assets/icons/service.png'), 
 });
 
 export default CustHome
