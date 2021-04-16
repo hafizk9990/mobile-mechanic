@@ -2,7 +2,6 @@ import React from 'react'
 import { View, Text, StyleSheet, TextInput, Button,TouchableOpacity } from 'react-native' 
 import { Formik } from 'formik'
 import firebase from './FirebaseInit'
-import { NavigationActions } from 'react-navigation'
 
 const SignInCustForm = (props) => {
     return(

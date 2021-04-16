@@ -4,6 +4,7 @@ import firebase from '../screenSnippets/FirebaseInit'
 
 var windowHeight = Dimensions.get('window').height;
 var windowWidth = Dimensions.get('window').width;
+var mechanicResponseCNIC = [];
 
 const ConfirmCustOrder = ( navigationProps ) => {
     let locationObject = (navigationProps.navigation.getParam('locationObject'));
@@ -15,14 +16,6 @@ const ConfirmCustOrder = ( navigationProps ) => {
     let userEmail = (navigationProps.navigation.getParam('userEmail')); // required by mechanic
     userEmail = userEmail.replace(/\./g, ',');
 
-    const [msg, updateMsg] = useState('');
-    const [color, updateColor] = useState('red');
-
-    // const dummy = () => {
-    //     console.log('Dummy called ...');
-    // }
-    // setInterval(dummy);
-
     const orderConfirmationHandler = () => {
         firebase.database().ref(`mobileMechanic/userRequests/${ userEmail }`).set({
             customerLocation: locationObject,
@@ -33,26 +26,47 @@ const ConfirmCustOrder = ( navigationProps ) => {
             customerCarDescription: carDescriptionNote, 
             mechanicCNIC: ['dummyCNIC']
         }).then( () => { 
-            updateMsg('Please Wait. We are Finding You a Mechanic ...');
-            
+            mechanicResponseCNIC = [];
             Alert.alert(
                 'Finding Mechanics',
                 "Congratulations! Your order has been placed successfully. Please wait while we connect you to the mechanics near by .... ",
-                [
-                    { text: "OK" }
-                ],
+                [ { text: "OK" } ],
             );
         })
         .catch( () => { 
             Alert.alert(
                 'Ooops!',
                 'Some unknown error occurred. Could not place order. Please try again ...',
-                [
-                    { text: "OK" }
-                ],
+                [ { text: "OK" } ],
             );
         });
     }
+
+    firebase.database().ref(`mobileMechanic/userRequests/${ userEmail }`).on('value', (data) => {
+        console.log('Something changed in the DB in realtime ...');
+        console.log(data);
+        console.log('User for which we check ....', userEmail);
+
+        let firebaseDataString = JSON.stringify(data); // JavaScript object to string
+        let firebaseDataJSON = JSON.parse(firebaseDataString); // String to JSON
+        
+        if (firebaseDataJSON) {
+            let mechanicCNICObject = firebaseDataJSON.mechanicCNIC;
+            if (Object.keys(mechanicCNICObject).length >= 2) {
+                for (let key in mechanicCNICObject) {
+                    if (mechanicCNICObject[key] === 'dummyCNIC' || mechanicResponseCNIC.includes(firebaseDataJSON.mechanicCNIC[key])) {
+                        // nothing
+                    }
+                    else {
+                        mechanicResponseCNIC.push(firebaseDataJSON.mechanicCNIC[key]);
+                        console.log(mechanicResponseCNIC);
+                    }
+                }
+                console.log(`Some mechanic has responded ... !!`);
+                navigationProps.navigation.navigate('SeeMechanicResponse', {mechanics: mechanicResponseCNIC});
+            }
+        }
+    });
 
     return(
         <React.Fragment> 
@@ -72,7 +86,6 @@ const ConfirmCustOrder = ( navigationProps ) => {
                     <Text style = { styles.loginText }> Confirm Order </Text>
                 </TouchableOpacity>
             </View>
-            <Text style = { {textAlign: 'center', color: color} }> { msg } </Text>
         </React.Fragment>
     );
 }
@@ -105,3 +118,52 @@ const styles = StyleSheet.create({
 });
 
 export default ConfirmCustOrder
+
+
+/*
+
+    // const dummy = () => {
+    //     firebase.database().ref(`mobileMechanic/userRequests/${ userEmail }`).once('value', (data) => {
+    //         let firebaseDataString = JSON.stringify(data); // JavaScript object to string
+    //         let firebaseDataJSON = JSON.parse(firebaseDataString); // String to JSON
+    
+    //         if (firebaseDataJSON) {
+    //             console.log('Data obtained from firebase ...');
+    //             console.log(firebaseDataJSON.mechanicCNIC);
+    //             if (Object.keys(firebaseDataJSON.mechanicCNIC).length >= 2) {
+    //                 for (let key in firebaseDataJSON.mechanicCNIC) {
+    //                     if (firebaseDataJSON.mechanicCNIC[key] === 'dummyCNIC' || mechanicResponseCNIC.includes(firebaseDataJSON.mechanicCNIC[key])) {
+    //                         // nothing
+    //                     }
+    //                     else {
+    //                         mechanicResponseCNIC.push(firebaseDataJSON.mechanicCNIC[key]);
+    //                         console.log(mechanicResponseCNIC);
+    //                         // clearInterval(interval);
+    //                     }
+    //                 }
+    //                 console.log(`Some mechanic has responded ... !!`);
+    //                 updateColor('green');
+    //                 updateMsg('A mechanic responded. Click to view their response');
+                    
+    //                 // props.navigateTo('CustTabsWrapper', {userEmail: userEmailToPass});
+    //             } 
+    //             else {
+    //                 console.log(`No mechanic has responded yet ...`);
+    //                 updateColor('red');
+    //                 updateMsg('Please Wait. We are finding you a mechanic');
+    //             }
+    //         }
+    //         else {
+    //             console.log(`This user has put no request in the DB as of now`);
+    //         }
+    //     })
+    // }
+
+    // dummy(); // If you just open this page, check in the DB immediately for any response
+
+    // // Otherwise, check every 20 seconds if anybody has responded or not ...
+
+    // interval = setInterval(() => {
+    //     dummy();
+    // }, 20000);
+*/

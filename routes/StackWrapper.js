@@ -18,6 +18,7 @@ import CarImages from '../components/screens/CarImages'
 import CarDescription from '../components/screens/CarDescription'
 import CustLocation from '../components/screens/CustLocation'
 import ConfirmCustOrder from '../components/screens/ConfirmCustOrder'
+import SeeMechanicResponse from '../components/screens/SeeMechanicResponse'
 
 const screens = {
     SplashScreen: {
@@ -113,6 +114,12 @@ const screens = {
     },
     ConfirmCustOrder: {
         screen: ConfirmCustOrder, 
+        navigationOptions: {
+            headerShown: false 
+        }
+    }, 
+    SeeMechanicResponse: {
+        screen: SeeMechanicResponse, 
         navigationOptions: {
             headerShown: false 
         }
