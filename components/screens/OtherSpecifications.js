@@ -6,6 +6,12 @@ var windowWidth = Dimensions.get('window').width;
 
 const BatterySpecifications = (navigationProps) => {
     const [description, setdescription] = useState(" ");
+    let incomingCart = navigationProps.navigation.getParam('cart');
+    let pushToCart = {
+        service: 'Other Issues', 
+        description: description, 
+        specifications: 'No specific specifications'
+    };
     return(
         <ScrollView behavior="padding"> 
             <View style = { mystyles.main  }>
@@ -25,12 +31,17 @@ const BatterySpecifications = (navigationProps) => {
                     </SafeAreaView>
                 </View>
                 <View style = {mystyles.heading4}>
-                    <TouchableOpacity
-                        style={mystyles.loginScreenButton}
-                        onPress={ () => navigationProps.navigation.navigate('CarImages', {userEmail: navigationProps.navigation.getParam('userEmail') }) } // pass email here
-                            underlayColor='#fff'>
-                        <Text style={mystyles.loginText}> Proceed (Temporary Fix) </Text>
-                    </TouchableOpacity>
+                <TouchableOpacity
+                style = { mystyles.loginScreenButton }
+                onPress = { () => {
+                    incomingCart.push(pushToCart);
+                    return(
+                        navigationProps.navigation.navigate('Home', {updatedCart: incomingCart}) 
+                    )
+                }}
+                underlayColor='#fff'>
+                <Text style = { mystyles.loginText }> Add to Shopping Cart </Text>
+            </TouchableOpacity>
                 </View>
                 
             </View>

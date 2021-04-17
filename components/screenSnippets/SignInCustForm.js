@@ -56,7 +56,6 @@ const SignInCustForm = (props) => {
                                     underlayColor='#fff'>
                                     <Text style={myStyles.loginText}>Continue</Text>
                             </TouchableOpacity>
-                             
                         </View>
                     );
                 }

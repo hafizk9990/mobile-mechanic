@@ -12,7 +12,10 @@ const pressHandler = (key, car, navigationProps) => {
 }
 
 const CarImages = (navigationProps) => {
+    console.log('DATA HANDED OVER TO THE CAR IMAGES SCREEN ....');
     console.log(navigationProps.navigation.getParam('userEmail'));
+    console.log(navigationProps.navigation.getParam('cart'));
+    
     return(
         <React.Fragment> 
             <View style = { {marginTop: windowWidth * 0.075} }> 

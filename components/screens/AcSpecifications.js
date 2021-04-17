@@ -8,7 +8,13 @@ var windowWidth = Dimensions.get('window').width;
 const BatterySpecifications = (navigationProps) => {
     const [batteryState, setbatteryState] = useState([{k:'Seasonal AC Service', v: false}, {k:'Filter Change', v: false}, {k:'AC Water Leakage', v: false}, {k:'No Cooling', v: false}, {k:'Not Sure', v: false}]);
     const [num, setnum] = useState(5);
-    const [description, setdescription] = useState(" ")
+    const [description, setdescription] = useState(" "); 
+    let incomingCart = navigationProps.navigation.getParam('cart');
+    let pushToCart = {
+        service: 'AC Issues', 
+        description: description, 
+        specifications: batteryState.filter( (eachObject) => eachObject.v === true )
+    };
 
     const pressHandler = (i) => {
         setbatteryState( (prevbatteryState) => {
@@ -31,8 +37,6 @@ const BatterySpecifications = (navigationProps) => {
 		)
 	}
 
-    console.log(batteryState);
-    console.log(navigationProps.navigation.getParam('userEmail'));
     return(
         <ScrollView behavior="padding"> 
             <View style = {mystyles.view1} behavior="padding">
@@ -59,14 +63,15 @@ const BatterySpecifications = (navigationProps) => {
                     </View>
                     <View style = {mystyles.heading4}>
                     <TouchableOpacity
-                        style={mystyles.loginScreenButton}
-                        onPress={ () => navigationProps.navigation.navigate('CarImages', {userEmail: navigationProps.navigation.getParam('userEmail') }) } // pass email here
-                        // This is only a temporary fix. We are not adding objects to cart,
-                        // rather we are directing the user to our next use case, i.e., adding 
-                        // their car images, their location and so on and so forth. 
-                        // The rest will be implemented later
+                        style = { mystyles.loginScreenButton }
+                        onPress = { () => {
+                            incomingCart.push(pushToCart);
+                            return(
+                                navigationProps.navigation.navigate('Home', {updatedCart: incomingCart}) 
+                            )
+                        }}
                         underlayColor='#fff'>
-                        <Text style={mystyles.loginText}> Proceed (Temporary Fix) </Text>
+                        <Text style = { mystyles.loginText }> Add to Shopping Cart </Text>
                     </TouchableOpacity>
                     </View>
                 </View>

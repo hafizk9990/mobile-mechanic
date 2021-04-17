@@ -1,16 +1,35 @@
-import React from 'react' 
-import { View, Text, StyleSheet, TextInput, FlatList, TouchableOpacity, Image, Dimensions } from 'react-native' 
+import React, { useState } from 'react' 
+import { View, Text, StyleSheet, Alert, FlatList, TouchableOpacity, Image, Dimensions } from 'react-native' 
 import db from '../screenSnippets/ServicesDatabase'
 
 var windowWidth = Dimensions.get('window').width; 
 var windowHeight = Dimensions.get('window').height;
+var shoppingCart = [];
 
 const CustHome = (navigationProps) => {
     let obtainedEmail = navigationProps.navigation.dangerouslyGetParent().getParam('userEmail');
     
+    if (navigationProps.navigation.getParam('updatedCart')) {
+        shoppingCart = (navigationProps.navigation.getParam('updatedCart'));
+        console.log('CART RETURNED FROM THE SPECIFICATIONS SCREEN ...', shoppingCart);
+    }
+
     const pressHandler = (itemKey, itemName) => {
         console.log(`Item touched ${itemKey} ${itemName}`)
-        navigationProps.navigation.navigate(navigationObject[itemKey], {userEmail: obtainedEmail});
+        navigationProps.navigation.navigate(navigationObject[itemKey], {cart: shoppingCart});
+    }
+
+    const proceedForward = () => {
+        if (shoppingCart.length === 0) {
+            Alert.alert(
+                'Oops!', 
+                `Please fill your shopping cart first by selecting services from the list ${shoppingCart}`, 
+                [ {text: "OK"} ]
+            );
+        }
+        else {
+            navigationProps.navigation.navigate('CarImages', {userEmail: obtainedEmail, cart: shoppingCart});
+        }
     }
 
     return(
@@ -18,7 +37,7 @@ const CustHome = (navigationProps) => {
             <View style = { {marginTop: windowWidth * 0.075} }> 
                 <Text style = { {marginTop: '12%', marginBottom: 20, fontSize: 30, textAlign: 'center'}}> Select Services </Text>
             </View>
-            <View style = { {marginBottom: windowHeight * 0.22, marginLeft: windowWidth * 0.185} }>
+            <View style = { {marginBottom: windowHeight * 0.28, marginLeft: windowWidth * 0.185} }>
                 {
                     <FlatList 
                         numColumns = {3}
@@ -39,6 +58,12 @@ const CustHome = (navigationProps) => {
                         }}
                     />
                 }
+                <TouchableOpacity
+                        style = { myStyles.loginScreenButton }
+                        onPress = { proceedForward }
+                        underlayColor = '#fff'>
+                        <Text style = { myStyles.loginText }> { 'Proceed' } </Text>
+                </TouchableOpacity>
             </View>
         </React.Fragment>
     );
@@ -74,6 +99,25 @@ const myStyles = StyleSheet.create({
     10: require('../../assets/icons/brakes.png'),   
     11: require('../../assets/icons/car-repair.png'),
     12: require('../../assets/icons/service.png'), 
+
+    loginScreenButton:{
+        marginRight:40,
+       marginTop:10,
+        paddingTop:10,
+        paddingBottom:10,
+        backgroundColor:"#35b8b6",
+        borderRadius:10,
+        borderWidth: 1,
+        borderColor: '#fff',
+        position: 'relative', 
+        width: windowWidth / 1.6
+      },
+  loginText:{
+      color:'#fff',
+      textAlign:'center',
+      paddingLeft : 10,
+      paddingRight : 10
+  },
 });
 
 export default CustHome
