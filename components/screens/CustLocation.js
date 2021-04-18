@@ -14,7 +14,7 @@ const CustLocation = (navigationProps) => {
     let carNumber = (navigationProps.navigation.getParam('carNumber'));
     let carDescriptionNote = (navigationProps.navigation.getParam('carDescriptionNote'));
     let userEmail = (navigationProps.navigation.getParam('userEmail'));
-    // let shoppingCart = (navigationProps.navigation.getParam('shoppingCart'));
+    let cartToSend = navigationProps.navigation.getParam('cart');
 
     // More requirements to forward: shopping cart (will be implemented later on ...)
 
@@ -89,7 +89,8 @@ const CustLocation = (navigationProps) => {
                             carModel: carModel, 
                             carNumber: carNumber, 
                             carDescriptionNote: carDescriptionNote,
-                            userEmail: userEmail
+                            userEmail: userEmail,
+                            cart: cartToSend
                         })}}
                         underlayColor='#fff'>
                         <Text style={styles.loginText}> {'Next =>'} </Text>

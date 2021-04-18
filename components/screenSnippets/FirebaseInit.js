@@ -14,6 +14,6 @@ console.log('Trying to Connect with Firebase ...');
 const Firebase = firebase.initializeApp(firebaseConfig);
 console.log('Successfully Established Connection with Firebase!!');
 
-console.log('Logging From firebaseInit => THIS IS THE DATA FIREBASE SENT:', firebase);
+// console.log('Logging From firebaseInit => THIS IS THE DATA FIREBASE SENT:', firebase);
 
 export default Firebase

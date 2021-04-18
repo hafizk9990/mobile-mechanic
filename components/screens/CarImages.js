@@ -8,14 +8,19 @@ var windowHeight = Dimensions.get('window').height;
 
 const pressHandler = (key, car, navigationProps) => {
     console.log(`${car} selected ...`);
-    navigationProps.navigation.navigate('CarDescription', {carName: car, carKey: key, userEmail: navigationProps.navigation.getParam('userEmail')});
+    navigationProps.navigation.navigate('CarDescription', {
+        carName: car, 
+        carKey: key, 
+        userEmail: navigationProps.navigation.getParam('userEmail'), 
+        cart: navigationProps.navigation.getParam('cart')
+    });
 }
 
 const CarImages = (navigationProps) => {
     console.log('DATA HANDED OVER TO THE CAR IMAGES SCREEN ....');
     console.log(navigationProps.navigation.getParam('userEmail'));
     console.log(navigationProps.navigation.getParam('cart'));
-    
+
     return(
         <React.Fragment> 
             <View style = { {marginTop: windowWidth * 0.075} }> 

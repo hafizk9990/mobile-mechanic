@@ -68,8 +68,9 @@ const CarDescription = (navigationProps) => {
                             carNumber: numberPlate, 
                             carImageKey: carKey, 
                             carDescriptionNote: description, 
-                            userEmail: navigationProps.navigation.getParam('userEmail')})
-                        }
+                            userEmail: navigationProps.navigation.getParam('userEmail'),
+                            cart: navigationProps.navigation.getParam('cart')
+                        })}
                         underlayColor = '#fff'
                     >
                         <Text style = {myStyles.loginText}> Proceed </Text>

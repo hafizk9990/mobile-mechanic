@@ -1,5 +1,5 @@
 import React, { useState } from 'react' 
-import { Text, View, StyleSheet, TouchableOpacity, Dimensions, Alert } from 'react-native' 
+import { Text, View, ScrollView, StyleSheet, TouchableOpacity, Dimensions, Alert } from 'react-native' 
 import firebase from '../screenSnippets/FirebaseInit'
 
 var windowHeight = Dimensions.get('window').height;
@@ -14,6 +14,7 @@ const ConfirmCustOrder = ( navigationProps ) => {
     let carNumber = (navigationProps.navigation.getParam('carNumber'));
     let carDescriptionNote = (navigationProps.navigation.getParam('carDescriptionNote'));
     let userEmail = (navigationProps.navigation.getParam('userEmail')); // required by mechanic
+    let obtainedCart = navigationProps.navigation.getParam('cart');
     userEmail = userEmail.replace(/\./g, ',');
     const [msg, setMsg] = useState('');
 
@@ -25,12 +26,13 @@ const ConfirmCustOrder = ( navigationProps ) => {
             customerCarModel: carModel, 
             customerCarNumber: carNumber, 
             customerCarDescription: carDescriptionNote, 
+            customerShoppingCart: obtainedCart,
             mechanicCNIC: ['dummyCNIC']
         }).then( () => { 
             mechanicResponseCNIC = [];
             Alert.alert(
                 'Order Confirmed!',
-                "Congratulations! Your order has been placed successfully. Please wait while we connect you to the mechanics near by .... ",
+                "Congratulations! Your order has been placed successfully. Please wait while we connect you to the mechanics near by ",
                 [ { text: "OK" } ],
             );
             setMsg('Please be patient. We are finding you a mechanic');
@@ -45,9 +47,8 @@ const ConfirmCustOrder = ( navigationProps ) => {
     }
 
     firebase.database().ref(`mobileMechanic/userRequests/${ userEmail }`).on('value', (data) => {
-        console.log('Something changed in the DB in realtime ...');
-        console.log(data);
-        console.log('User for which we check ....', userEmail);
+        console.log('Something changed in the DB in realtime');
+        console.log('User for which we check:', userEmail);
 
         let firebaseDataString = JSON.stringify(data); // JavaScript object to string
         let firebaseDataJSON = JSON.parse(firebaseDataString); // String to JSON
@@ -72,14 +73,7 @@ const ConfirmCustOrder = ( navigationProps ) => {
 
     return(
         <React.Fragment> 
-            <Text style = { {marginTop: 30} }> Confirm Your Order ... </Text>
-            <View> 
-                <Text> Location: { locationObject.longitude } and { locationObject.latitude } </Text>
-                <Text> Car: { carName } </Text>
-                <Text> Model: { carModel } </Text>
-                <Text> Number Plate: { carNumber } </Text>
-                <Text> Car Description: { carDescriptionNote } </Text>
-            </View>
+            <Text style = { {marginTop: 50, textAlign: 'center'} }> Confirm Your Order </Text>
             <View style = { styles.heading4 }>
                 <TouchableOpacity
                     style = { styles.loginScreenButton }
@@ -87,8 +81,43 @@ const ConfirmCustOrder = ( navigationProps ) => {
                     underlayColor = '#fff'>
                     <Text style = { styles.loginText }> Confirm Order </Text>
                 </TouchableOpacity>
+                <Text style = { {textAlign: 'center'} }> Order Details </Text>
             </View>
-            <Text style = { {color: 'red', textAlign: 'center'} }> { msg } </Text>
+            <ScrollView> 
+                <Text> Location: { locationObject.longitude } and { locationObject.latitude } </Text>
+                <Text> Car: { carName } </Text>
+                <Text> Model: { carModel } </Text>
+                <Text> Number Plate: { carNumber } </Text>
+                <Text> Car Description: { carDescriptionNote + '\n\n' } </Text>
+                <Text style = { {textAlign: 'center'} }> { 'Shopping Cart' } </Text>
+                {
+                    obtainedCart.map( (data, index) => {
+                        if (!(data.service === 'Other Issues')) {
+                            return(    
+                                <React.Fragment> 
+                                    <Text> { `\n\n Service ${ index + 1 }: ` + data.service } { `\n Description: ` + data.description } { `\n Specifications:` } </Text>
+                                    {
+                                        data.specifications.map( (specs, index) => {
+                                            return(
+                                                <Text> { index + 1 + ': ' + specs.k } </Text>
+                                            )
+                                        })
+                                    }
+                                </React.Fragment>
+                            );
+                        }
+                        else {
+                            return(
+                                <React.Fragment> 
+                                    <Text> { `\n\n Service ${ index + 1 }: ` + data.service } { `\n Description: ` + data.description } </Text>
+                                    <Text> { `Specifications: ` + data.specifications } </Text>
+                                </React.Fragment>
+                            );
+                        }
+                    })
+                }
+            </ScrollView>
+            <Text style = { {color: 'red', textAlign: 'center', marginTop: 20, marginBottom: 20} }> { msg } </Text>
         </React.Fragment>
     );
 }

@@ -11,7 +11,7 @@ const BatterySpecifications = (navigationProps) => {
     const [description, setdescription] = useState(" "); 
     let incomingCart = navigationProps.navigation.getParam('cart');
     let pushToCart = {
-        service: 'Brake Issues', 
+        service: 'Car Painting', 
         description: description, 
         specifications: batteryState.filter( (eachObject) => eachObject.v === true )
     };

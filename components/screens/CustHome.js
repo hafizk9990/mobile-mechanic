@@ -4,7 +4,7 @@ import db from '../screenSnippets/ServicesDatabase'
 
 var windowWidth = Dimensions.get('window').width; 
 var windowHeight = Dimensions.get('window').height;
-var shoppingCart = [];
+let shoppingCart = [];
 
 const CustHome = (navigationProps) => {
     let obtainedEmail = navigationProps.navigation.dangerouslyGetParent().getParam('userEmail');
@@ -20,7 +20,8 @@ const CustHome = (navigationProps) => {
     }
 
     const proceedForward = () => {
-        if (shoppingCart.length === 0) {
+        if (!(shoppingCart.length > 0 && (shoppingCart[0].description.length > 1 || shoppingCart[0].specifications.length > 0))) {
+            shoppingCart = [];
             Alert.alert(
                 'Oops!', 
                 `Please fill your shopping cart first by selecting services from the list ${shoppingCart}`, 
@@ -40,7 +41,7 @@ const CustHome = (navigationProps) => {
             <View style = { {marginBottom: windowHeight * 0.28, marginLeft: windowWidth * 0.185} }>
                 {
                     <FlatList 
-                        numColumns = {3}
+                        numColumns = { 3 }
                         data = { db }
                         renderItem = { ( {item} ) => {
                             return(

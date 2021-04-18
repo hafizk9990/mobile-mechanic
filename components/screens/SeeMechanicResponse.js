@@ -2,7 +2,13 @@ import React from 'react'
 import { Text, View, StyleSheet } from 'react-native' 
 
 const SeeMechanicResponse = ( navigationProps ) => {
-    console.log(navigationProps.navigation.getParam('mechanics'));
+    let responsesArray = navigationProps.navigation.getParam('mechanics');
+    console.log(responsesArray);
+
+    if (responsesArray.length < 1) {
+        console.log('Let us go back');
+        navigationProps.navigation.navigate('ConfirmCustOrder');
+    }
 
     // In this file, use this CNIC (and all others that will be added in real-time)
     // to see the mechanic and their profile ...
