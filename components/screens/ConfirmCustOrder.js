@@ -53,7 +53,7 @@ const ConfirmCustOrder = ( navigationProps ) => {
         let firebaseDataString = JSON.stringify(data); // JavaScript object to string
         let firebaseDataJSON = JSON.parse(firebaseDataString); // String to JSON
         
-        if (firebaseDataJSON) {
+        if (firebaseDataJSON && firebaseDataJSON.mechanicCNIC) {
             let mechanicCNICObject = firebaseDataJSON.mechanicCNIC;
             if (Object.keys(mechanicCNICObject).length >= 2) {
                 for (let key in mechanicCNICObject) {

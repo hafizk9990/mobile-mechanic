@@ -19,7 +19,7 @@ const SignInCustForm = (props) => {
                     let firebaseDataJSON = JSON.parse(firebaseDataString); // String to JSON
 
                     if (firebaseDataJSON) {
-                        if (firebaseDataJSON.password === userPassword) {
+                        if (firebaseDataJSON.password === userPassword) { 
                             console.log(`Login Successful .... Email and password both match`);
                             props.navigateTo('CustTabsWrapper', {userEmail: userEmailToPass});
                         } 
