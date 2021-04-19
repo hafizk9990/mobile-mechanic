@@ -1,52 +1,14 @@
-import React, { useState } from 'react' 
+import React from 'react' 
 import { Text, View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native' 
 import firebase from '../screenSnippets/FirebaseInit'
 
 const SeeMechanicResponse = ( navigationProps ) => {
     let displayArray = [];
-    // const [displayArray, updateDisplayArray] = useState([]);
 
-    // let count = 0;
-
-    // if (!count) {
-        // count++;
-
-        let responsesArray = navigationProps.navigation.getParam('mechanics');
-        let userEmail = navigationProps.navigation.getParam('userEmailToPass');
-        userEmail = userEmail.replace(/\./g, ',');
-    // }
+    let responsesArray = navigationProps.navigation.getParam('mechanics');
+    let userEmail = navigationProps.navigation.getParam('userEmailToPass');
+    userEmail = userEmail.replace(/\./g, ',');
     
-    console.log('Response Array |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||', responsesArray);
-    console.log('userEmail', userEmail);
-
-    // if (responsesArray.length < 1) {
-    //     console.log('Let us go back');
-    //     navigationProps.navigation.navigate('ConfirmCustOrder');
-    // }
-
-    const acceptMechanic = (cnicToAccept) => {
-        console.log('Mechanic Accepted');
-    }
-
-    const rejectMechanic = (cnicToReject) => {
-        let returnedArray = displayArray.filter( (object) => object.mechanicCNIC != cnicToReject);
-        responsesArray = responsesArray.filter( (object) => object.mechanicCNIC != cnicToReject);
-        
-        displayArray = returnedArray;
-        console.log('Display array filtered ...', displayArray);
-        // updateDisplayArray(returnedArray);
-
-        firebase.database().ref(`mobileMechanic/mechanicResponse/${ userEmail }/${ cnicToReject }`).update({
-            bidAcceptance: -1
-        });
-
-        let arrayToUpdate = displayArray.map(object => object.mechanicCNIC);
-        arrayToUpdate.unshift('dummyCNIC');
-        
-        firebase.database().ref(`mobileMechanic/userRequests/${ userEmail }`).update({
-            mechanicCNIC: arrayToUpdate
-        });
-    }
 
     const displayData = (dataResponse, dataProfile) => {
         console.log('In display Data function');
@@ -64,19 +26,6 @@ const SeeMechanicResponse = ( navigationProps ) => {
                 mechanicCNIC: cnic, 
                 mechanicCharges: charges
             });
-
-            // updateDisplayArray( (previousState) => {
-            //     return(
-            //         [
-            //             ...previousState, 
-            //             {
-            //                 mechanicName: name, 
-            //                 mechanicCNIC: cnic, 
-            //                 mechanicCharges: charges
-            //             }
-            //         ]
-            //     );
-            // });
             console.log('Display Array: ', displayArray);
             console.log('CNIC: ', cnic);
         }
@@ -123,13 +72,11 @@ const SeeMechanicResponse = ( navigationProps ) => {
                                         <Text> { dataObject.mechanicName } { dataObject.mechanicCharges } </Text>  
                                     </View>
                                     <View style = { {flexDirection: 'row'} }>
-                                        <TouchableOpacity onPress = { () => acceptMechanic(dataObject.mechanicCNIC) }>
+                                        <TouchableOpacity onPress = { () => navigationProps.navigation.navigate('Payments', {userEmail: userEmail, cnic: dataObject.mechanicCNIC, array: responsesArray, charges: dataObject.mechanicCharges}) }>
                                             <Text style = { {color: 'green'} }> Accept </Text>
                                         </TouchableOpacity>
                                         
-                                        <TouchableOpacity onPress = { () => rejectMechanic(dataObject.mechanicCNIC) }>
-                                            <Text style = { {color: 'red'} }> Reject </Text>
-                                        </TouchableOpacity>
+                                        
                                     </View>
                                 </View>
                             </React.Fragment>
@@ -142,3 +89,69 @@ const SeeMechanicResponse = ( navigationProps ) => {
 }
 
 export default SeeMechanicResponse
+
+
+
+
+
+            // updateDisplayArray( (previousState) => {
+            //     return(
+            //         [
+            //             ...previousState, 
+            //             {
+            //                 mechanicName: name, 
+            //                 mechanicCNIC: cnic, 
+            //                 mechanicCharges: charges
+            //             }
+            //         ]
+            //     );
+            // });
+
+
+            // {
+            //     //     <TouchableOpacity onPress = { () => rejectMechanic(dataObject.mechanicCNIC) }>
+            //     //     <Text style = { {color: 'red'} }> Reject </Text>
+            //     // </TouchableOpacity>
+            // }
+
+            // }
+
+    // console.log('Response Array |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||', responsesArray);
+    // console.log('userEmail', userEmail);
+
+    // if (responsesArray.length < 1) {
+    //     console.log('Let us go back');
+    //     navigationProps.navigation.navigate('ConfirmCustOrder');
+    // }
+
+    // const acceptMechanic = (cnicToAccept) => {
+    //     console.log('Mechanic Accepted');
+    // }
+
+    // const rejectMechanic = (cnicToReject) => {
+    //     let returnedArray = displayArray.filter( (object) => object.mechanicCNIC != cnicToReject);
+    //     responsesArray = responsesArray.filter( (object) => object.mechanicCNIC != cnicToReject);
+        
+    //     displayArray = returnedArray;
+    //     console.log('Display array filtered ...', displayArray);
+    //     // updateDisplayArray(returnedArray);
+
+    //     firebase.database().ref(`mobileMechanic/mechanicResponse/${ userEmail }/${ cnicToReject }`).update({
+    //         bidAcceptance: -1
+    //     });
+
+    //     let arrayToUpdate = displayArray.map(object => object.mechanicCNIC);
+    //     arrayToUpdate.unshift('dummyCNIC');
+        
+    //     firebase.database().ref(`mobileMechanic/userRequests/${ userEmail }`).update({
+    //         mechanicCNIC: arrayToUpdate
+    //     });
+    // }
+
+
+    // const [displayArray, updateDisplayArray] = useState([]);
+
+    // let count = 0;
+
+    // if (!count) {
+        // count++;

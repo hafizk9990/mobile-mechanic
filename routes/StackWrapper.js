@@ -31,6 +31,8 @@ import CleaningSpecifications from '../components/screens/CleaningSpecifications
 import TyreSpecifications from '../components/screens/TyreSpecifications'
 import InspectionSpecifications from '../components/screens/InspectionSpecifications'
 import PolishSpecifications from '../components/screens/PolishSpecifications'
+import Payments from '../components/screens/Payments'
+import RatingReviews from '../components/screens/RatingReviews'
 
 const screens = {
     SplashScreen: {
@@ -208,7 +210,18 @@ const screens = {
             headerShown: false
         }
     },
-    
+    Payments: {
+        screen: Payments, 
+        navigationOptions: {
+            headerShown: false
+        }
+    },
+    RatingReviews: {
+        screen: RatingReviews, 
+        navigationOptions: {
+            headerShown: false
+        }
+    },
 }
 
 const stack = createStackNavigator(screens);

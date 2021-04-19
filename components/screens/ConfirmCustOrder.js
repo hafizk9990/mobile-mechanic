@@ -32,7 +32,7 @@ const ConfirmCustOrder = ( navigationProps ) => {
         }).then( () => { 
             mechanicResponseCNIC = [];
             Alert.alert(
-                'Order Confirmed!',
+                'Order Confirmed',
                 "Congratulations! Your order has been placed successfully. Please wait while we connect you to the mechanics near by ",
                 [ { text: "OK" } ],
             );
