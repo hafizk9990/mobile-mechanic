@@ -14,7 +14,8 @@ const BatterySpecifications = (navigationProps) => {
     let pushToCart = {
         service: 'Oil Change', 
         description: description, 
-        specifications: batteryState.filter( (eachObject) => eachObject.v === true )
+        specifications: batteryState.filter( (eachObject) => eachObject.v === true ),
+        carImageKey: 0
     };
 
     const pressHandler = (i) => {

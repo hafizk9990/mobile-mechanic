@@ -20,6 +20,7 @@ const ConfirmCustOrder = ( navigationProps ) => {
 
     const orderConfirmationHandler = () => {
         firebase.database().ref(`mobileMechanic/userRequests/${ userEmail }`).set({
+            customerEmail: userEmail,
             customerLocation: locationObject,
             customerCarName: carName, 
             customerCarImageKey: carImageKey, 
@@ -49,10 +50,11 @@ const ConfirmCustOrder = ( navigationProps ) => {
     firebase.database().ref(`mobileMechanic/userRequests/${ userEmail }`).on('value', (data) => {
         console.log('Something changed in the DB in realtime');
         console.log('User for which we check:', userEmail);
+        console.log(data);
 
         let firebaseDataString = JSON.stringify(data); // JavaScript object to string
         let firebaseDataJSON = JSON.parse(firebaseDataString); // String to JSON
-        
+
         if (firebaseDataJSON && firebaseDataJSON.mechanicCNIC) {
             let mechanicCNICObject = firebaseDataJSON.mechanicCNIC;
             if (Object.keys(mechanicCNICObject).length >= 2) {
@@ -66,7 +68,7 @@ const ConfirmCustOrder = ( navigationProps ) => {
                     }
                 }
                 console.log(`Some mechanic has responded ... !!`);
-                navigationProps.navigation.navigate('SeeMechanicResponse', {mechanics: mechanicResponseCNIC});
+                navigationProps.navigation.navigate('SeeMechanicResponse', {mechanics: mechanicResponseCNIC, userEmailToPass: userEmail});
             }
         }
     });

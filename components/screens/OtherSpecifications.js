@@ -10,7 +10,8 @@ const BatterySpecifications = (navigationProps) => {
     let pushToCart = {
         service: 'Other Issues', 
         description: description, 
-        specifications: 'No specific specifications'
+        specifications: 'No specific specifications',
+        carImageKey: 12
     };
     return(
         <ScrollView behavior="padding"> 

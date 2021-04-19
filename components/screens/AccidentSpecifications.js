@@ -15,7 +15,8 @@ const BatterySpecifications = (navigationProps) => {
     let pushToCart = {
         service: 'Accident Occured', 
         description: description, 
-        specifications: batteryState.filter( (eachObject) => eachObject.v === true )
+        specifications: batteryState.filter( (eachObject) => eachObject.v === true ), 
+        carImageKey: 11
     };
 
     const pressHandler = (i) => {

@@ -1,75 +1,138 @@
-import React from 'react' 
+import React, { useState } from 'react' 
 import { Text, View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native' 
 import firebase from '../screenSnippets/FirebaseInit'
 
 const SeeMechanicResponse = ( navigationProps ) => {
-    let responsesArray = navigationProps.navigation.getParam('mechanics');
-    console.log('Response Array', responsesArray);
+    let displayArray = [];
+    // const [displayArray, updateDisplayArray] = useState([]);
 
-    if (responsesArray.length < 1) {
-        console.log('Let us go back');
-        navigationProps.navigation.navigate('ConfirmCustOrder');
+    // let count = 0;
+
+    // if (!count) {
+        // count++;
+
+        let responsesArray = navigationProps.navigation.getParam('mechanics');
+        let userEmail = navigationProps.navigation.getParam('userEmailToPass');
+        userEmail = userEmail.replace(/\./g, ',');
+    // }
+    
+    console.log('Response Array |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||', responsesArray);
+    console.log('userEmail', userEmail);
+
+    // if (responsesArray.length < 1) {
+    //     console.log('Let us go back');
+    //     navigationProps.navigation.navigate('ConfirmCustOrder');
+    // }
+
+    const acceptMechanic = (cnicToAccept) => {
+        console.log('Mechanic Accepted');
     }
 
-    // Then, if you reject a mechanic, they will be reomoved from this array
-    // as well as DB (mobileMechanic/userRequests/userEmail/mechanicCNIC), and their
-    // acceptance bit will be set to -1. This will tell them that they
-    // have been rejected ...
+    const rejectMechanic = (cnicToReject) => {
+        let returnedArray = displayArray.filter( (object) => object.mechanicCNIC != cnicToReject);
+        responsesArray = responsesArray.filter( (object) => object.mechanicCNIC != cnicToReject);
+        
+        displayArray = returnedArray;
+        console.log('Display array filtered ...', displayArray);
+        // updateDisplayArray(returnedArray);
 
-    // If you accept this mechanic, the bit in the DB will become 1
-    // (mobileMechanic/mechanicResponse/CNIC/acceptanceBit). This will notify them
-    // if they get accepted ....
+        firebase.database().ref(`mobileMechanic/mechanicResponse/${ userEmail }/${ cnicToReject }`).update({
+            bidAcceptance: -1
+        });
 
-    let displayArray = [];
+        let arrayToUpdate = displayArray.map(object => object.mechanicCNIC);
+        arrayToUpdate.unshift('dummyCNIC');
+        
+        firebase.database().ref(`mobileMechanic/userRequests/${ userEmail }`).update({
+            mechanicCNIC: arrayToUpdate
+        });
+    }
 
     const displayData = (dataResponse, dataProfile) => {
+        console.log('In display Data function');
+        console.log(dataResponse);
+        console.log(dataProfile);
+        
         if (dataResponse && dataProfile) {
+            console.log('About to display ...');
             let name = dataProfile.firstName + ' ' + dataProfile.lastName;
+            let cnic = dataProfile.cnic;
             let charges = dataResponse.charges;
 
-            displayArray.push( name + ' ' + charges );
+            displayArray.push({
+                mechanicName: name, 
+                mechanicCNIC: cnic, 
+                mechanicCharges: charges
+            });
+
+            // updateDisplayArray( (previousState) => {
+            //     return(
+            //         [
+            //             ...previousState, 
+            //             {
+            //                 mechanicName: name, 
+            //                 mechanicCNIC: cnic, 
+            //                 mechanicCharges: charges
+            //             }
+            //         ]
+            //     );
+            // });
             console.log('Display Array: ', displayArray);
+            console.log('CNIC: ', cnic);
         }
+        console.log('Not gonna display ....');
     }
 
-    // _.observe(responsesArray, 'update', () => {
-        responsesArray.map( (data, index) => {
-            let responseData = '';
-            let profileData = '';
-    
-            console.log('Mapping ...');
-    
-            // get their demand like this
+    responsesArray.map( (data, index) => {
+        let responseData = '';
+        let profileData = '';
+
+        console.log('Mapping ...');
+
+        // get their demand like this
+
+        firebase.database().ref(`mobileMechanic/mechanicResponse/${ userEmail }/${ data }`).on('value', (dataResponse) => { 
+            console.log(' ', dataResponse);
+            let firebaseDataString = JSON.stringify(dataResponse);
+            dataResponse = JSON.parse(firebaseDataString);
+            responseData = dataResponse;
+            console.log('Response data', responseData);
+
+            // get their profile data like this
             
-            firebase.database().ref(`mobileMechanic/mechanicResponse/${ data }`).on('value', (dataResponse) => {
-                let firebaseDataString = JSON.stringify(dataResponse);
-                dataResponse = JSON.parse(firebaseDataString);
-                responseData = dataResponse;
-                console.log('Response data', responseData);
-        
-                // get their profile data like this
-                
-                firebase.database().ref(`mobileMechanic/Mechanics/${ data }`).on('value', (dataProfile) => {
-                    let firebaseDataString = JSON.stringify(dataProfile);
-                    dataProfile = JSON.parse(firebaseDataString);
-                    profileData = dataProfile;
-                    console.log('Profile Data', profileData);
-                });
-            })
-            displayData(responseData, profileData);
-        });
-    // }
+            firebase.database().ref(`mobileMechanic/Mechanics/${ data }`).on('value', (dataProfile) => {
+                let firebaseDataString = JSON.stringify(dataProfile);
+                dataProfile = JSON.parse(firebaseDataString);
+                profileData = dataProfile;
+                console.log('Profile Data', profileData);
+            });
+        })
+        displayData(responseData, profileData);
+    })
 
     return(
         <React.Fragment> 
             <Text style = { {marginTop: 30, textAlign: 'center'} }> See Mechanic Responses </Text>
             <ScrollView> 
                 {
-                    displayArray.map( (data, index) => {
+                    displayArray.map( (dataObject, index) => { 
                         return(
-                            <TouchableOpacity  onPress = { () => console.log('You pressed the button') }> 
-                                <Text> { data } </Text>
-                            </TouchableOpacity>
+                            <React.Fragment>
+                                <View style = { {borderBottomColor: 'gray', borderBottomWidth: 1} } key = {index}>
+                                    <View style = { {flexDirection: 'row'} }>
+                                        <Text> { dataObject.mechanicName } { dataObject.mechanicCharges } </Text>  
+                                    </View>
+                                    <View style = { {flexDirection: 'row'} }>
+                                        <TouchableOpacity onPress = { () => acceptMechanic(dataObject.mechanicCNIC) }>
+                                            <Text style = { {color: 'green'} }> Accept </Text>
+                                        </TouchableOpacity>
+                                        
+                                        <TouchableOpacity onPress = { () => rejectMechanic(dataObject.mechanicCNIC) }>
+                                            <Text style = { {color: 'red'} }> Reject </Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                            </React.Fragment>
                         );
                     })
                 }
