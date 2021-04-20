@@ -17,9 +17,26 @@ const ConfirmCustOrder = ( navigationProps ) => {
     let obtainedCart = navigationProps.navigation.getParam('cart');
     userEmail = userEmail.replace(/\./g, ',');
     const [msg, setMsg] = useState('');
+    
+    let date = new Date().getDate();
+    let month = new Date().getMonth() + 1;
+    let year = new Date().getFullYear();
+    let time = {
+        hrs: new Date().getHours(),
+        mins: new Date().getMinutes(),
+        secs: new Date().getSeconds() 
+    }
+
+    let today = {
+        date: date, 
+        month: month, 
+        year: year, 
+        time: time
+    }
 
     const orderConfirmationHandler = () => {
         firebase.database().ref(`mobileMechanic/userRequests/${ userEmail }`).set({
+            orderDateTime: today,
             customerEmail: userEmail,
             customerLocation: locationObject,
             customerCarName: carName, 
@@ -47,23 +64,39 @@ const ConfirmCustOrder = ( navigationProps ) => {
         });
     }
 
-    firebase.database().ref(`mobileMechanic/userRequests/${ userEmail }`).on('value', (data) => {
+    firebase.database().ref(`mobileMechanic/userRequests/${ userEmail }/mechanicCNIC`).on('value', (data) => {
         console.log('Something changed in the DB in realtime');
         console.log('User for which we check:', userEmail);
-        console.log(data);
+        console.log('******llldslfjdlskfjlsdfjlkds*************************************************************', data);
 
         let firebaseDataString = JSON.stringify(data); // JavaScript object to string
         let firebaseDataJSON = JSON.parse(firebaseDataString); // String to JSON
 
-        if (firebaseDataJSON && firebaseDataJSON.mechanicCNIC) {
-            let mechanicCNICObject = firebaseDataJSON.mechanicCNIC;
-            if (Object.keys(mechanicCNICObject).length >= 2) {
-                for (let key in mechanicCNICObject) {
-                    if (mechanicCNICObject[key] === 'dummyCNIC' || mechanicResponseCNIC.includes(firebaseDataJSON.mechanicCNIC[key])) {
+        // if (firebaseDataJSON && firebaseDataJSON.mechanicCNIC) {
+        //     let mechanicCNICObject = firebaseDataJSON.mechanicCNIC;
+        //     if (Object.keys(mechanicCNICObject).length > 1) { // 1 (if only dummyCNIC is there). 2, because that's what we need to extract out people
+        //         for (let key in mechanicCNICObject) {
+        //             if (mechanicCNICObject[key] === 'dummyCNIC' || mechanicResponseCNIC.includes(firebaseDataJSON.mechanicCNIC[key])) {
+        //                 // nothing
+        //             }
+        //             else {
+        //                 mechanicResponseCNIC.push(firebaseDataJSON.mechanicCNIC[key]);
+        //                 console.log(mechanicResponseCNIC);
+        //             }
+        //         }
+        //         console.log(`Some mechanic has responded ... !!`);
+        //         navigationProps.navigation.navigate('SeeMechanicResponse', {mechanics: mechanicResponseCNIC, userEmailToPass: userEmail});
+        //     }
+        // }
+
+        if (firebaseDataJSON) {
+            if (Object.keys(firebaseDataJSON).length > 1) { // 1 (if only dummyCNIC is there). 2, because that's what we need to extract out people
+                for (let key in firebaseDataJSON) {
+                    if (firebaseDataJSON[key] === 'dummyCNIC' || mechanicResponseCNIC.includes(firebaseDataJSON[key])) {
                         // nothing
                     }
                     else {
-                        mechanicResponseCNIC.push(firebaseDataJSON.mechanicCNIC[key]);
+                        mechanicResponseCNIC.push(firebaseDataJSON[key]);
                         console.log(mechanicResponseCNIC);
                     }
                 }
@@ -152,52 +185,3 @@ const styles = StyleSheet.create({
 });
 
 export default ConfirmCustOrder
-
-
-/*
-
-    // const dummy = () => {
-    //     firebase.database().ref(`mobileMechanic/userRequests/${ userEmail }`).once('value', (data) => {
-    //         let firebaseDataString = JSON.stringify(data); // JavaScript object to string
-    //         let firebaseDataJSON = JSON.parse(firebaseDataString); // String to JSON
-    
-    //         if (firebaseDataJSON) {
-    //             console.log('Data obtained from firebase ...');
-    //             console.log(firebaseDataJSON.mechanicCNIC);
-    //             if (Object.keys(firebaseDataJSON.mechanicCNIC).length >= 2) {
-    //                 for (let key in firebaseDataJSON.mechanicCNIC) {
-    //                     if (firebaseDataJSON.mechanicCNIC[key] === 'dummyCNIC' || mechanicResponseCNIC.includes(firebaseDataJSON.mechanicCNIC[key])) {
-    //                         // nothing
-    //                     }
-    //                     else {
-    //                         mechanicResponseCNIC.push(firebaseDataJSON.mechanicCNIC[key]);
-    //                         console.log(mechanicResponseCNIC);
-    //                         // clearInterval(interval);
-    //                     }
-    //                 }
-    //                 console.log(`Some mechanic has responded ... !!`);
-    //                 updateColor('green');
-    //                 updateMsg('A mechanic responded. Click to view their response');
-                    
-    //                 // props.navigateTo('CustTabsWrapper', {userEmail: userEmailToPass});
-    //             } 
-    //             else {
-    //                 console.log(`No mechanic has responded yet ...`);
-    //                 updateColor('red');
-    //                 updateMsg('Please Wait. We are finding you a mechanic');
-    //             }
-    //         }
-    //         else {
-    //             console.log(`This user has put no request in the DB as of now`);
-    //         }
-    //     })
-    // }
-
-    // dummy(); // If you just open this page, check in the DB immediately for any response
-
-    // // Otherwise, check every 20 seconds if anybody has responded or not ...
-
-    // interval = setInterval(() => {
-    //     dummy();
-    // }, 20000);
-*/

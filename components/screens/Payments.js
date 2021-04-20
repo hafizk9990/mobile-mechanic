@@ -9,8 +9,7 @@ const Payments = (navigationProps) => {
     let acceptedCNIC = navigationProps.navigation.getParam('cnic');
     let array = navigationProps.navigation.getParam('array');
     let charges = navigationProps.navigation.getParam('charges');
-    let place = `You Owe Rs. ${ charges }`; 
-    let paidMoney = 0;
+    let place = `You Owe Rs. ${ charges }`;
     let over = 0;
     console.log(userEmail, acceptedCNIC, array); 
 
@@ -24,14 +23,20 @@ const Payments = (navigationProps) => {
         let year = new Date().getFullYear();
         let today = date + '-' + month + '-' + year;
 
-        firebase.database().ref(`mobileMechanic/mechanicTransactions/${ acceptedCNIC }/${ userEmail }`).set({ ///////////////////////////////////////////////////////////////////////////////// do transactions get redone / not done at all? Cause both are wrong!
-            totalPayment: charges,
-            date: today
+        let random = Math.floor((Math.random() * 1000000000) + 1);
+        
+        firebase.database().ref(`mobileMechanic/mechanicTransactions/${ acceptedCNIC }/${ userEmail }`).update({ 
+            [random]: {
+                totalPayment: charges,
+                date: today
+            }
         });
 
-        firebase.database().ref(`mobileMechanic/userTransactions/${ userEmail }/${ acceptedCNIC }`).set({ ///////////////////////////////////////////////////////////////////////////////////// same question !?
-            totalPayment: charges,
-            date: today
+        firebase.database().ref(`mobileMechanic/userTransactions/${ userEmail }/${ acceptedCNIC }`).update({ 
+            [random]: {
+                totalPayment: charges,
+                date: today
+            }
         }).then( () => {
             Alert.alert(
                 'Transaction Successful',
