@@ -65,29 +65,11 @@ const ConfirmCustOrder = ( navigationProps ) => {
     }
 
     firebase.database().ref(`mobileMechanic/userRequests/${ userEmail }/mechanicCNIC`).on('value', (data) => {
-        console.log('Something changed in the DB in realtime');
-        console.log('User for which we check:', userEmail);
-        console.log('******llldslfjdlskfjlsdfjlkds*************************************************************', data);
+        // console.log('Something changed in the DB in realtime');
+        // console.log('User for which we check:', userEmail);
 
         let firebaseDataString = JSON.stringify(data); // JavaScript object to string
         let firebaseDataJSON = JSON.parse(firebaseDataString); // String to JSON
-
-        // if (firebaseDataJSON && firebaseDataJSON.mechanicCNIC) {
-        //     let mechanicCNICObject = firebaseDataJSON.mechanicCNIC;
-        //     if (Object.keys(mechanicCNICObject).length > 1) { // 1 (if only dummyCNIC is there). 2, because that's what we need to extract out people
-        //         for (let key in mechanicCNICObject) {
-        //             if (mechanicCNICObject[key] === 'dummyCNIC' || mechanicResponseCNIC.includes(firebaseDataJSON.mechanicCNIC[key])) {
-        //                 // nothing
-        //             }
-        //             else {
-        //                 mechanicResponseCNIC.push(firebaseDataJSON.mechanicCNIC[key]);
-        //                 console.log(mechanicResponseCNIC);
-        //             }
-        //         }
-        //         console.log(`Some mechanic has responded ... !!`);
-        //         navigationProps.navigation.navigate('SeeMechanicResponse', {mechanics: mechanicResponseCNIC, userEmailToPass: userEmail});
-        //     }
-        // }
 
         if (firebaseDataJSON) {
             if (Object.keys(firebaseDataJSON).length > 1) { // 1 (if only dummyCNIC is there). 2, because that's what we need to extract out people
@@ -185,3 +167,22 @@ const styles = StyleSheet.create({
 });
 
 export default ConfirmCustOrder
+
+
+
+// if (firebaseDataJSON && firebaseDataJSON.mechanicCNIC) {
+    //     let mechanicCNICObject = firebaseDataJSON.mechanicCNIC;
+    //     if (Object.keys(mechanicCNICObject).length > 1) { // 1 (if only dummyCNIC is there). 2, because that's what we need to extract out people
+    //         for (let key in mechanicCNICObject) {
+    //             if (mechanicCNICObject[key] === 'dummyCNIC' || mechanicResponseCNIC.includes(firebaseDataJSON.mechanicCNIC[key])) {
+    //                 // nothing
+    //             }
+    //             else {
+    //                 mechanicResponseCNIC.push(firebaseDataJSON.mechanicCNIC[key]);
+    //                 console.log(mechanicResponseCNIC);
+    //             }
+    //         }
+    //         console.log(`Some mechanic has responded ... !!`);
+    //         navigationProps.navigation.navigate('SeeMechanicResponse', {mechanics: mechanicResponseCNIC, userEmailToPass: userEmail});
+    //     }
+    // }

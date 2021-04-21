@@ -1,6 +1,7 @@
 import React from 'react' 
 import { Text, View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native' 
 import firebase from '../screenSnippets/FirebaseInit'
+// var wallet;
 
 const SeeMechanicResponse = ( navigationProps ) => {
     let displayArray = [];
@@ -32,6 +33,8 @@ const SeeMechanicResponse = ( navigationProps ) => {
         // }
     }
 
+    
+
     responsesArray.map( (data, index) => {
         let responseData = '';
         let profileData = '';
@@ -47,6 +50,16 @@ const SeeMechanicResponse = ( navigationProps ) => {
             responseData = dataResponse;
             // console.log('Response data', responseData);
 
+            // get customer's wallet like this
+            
+            // firebase.database().ref(`mobileMechanic/Clients/${ userEmail }/wallet`).on('value', (incomingMoney) => {
+            //     if (incomingMoney) {
+            //         wallet = incomingMoney;
+            //         console.log('Wallet ...', wallet);
+            //         console.log(toString(wallet[0]));
+            //     }
+            // });
+            
             // get their profile data like this
 
             firebase.database().ref(`mobileMechanic/Mechanics/${ data }`).on('value', (dataProfile) => {
@@ -67,22 +80,41 @@ const SeeMechanicResponse = ( navigationProps ) => {
                 {
                     displayArray.map( (dataObject, index) => { 
                         // console.log('wow ........');
-                        return(
-                            <React.Fragment>
-                                <View style = { {borderBottomColor: 'gray', borderBottomWidth: 1} } key = {index}>
-                                    <View style = { {flexDirection: 'row'} }>
-                                        <Text> { dataObject.mechanicName } { dataObject.mechanicCharges } </Text>  
+                        console.log(typeof(dataObject.mechanicCharges));
+                        // console.log(typeof(wallet));
+                        // console.log('888888888888\\\\\\\\\\\\', wallet);
+                        // if (parseInt(wallet) >= parseInt(dataObject.mechanicCharges)) {
+                            return(
+                                <React.Fragment>
+                                    <View style = { {borderBottomColor: 'gray', borderBottomWidth: 1} } key = {index}>
+                                        <View style = { {flexDirection: 'row'} }>
+                                            <Text> { dataObject.mechanicName } { dataObject.mechanicCharges } </Text>  
+                                        </View>
+                                        <View style = { {flexDirection: 'row'} }>
+                                            <TouchableOpacity onPress = { () => navigationProps.navigation.navigate('Payments', {userEmail: userEmail, cnic: dataObject.mechanicCNIC, array: responsesArray, charges: dataObject.mechanicCharges}) }>
+                                                <Text style = { {color: 'green'} }> Accept </Text>
+                                            </TouchableOpacity>
+                                        </View>
                                     </View>
-                                    <View style = { {flexDirection: 'row'} }>
-                                        <TouchableOpacity onPress = { () => navigationProps.navigation.navigate('Payments', {userEmail: userEmail, cnic: dataObject.mechanicCNIC, array: responsesArray, charges: dataObject.mechanicCharges}) }>
-                                            <Text style = { {color: 'green'} }> Accept </Text>
-                                        </TouchableOpacity>
-                                        
-                                        
-                                    </View>
-                                </View>
-                            </React.Fragment>
-                        );
+                                </React.Fragment>
+                            );
+                        // }
+                        // else {
+                        //     let toReturn = `Your wallet doesn't permit this mechanic. You only have ${ wallet } Rs`;
+                        //     return(
+                                
+                        //         <React.Fragment>
+                        //             <View style = { {borderBottomColor: 'gray', borderBottomWidth: 1} } key = {index}>
+                        //                 <View style = { {flexDirection: 'row'} }>
+                        //                     <Text> { dataObject.mechanicName } { dataObject.mechanicCharges } </Text>  
+                        //                 </View>
+                        //                 <View style = { {flexDirection: 'row'} }>
+                        //                      <Text style = { { textAlign: 'center', alignItems: 'center', justifyContent: 'center', color: 'red'} }> { toReturn } </Text>
+                        //                  </View>
+                        //             </View>
+                        //         </React.Fragment>
+                        //     );
+                        // }
                     })
                 }
             </ScrollView>
