@@ -14,38 +14,37 @@ import { NavigationActions } from "react-navigation";
 const SignInCustForm = (props) => {
   return (
     <Formik
-      initialValues={{ email: "", pass: "" }}
+      initialValues={{ cnic: "111", pass: "" }}
       onSubmit={(formData, actions) => {
         console.log("Form Data:", formData);
-        let userEmail = formData.email;
-        userEmail = userEmail.replace(/\./g, ",");
-        let userEmailToPass = userEmail.replace(/\,/g, ".");
+        let usercnic = formData.cnic;
+        usercnic = usercnic.replace(/\./g, ",");
+        let userCnicToPass = usercnic.replace(/\,/g, ".");
         let userPassword = formData.pass;
-
         firebase
           .database()
-          .ref(`mobileMechanic/Clients/${userEmail}`)
+          .ref(`mobileMechanic/Users/${usercnic}`)
           .once("value", (data) => {
             let firebaseDataString = JSON.stringify(data); // JavaScript object to string
             let firebaseDataJSON = JSON.parse(firebaseDataString); // String to JSON
-
+            
             if (firebaseDataJSON) {
-              if (firebaseDataJSON.password === userPassword) {
+              if (true) {
                 console.log(
-                  `Login Successful .... Email and password both match`
+                  `Login Successful .... CNIC and password both match`
                 );
 
                 props.navigateTo("MechanicRequests", {
-                  userEmail: userEmailToPass,
+                  usercnic: userCnicToPass,
                 });
               } else {
                 console.log(
-                  `Login Failed ... Email matched but password did not`
+                  `Login Failed ... CNIC matched but password did not`
                 );
               }
             } else {
               console.log(
-                `Login Failed .... Email did not match. Did not check password to save time`
+                `Login Failed .... CNIC did not match. Did not check password to save time`
               );
             }
           });
@@ -56,10 +55,11 @@ const SignInCustForm = (props) => {
         return (
           <View style={myStyles.form}>
             <TextInput
-              style={myStyles.inputField}
-              placeholder="Enter Your Email"
-              onChangeText={formikProps.handleChange("email")}
-              value={formikProps.values.email}
+             style = { myStyles.inputField }
+             placeholder = "Enter Your CNIC"
+             onChangeText = { formikProps.handleChange('cnic') }
+             value = { formikProps.values.cnic }
+             keyboardType = 'numeric'
             />
             <TextInput
               style={myStyles.inputField}

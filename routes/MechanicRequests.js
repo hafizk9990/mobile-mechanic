@@ -37,6 +37,7 @@ const screens = {
       },
     },
   },
+
 };
 
 const tabs = createBottomTabNavigator(screens);

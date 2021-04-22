@@ -33,6 +33,10 @@ import InspectionSpecifications from '../components/screens/InspectionSpecificat
 import PolishSpecifications from '../components/screens/PolishSpecifications'
 import Payments from '../components/screens/Payments'
 import RatingReviews from '../components/screens/RatingReviews'
+import WorkUnderProcess from '../components/screens/WorkUnderProcess'
+import MechanicOtp from '../components/screens/MechanicOtp'
+
+
 
 const screens = {
     SplashScreen: {
@@ -218,6 +222,18 @@ const screens = {
     },
     RatingReviews: {
         screen: RatingReviews, 
+        navigationOptions: {
+            headerShown: false
+        }
+    },
+    WorkUnderProcess: {
+        screen: WorkUnderProcess, 
+        navigationOptions: {
+            headerShown: false
+        }
+    },
+    MechanicOtp: {
+        screen: MechanicOtp, 
         navigationOptions: {
             headerShown: false
         }
