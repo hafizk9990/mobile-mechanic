@@ -9,9 +9,13 @@ const Payments = (navigationProps) => {
     let acceptedCNIC = navigationProps.navigation.getParam('cnic');
     let array = navigationProps.navigation.getParam('array');
     let charges = navigationProps.navigation.getParam('charges');
+    let userWallet = navigationProps.navigation.getParam('wallet');
     let place = `You Owe Rs. ${ charges }`;
-    let over = 0;
-    console.log(userEmail, acceptedCNIC, array); 
+    let mechanicWallet = '';
+
+    firebase.database().ref(`mobileMechanic/Mechanics/${ acceptedCNIC }/wallet`).once('value', (data) => {
+        mechanicWallet = parseInt(JSON.stringify(data));
+    });
 
     const yupValidationSchema = yup.object({
         money: yup.number().required('You Must Pay the Mechanic') 
@@ -22,49 +26,57 @@ const Payments = (navigationProps) => {
         let month = new Date().getMonth() + 1;
         let year = new Date().getFullYear();
         let today = date + '-' + month + '-' + year;
-
         let random = Math.floor((Math.random() * 1000000000) + 1);
         
-        firebase.database().ref(`mobileMechanic/mechanicTransactions/${ acceptedCNIC }/${ userEmail }`).update({ 
-            [random]: {
-                totalPayment: charges,
-                date: today
-            }
-        });
-
-        firebase.database().ref(`mobileMechanic/userTransactions/${ userEmail }/${ acceptedCNIC }`).update({ 
-            [random]: {
-                totalPayment: charges,
-                date: today
-            }
+        firebase.database().ref(`mobileMechanic/Clients/${ userEmail }`).update({ // update client's wallet
+            wallet: parseInt(JSON.stringify(userWallet)) - charges
         }).then( () => {
-            Alert.alert(
-                'Transaction Successful',
-                `You Paid ${ moneyPaid } rupees`,
-                [ 
-                    { 
-                        text: "OK", 
+            firebase.database().ref(`mobileMechanic/Mechanics/${ acceptedCNIC }`).update({ // update mechanic's wallet as well
+                wallet: mechanicWallet + charges
+            }).then( () => {
+                firebase.database().ref(`mobileMechanic/mechanicTransactions/${ acceptedCNIC }/${ userEmail }`).update({  // update mechanic's transactions
+                    [random]: {
+                        totalPayment: charges,
+                        date: today
                     }
-                ],
-            );
-        }).catch( () => {
-            Alert.alert(
-                'Transaction Failed',
-                `Please try again`,
-                [ 
-                    { 
-                        text: "OK", 
-                        onPress: () => navigationProps.navigation.navigate('Payments')
-                    }
-                ],
-            );
+                }).then( () => {
+                    firebase.database().ref(`mobileMechanic/userTransactions/${ userEmail }/${ acceptedCNIC }`).update({ // update user's transactions as well
+                        [random]: {
+                            totalPayment: charges,
+                            date: today
+                        }
+                    }).then( () => {
+                        Alert.alert(
+                            'Transaction Successful',
+                            `You Paid ${ moneyPaid } rupees`,
+                            [ 
+                                { 
+                                    text: "OK", 
+                                    onPress: () => navigationProps.navigation.navigate('RatingReviews', {cnic: acceptedCNIC})
+                                }
+                            ],
+                        );
+                    }).catch( (error) => {
+                        console.log('Could not update users transactions ...', error);
+                        Alert.alert(
+                            'Transaction Failed',
+                            `Please try again`,
+                            [ 
+                                { 
+                                    text: "OK",
+                                }
+                            ],
+                        );
+                    });
+                }).catch( (error) => {
+                    console.log('Could not update mechanics transactions ...', error);
+                });
+            }).catch( (error) => {
+                console.log('Could not update mechanics wallet ...', error);
+            });
+        }).catch( (error) => {
+            console.log('Could not update users wallet ... ', error);
         });
-
-        if (over > 0) {
-            // add this extra money to the customer's wallet and then navigate
-            console.log('Extra money added to the wallet');
-        }
-        navigationProps.navigation.navigate('RatingReviews', {cnic: acceptedCNIC});   
     }
 
     array.map( (mechanicCNIC) => {
@@ -99,21 +111,19 @@ const Payments = (navigationProps) => {
                     if (parseInt(money) < parseInt(charges)) {
                         Alert.alert(
                             'Warning! Under Payment',
-                            `You need to pay at least ${ charges } rupees`,
+                            `You need to pay at least ${ charges } rupees. Please pay the exact amount of money from your wallet. We don't accept under payments. Thank you!`,
                             [ { text: "OK" } ],
                         );
                     }
                     else if (parseInt(money) > parseInt(charges)) {
-                        over = money - charges;
+                        let over = money - charges;
                         Alert.alert(
                             'Warning! Over Payment',
-                            `You are over paying by ${ over } rupees which will be added to your wallet`,
+                            `You are over paying by ${ over } rupees. Please pay the exact amount of money from your wallet. We don't accept over payments. Thank you!`,
                             [ 
                                 { 
-                                    text: "Add", 
-                                    onPress: () => paymentMethod(money)
-                                },
-                                { text: "Cancel" } 
+                                    text: "OK", 
+                                }
                             ],
                         );
                     }
@@ -123,7 +133,8 @@ const Payments = (navigationProps) => {
                     else {
                         console.log('Something went wrong ...');
                     }
-                }}> 
+                }}
+            >
                 {
                     (formikProps) => {
                         return(

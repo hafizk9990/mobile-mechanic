@@ -16,10 +16,35 @@ const ConfirmCustOrder = ( navigationProps ) => {
     let userEmail = (navigationProps.navigation.getParam('userEmail')); // required by mechanic
     let obtainedCart = navigationProps.navigation.getParam('cart');
     userEmail = userEmail.replace(/\./g, ',');
+    let wallet = '';
+
+    firebase.database().ref(`mobileMechanic/Clients/${ userEmail }/wallet`).on('value', (incomingMoney) => {
+        if (incomingMoney) {
+            wallet = incomingMoney;
+        }
+    });
+    
     const [msg, setMsg] = useState('');
+
+    let date = new Date().getDate();
+    let month = new Date().getMonth() + 1;
+    let year = new Date().getFullYear();
+    let time = {
+        hrs: new Date().getHours(),
+        mins: new Date().getMinutes(),
+        secs: new Date().getSeconds() 
+    }
+
+    let today = {
+        date: date, 
+        month: month, 
+        year: year, 
+        time: time
+    }
 
     const orderConfirmationHandler = () => {
         firebase.database().ref(`mobileMechanic/userRequests/${ userEmail }`).set({
+            orderDateTime: today,
             customerEmail: userEmail,
             customerLocation: locationObject,
             customerCarName: carName, 
@@ -37,6 +62,8 @@ const ConfirmCustOrder = ( navigationProps ) => {
                 [ { text: "OK" } ],
             );
             setMsg('Please be patient. We are finding you a mechanic');
+            
+            // get customer's wallet like this
         })
         .catch( () => { 
             Alert.alert(
@@ -68,7 +95,7 @@ const ConfirmCustOrder = ( navigationProps ) => {
                     }
                 }
                 console.log(`Some mechanic has responded ... !!`);
-                navigationProps.navigation.navigate('SeeMechanicResponse', {mechanics: mechanicResponseCNIC, userEmailToPass: userEmail});
+                navigationProps.navigation.navigate('SeeMechanicResponse', {mechanics: mechanicResponseCNIC, userEmailToPass: userEmail, wallet: wallet});
             }
         }
     });
@@ -79,17 +106,18 @@ const ConfirmCustOrder = ( navigationProps ) => {
             <ScrollView> 
                 <View style = {styles.header}>
                 <Text style = { styles.title1 }> Order Details </Text>
+                
                 <View style = {styles.item}>
-                <Text style = {{color: '#000',fontSize: 15, marginTop: 20, fontWeight: 'bold'}}> Location: </Text>
-                <Text style = {styles.title3}> { locationObject.longitude },{ locationObject.latitude } </Text>
-                <Text style = {styles.title2}> Car: </Text>
-                <Text style = {styles.title3}> { carName } </Text>
-                <Text style = {styles.title2}> Model: </Text>
-                <Text style = {styles.title3}> { carModel } </Text>
-                <Text style = {styles.title2}> Number Plate: </Text>
-                <Text style = {styles.title3}> { carNumber } </Text>
-                <Text style = {styles.title2}> Car Description: </Text>
-                <Text style = {styles.title3}> { carDescriptionNote + '\n\n' } </Text>
+                    <Text style = {{color: '#000',fontSize: 15, marginTop: 20, fontWeight: 'bold'}}> Location: </Text>
+                    <Text style = {styles.title3}> { locationObject.longitude },{ locationObject.latitude } </Text>
+                    <Text style = {styles.title2}> Car </Text>
+                    <Text style = {styles.title3}> { carName } </Text>
+                    <Text style = {styles.title2}> Model </Text>
+                    <Text style = {styles.title3}> { carModel } </Text>
+                    <Text style = {styles.title2}> Number Plate  </Text>
+                    <Text style = {styles.title3}> { carNumber } </Text>
+                    <Text style = {styles.title2}> Car Description  </Text>
+                    <Text style = {styles.title3}> { carDescriptionNote + '\n\n' } </Text>
                 </View>
                 
                 <Text style = {styles.title1} > { 'Shopping Cart' } </Text>
@@ -98,11 +126,11 @@ const ConfirmCustOrder = ( navigationProps ) => {
                         if (!(data.service === 'Other Issues')) {
                             return(    
                                 <View style = {styles.item}> 
-                                    <Text style = {styles.title2}> Service#{ index + 1 }</Text>
+                                    <Text style = {styles.title2}> Service # { index + 1 } </Text>
                                     <Text style = {styles.title3}> { data.service }  </Text>
-                                    <Text style = {styles.title2}> Description:</Text> 
+                                    <Text style = {styles.title2}> Description </Text> 
                                     <Text style = {styles.title3}> { data.description }  </Text>
-                                    <Text style = {styles.title2}> Specifications: </Text>
+                                    <Text style = {styles.title2}> Specifications </Text>
                                     {
                                         data.specifications.map( (specs, index) => {
                                             return(

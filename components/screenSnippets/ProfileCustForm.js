@@ -1,6 +1,6 @@
 import React, { useState } from 'react' 
 import { View, Text, StyleSheet, TextInput, Button, ScrollView, Dimensions, TouchableOpacity } from 'react-native' 
-import { Formik, Field } from 'formik'
+import { Formik } from 'formik'
 import * as yup from 'yup' 
 import firebase from '../screenSnippets/FirebaseInit'
 
@@ -8,12 +8,12 @@ const schema = yup.object({
     firstName: yup.string().required('First name is required'), 
     lastName: yup.string().required('Last name is required'), 
     age: yup.number().required().positive().integer(),
-    creditCard: yup.string().required('Credit card number is required').length(16), 
+    creditCard: yup.string().required('Credit card number is required').length(16),
+    wallet: yup.number().required().positive().integer(),
 });
 
 var windowHeight = Dimensions.get('window').height;
 var windowWidth = Dimensions.get('window').width;
-
 
 const ProfileCustForm = (props) => {
     let userEmail = props.userEmail;
@@ -23,6 +23,7 @@ const ProfileCustForm = (props) => {
     const [lastNameToShow, setLastName] = useState('Enter Your Last Name');
     const [ageToShow, setAge] = useState('Enter Your Age');
     const [creditCardToShow, setCreditCard] = useState('Enter Your Credit Card');
+    const [walletToShow, setWallet] = useState('Wallet is empty (0 Rs)');
 
     const getData = () => {
         firebase.database().ref(`mobileMechanic/Clients/${ userEmail }`).once('value', (data) => {
@@ -42,6 +43,10 @@ const ProfileCustForm = (props) => {
             if (firebaseDataJSON.creditCard) {
                 setCreditCard('CREDIT CARD NUMBER: ' + firebaseDataJSON.creditCard);
             }
+            if (firebaseDataJSON.wallet) {
+                currentBalance = firebaseDataJSON.wallet;
+                setWallet('CURRENT BALANCE: Rs ' + firebaseDataJSON.wallet);
+            }
         })
     }
 
@@ -50,7 +55,7 @@ const ProfileCustForm = (props) => {
     return(
         <ScrollView> 
             <Formik 
-                initialValues = { {firstName: '', lastName: '', age: '', creditCard: ''} }
+                initialValues = { {firstName: '', lastName: '', age: '', creditCard: '', wallet: ''} }
                 validationSchema = { schema }
                 onSubmit = { (submittedData, control) => {
                     control.resetForm();
@@ -59,12 +64,15 @@ const ProfileCustForm = (props) => {
                     let lastName = submittedData.lastName; 
                     let age = submittedData.age;
                     let creditCardNumb = submittedData.creditCard;
+                    let walletMoney = submittedData.wallet;
+
 
                     firebase.database().ref(`mobileMechanic/Clients/${userEmail}`).update({
                         firstName: firstName, 
                         lastName: lastName, 
                         age: age, 
-                        creditCard: creditCardNumb
+                        creditCard: creditCardNumb, 
+                        wallet: parseInt(walletMoney) + parseInt(currentBalance)
                     }).then( () => { 
                         console.log(`Profile updation successful ...`);
                         getData();
@@ -109,6 +117,15 @@ const ProfileCustForm = (props) => {
                                 value = { formikProps.values.creditCard }
                             />
                             <Text style = { styles.errors }> { formikProps.touched.creditCard && formikProps.errors.creditCard } </Text>
+                            
+                            <TextInput 
+                                style = { {textAlign: 'center'} }
+                                placeholder = { walletToShow }
+                                onChangeText = { formikProps.handleChange('wallet') }
+                                value = { formikProps.values.wallet }
+                            />
+                            <Text style = { styles.errors }> { formikProps.touched.wallet && formikProps.errors.wallet } </Text>
+                            
                             <View style = { styles.heading4 }>
                                 <TouchableOpacity
                                     style = { styles.loginScreenButton }
@@ -137,11 +154,11 @@ const styles = StyleSheet.create({
         marginRight: 0.2*windowWidth,
     },
     input: {
-        marginBottom: 10,
-        paddingHorizontal: 8,
-        paddingVertical: 6,
-        borderBottomWidth: 1,
-        borderBottomColor: '#ddd',
+        // marginBottom: 10,
+        // paddingHorizontal: 8,
+        // paddingVertical: 6,
+        // borderBottomWidth: 1,
+        // borderBottomColor: '#ddd',
         textAlign: 'center',      
     },
     heading4: {
