@@ -1,5 +1,5 @@
 import React from 'react' 
-import { View, Text, Dimensions, Image } from 'react-native'
+import { View, Text, Dimensions, Image, StyleSheet } from 'react-native'
 import ProfileCustForm from '../screenSnippets/ProfileCustForm'
 import { FontAwesome5 } from '@expo/vector-icons'; 
 // import * as fs from 'react-native-fs'
@@ -13,8 +13,7 @@ const ProfileCust = (tabsNavigationProps) => {
     console.log(obtainedEmail);
     return(
         <React.Fragment> 
-            <Text style = { {marginTop: windowHeight * 0.05, textAlign: 'center'} }> Customer Profile </Text>
-            <View style = { {alignSelf: 'center', flexDirection: 'row'} }> 
+            <View style = { {alignSelf: 'center', flexDirection: 'row', marginTop:windowHeight*0.1} }> 
                 <Image 
                     style = { {width: windowWidth * 0.5, height: windowHeight * 0.27, borderRadius: 100, marginBottom: windowHeight * 0.05, marginTop: windowHeight * 0.05} } 
                     source = {image}
@@ -34,5 +33,22 @@ const ProfileCust = (tabsNavigationProps) => {
         </React.Fragment>
     );
 }
+
+const styles = StyleSheet.create( {
+    header: {
+        height: 80,
+        paddingTop: 38,
+        backgroundColor: 'coral',
+        
+    },
+    title: {
+        textAlign: 'center',
+        color: '#000',
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginTop: windowHeight * 0.05,
+    }
+})
+
 
 export default ProfileCust

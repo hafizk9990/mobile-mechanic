@@ -17,26 +17,9 @@ const ConfirmCustOrder = ( navigationProps ) => {
     let obtainedCart = navigationProps.navigation.getParam('cart');
     userEmail = userEmail.replace(/\./g, ',');
     const [msg, setMsg] = useState('');
-    
-    let date = new Date().getDate();
-    let month = new Date().getMonth() + 1;
-    let year = new Date().getFullYear();
-    let time = {
-        hrs: new Date().getHours(),
-        mins: new Date().getMinutes(),
-        secs: new Date().getSeconds() 
-    }
-
-    let today = {
-        date: date, 
-        month: month, 
-        year: year, 
-        time: time
-    }
 
     const orderConfirmationHandler = () => {
         firebase.database().ref(`mobileMechanic/userRequests/${ userEmail }`).set({
-            orderDateTime: today,
             customerEmail: userEmail,
             customerLocation: locationObject,
             customerCarName: carName, 
@@ -64,21 +47,23 @@ const ConfirmCustOrder = ( navigationProps ) => {
         });
     }
 
-    firebase.database().ref(`mobileMechanic/userRequests/${ userEmail }/mechanicCNIC`).on('value', (data) => {
-        // console.log('Something changed in the DB in realtime');
-        // console.log('User for which we check:', userEmail);
+    firebase.database().ref(`mobileMechanic/userRequests/${ userEmail }`).on('value', (data) => {
+        console.log('Something changed in the DB in realtime');
+        console.log('User for which we check:', userEmail);
+        console.log(data);
 
         let firebaseDataString = JSON.stringify(data); // JavaScript object to string
         let firebaseDataJSON = JSON.parse(firebaseDataString); // String to JSON
 
-        if (firebaseDataJSON) {
-            if (Object.keys(firebaseDataJSON).length > 1) { // 1 (if only dummyCNIC is there). 2, because that's what we need to extract out people
-                for (let key in firebaseDataJSON) {
-                    if (firebaseDataJSON[key] === 'dummyCNIC' || mechanicResponseCNIC.includes(firebaseDataJSON[key])) {
+        if (firebaseDataJSON && firebaseDataJSON.mechanicCNIC) {
+            let mechanicCNICObject = firebaseDataJSON.mechanicCNIC;
+            if (Object.keys(mechanicCNICObject).length >= 2) {
+                for (let key in mechanicCNICObject) {
+                    if (mechanicCNICObject[key] === 'dummyCNIC' || mechanicResponseCNIC.includes(firebaseDataJSON.mechanicCNIC[key])) {
                         // nothing
                     }
                     else {
-                        mechanicResponseCNIC.push(firebaseDataJSON[key]);
+                        mechanicResponseCNIC.push(firebaseDataJSON.mechanicCNIC[key]);
                         console.log(mechanicResponseCNIC);
                     }
                 }
@@ -90,7 +75,61 @@ const ConfirmCustOrder = ( navigationProps ) => {
 
     return(
         <React.Fragment> 
-            <Text style = { {marginTop: 50, textAlign: 'center'} }> Confirm Your Order </Text>
+            <Text style = { styles.title }> Confirm Your Order </Text>
+            <ScrollView> 
+                <View style = {styles.header}>
+                <Text style = { styles.title1 }> Order Details </Text>
+                <View style = {styles.item}>
+                <Text style = {{color: '#000',fontSize: 15, marginTop: 20, fontWeight: 'bold'}}> Location: </Text>
+                <Text style = {styles.title3}> { locationObject.longitude },{ locationObject.latitude } </Text>
+                <Text style = {styles.title2}> Car: </Text>
+                <Text style = {styles.title3}> { carName } </Text>
+                <Text style = {styles.title2}> Model: </Text>
+                <Text style = {styles.title3}> { carModel } </Text>
+                <Text style = {styles.title2}> Number Plate: </Text>
+                <Text style = {styles.title3}> { carNumber } </Text>
+                <Text style = {styles.title2}> Car Description: </Text>
+                <Text style = {styles.title3}> { carDescriptionNote + '\n\n' } </Text>
+                </View>
+                
+                <Text style = {styles.title1} > { 'Shopping Cart' } </Text>
+                {
+                    obtainedCart.map( (data, index) => {
+                        if (!(data.service === 'Other Issues')) {
+                            return(    
+                                <View style = {styles.item}> 
+                                    <Text style = {styles.title2}> Service#{ index + 1 }</Text>
+                                    <Text style = {styles.title3}> { data.service }  </Text>
+                                    <Text style = {styles.title2}> Description:</Text> 
+                                    <Text style = {styles.title3}> { data.description }  </Text>
+                                    <Text style = {styles.title2}> Specifications: </Text>
+                                    {
+                                        data.specifications.map( (specs, index) => {
+                                            return(
+                                                <Text style = {styles.title3}> {specs.k } </Text>
+                                            )
+                                        })
+                                    }
+                                </View>
+                            );
+                        }
+                        else {
+                            return(
+                                <View style = {styles.item}> 
+                                    <Text style = {styles.title2}> Service#{ index + 1 }</Text>
+                                    <Text style = {styles.title3}> { data.service }  </Text>
+                                    <Text style = {styles.title2}> Description:</Text> 
+                                    <Text style = {styles.title3}> { data.description }  </Text>
+                                    <Text style = {styles.title2}> Specifications: </Text>
+                                    <Text style = {styles.title2}> Specifications:  </Text>
+                                    <Text style = {styles.title3}>{data.specifications } </Text>
+                                </View>
+                            );
+                        }
+                    })
+                }
+                </View>
+            </ScrollView>
             <View style = { styles.heading4 }>
                 <TouchableOpacity
                     style = { styles.loginScreenButton }
@@ -98,42 +137,7 @@ const ConfirmCustOrder = ( navigationProps ) => {
                     underlayColor = '#fff'>
                     <Text style = { styles.loginText }> Confirm Order </Text>
                 </TouchableOpacity>
-                <Text style = { {textAlign: 'center'} }> Order Details </Text>
             </View>
-            <ScrollView> 
-                <Text> Location: { locationObject.longitude } and { locationObject.latitude } </Text>
-                <Text> Car: { carName } </Text>
-                <Text> Model: { carModel } </Text>
-                <Text> Number Plate: { carNumber } </Text>
-                <Text> Car Description: { carDescriptionNote + '\n\n' } </Text>
-                <Text style = { {textAlign: 'center'} }> { 'Shopping Cart' } </Text>
-                {
-                    obtainedCart.map( (data, index) => {
-                        if (!(data.service === 'Other Issues')) {
-                            return(    
-                                <React.Fragment> 
-                                    <Text> { `\n\n Service ${ index + 1 }: ` + data.service } { `\n Description: ` + data.description } { `\n Specifications:` } </Text>
-                                    {
-                                        data.specifications.map( (specs, index) => {
-                                            return(
-                                                <Text> { index + 1 + ': ' + specs.k } </Text>
-                                            )
-                                        })
-                                    }
-                                </React.Fragment>
-                            );
-                        }
-                        else {
-                            return(
-                                <React.Fragment> 
-                                    <Text> { `\n\n Service ${ index + 1 }: ` + data.service } { `\n Description: ` + data.description } </Text>
-                                    <Text> { `Specifications: ` + data.specifications } </Text>
-                                </React.Fragment>
-                            );
-                        }
-                    })
-                }
-            </ScrollView>
             <Text style = { {color: 'red', textAlign: 'center', marginTop: 20, marginBottom: 20} }> { msg } </Text>
         </React.Fragment>
     );
@@ -163,26 +167,95 @@ const styles = StyleSheet.create({
         textAlign:'center',
         paddingLeft : 10,
         paddingRight : 10
-    }
+    },
+    header: {
+        paddingTop: 30,
+        //backgroundColor: 'coral',
+        
+    },
+    title: {
+        textAlign: 'center',
+        color: '#000',
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginTop: windowHeight * 0.07,
+    },
+    title1: {
+        textAlign: 'center',
+        color: '#000',
+        fontSize: 18,
+        fontWeight: 'bold',
+    },
+    title2: {
+        color: '#000',
+        fontSize: 15,
+        fontWeight: 'bold',
+    },
+    title3: {
+        color: '#000',
+        fontSize: 15,
+    },
+    item: {
+        paddingLeft: 5,
+        marginTop: 15,
+        marginLeft: 10,
+        marginRight: 10,
+        borderWidth: 2,
+        borderStyle: 'solid',
+        borderRadius: 10,
+        borderColor: '#bbb',
+        backgroundColor: '#fff'
+    },
+
 });
 
 export default ConfirmCustOrder
 
 
+/*
 
-// if (firebaseDataJSON && firebaseDataJSON.mechanicCNIC) {
-    //     let mechanicCNICObject = firebaseDataJSON.mechanicCNIC;
-    //     if (Object.keys(mechanicCNICObject).length > 1) { // 1 (if only dummyCNIC is there). 2, because that's what we need to extract out people
-    //         for (let key in mechanicCNICObject) {
-    //             if (mechanicCNICObject[key] === 'dummyCNIC' || mechanicResponseCNIC.includes(firebaseDataJSON.mechanicCNIC[key])) {
-    //                 // nothing
-    //             }
+    // const dummy = () => {
+    //     firebase.database().ref(`mobileMechanic/userRequests/${ userEmail }`).once('value', (data) => {
+    //         let firebaseDataString = JSON.stringify(data); // JavaScript object to string
+    //         let firebaseDataJSON = JSON.parse(firebaseDataString); // String to JSON
+    
+    //         if (firebaseDataJSON) {
+    //             console.log('Data obtained from firebase ...');
+    //             console.log(firebaseDataJSON.mechanicCNIC);
+    //             if (Object.keys(firebaseDataJSON.mechanicCNIC).length >= 2) {
+    //                 for (let key in firebaseDataJSON.mechanicCNIC) {
+    //                     if (firebaseDataJSON.mechanicCNIC[key] === 'dummyCNIC' || mechanicResponseCNIC.includes(firebaseDataJSON.mechanicCNIC[key])) {
+    //                         // nothing
+    //                     }
+    //                     else {
+    //                         mechanicResponseCNIC.push(firebaseDataJSON.mechanicCNIC[key]);
+    //                         console.log(mechanicResponseCNIC);
+    //                         // clearInterval(interval);
+    //                     }
+    //                 }
+    //                 console.log(`Some mechanic has responded ... !!`);
+    //                 updateColor('green');
+    //                 updateMsg('A mechanic responded. Click to view their response');
+                    
+    //                 // props.navigateTo('CustTabsWrapper', {userEmail: userEmailToPass});
+    //             } 
     //             else {
-    //                 mechanicResponseCNIC.push(firebaseDataJSON.mechanicCNIC[key]);
-    //                 console.log(mechanicResponseCNIC);
+    //                 console.log(`No mechanic has responded yet ...`);
+    //                 updateColor('red');
+    //                 updateMsg('Please Wait. We are finding you a mechanic');
     //             }
     //         }
-    //         console.log(`Some mechanic has responded ... !!`);
-    //         navigationProps.navigation.navigate('SeeMechanicResponse', {mechanics: mechanicResponseCNIC, userEmailToPass: userEmail});
-    //     }
+    //         else {
+    //             console.log(`This user has put no request in the DB as of now`);
+    //         }
+    //     })
     // }
+
+    // dummy(); // If you just open this page, check in the DB immediately for any response
+
+    // // Otherwise, check every 20 seconds if anybody has responded or not ...
+
+    // interval = setInterval(() => {
+    //     dummy();
+    // }, 20000);
+*/

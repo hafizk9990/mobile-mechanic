@@ -29,9 +29,9 @@ const SettingsCust = (tabsNavigationProps) => {
 
     return(
         <React.Fragment> 
-            <View style = { {marginTop: windowHeight * 0.08, flexDirection: 'row', marginBottom: windowHeight * 0.06} }>
+            <View style = { {marginTop: windowHeight * 0.1, flexDirection: 'row', marginBottom: windowHeight * 0.06} }>
                 <Image style = { {width: windowWidth * 0.35, height: windowHeight * 0.2, borderRadius: windowWidth * 0.5, marginLeft: windowWidth * 0.05} } source = { image } />
-                <Text style = { {marginLeft: windowWidth * 0.05, fontWeight: 'bold', fontSize: 24} }> { name } </Text>
+                <Text style = { {marginLeft: windowWidth * 0.05, fontWeight: 'bold', fontSize: 24, marginTop: windowHeight*0.06} }> { name } </Text>
             </View>
             
             {
@@ -41,25 +41,25 @@ const SettingsCust = (tabsNavigationProps) => {
             <View style = { {flexDirection: 'row', marginBottom: windowHeight * 0.05} }>
                 <Ionicons style = { {marginLeft: windowWidth * 0.05} } name = "person" size = { 24 } color = "green" />
                 <Text style = { {marginLeft: windowWidth * 0.02} }> Online Status </Text>
-                <FontAwesome style = { {marginLeft: windowWidth * 0.56} } name = "toggle-off" size = { 30 } color = "gray" />
+                <FontAwesome style = { {marginLeft: windowWidth * 0.5} } name = "toggle-off" size = { 30 } color = "gray" />
             </View>
 
             <View style = { {flexDirection: 'row', marginBottom: windowHeight * 0.05} }>
                 <Ionicons style = { {marginLeft: windowWidth * 0.05} } name = "notifications" size = { 24 } color = "green" />
                 <Text style = { {marginLeft: windowWidth * 0.02} }> Notifications Alert </Text>
-                <FontAwesome style = { {marginLeft: windowWidth * 0.5} } name = "toggle-on" size = { 30 } color = "green" />
+                <FontAwesome style = { {marginLeft: windowWidth * 0.42} } name = "toggle-on" size = { 30 } color = "green" />
             </View>
 
             <View style = { {flexDirection: 'row', marginBottom: windowHeight * 0.05} }> 
                 <Entypo style = { {marginLeft: windowWidth * 0.05} } name = "key" size = { 24 } color = "green" />
                 <Text style = { {marginLeft: windowWidth * 0.02} }> Change Password </Text>
-                <Feather style = { {marginLeft: windowWidth * 0.5} } name = "arrow-right" size = { 24 } color = "gray" />
+                <Feather style = { {marginLeft: windowWidth * 0.42} } name = "arrow-right" size = { 24 } color = "gray" />
             </View>
 
             <View style = { {flexDirection: 'row', marginBottom: windowHeight * 0.05} }> 
                 <Ionicons style = { {marginLeft: windowWidth * 0.05} } name = "document-text-sharp" size = { 24 } color = "green" />
                 <Text style = { {marginLeft: windowWidth * 0.02} }> Terms of Service </Text>
-                <Feather style = { {marginLeft: windowWidth * 0.51} } name = "arrow-right" size = { 24 } color = "gray" />
+                <Feather style = { {marginLeft: windowWidth * 0.45} } name = "arrow-right" size = { 24 } color = "gray" />
             </View>
 
             <View style = { {flexDirection: 'row', marginBottom: windowHeight * 0.05} }>
