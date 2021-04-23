@@ -13,14 +13,22 @@ const SignInCust = (navigationProps) => {
             <View style = { myStyles.pageTop }>
                 <Text style = { myStyles.title  } > MobileMechanic </Text>
                 <Text style = { myStyles.signin  } > Sign In </Text>
-                <Text style = { myStyles.useyouraccount  } > Use your account </Text>
             </View>
             <SignInCustForm 
                 navigateTo = { navigationProps.navigation.navigate }
             />
-            <View style = { myStyles.termsofservice }> 
-                <Text>By continuing, you agree to accept our <Text style = { {color: "#35b8b6"} } onPress = { () => navigationProps.navigation.navigate('PreSignUp') }> PRIVACY POLICY   & TERMS OF SERVICE  </Text> </Text>
-            </View>
+            <Text style = { myStyles.termsofservice }>
+                <Text  style = { myStyles.termsofservice }> By continuing, you agree to our </Text> 
+                <Text style = { myStyles.urlLinking }
+                    onPress = { () => Linking.openURL('http://www.uzair-reviews.com/MobileMechanic/privacy-policy.html') }>
+                    PRIVACY POLICY
+                </Text>
+                <Text> and </Text>
+                <Text style = { myStyles.urlLinking }
+                    onPress = { () => {Linking.openURL('http://www.uzair-reviews.com/MobileMechanic/terms-of-service.html')} }>
+                    TERMS OF SERVICE
+                </Text> 
+            </Text>
             <View style = { myStyles.pageBottom }> 
                 <Text> Do not Have an Account? <Text style = { {color:"#35b8b6"} } onPress = { () => navigationProps.navigation.navigate('PreSignUp') }> SIGN UP </Text> </Text>
             </View>
@@ -67,7 +75,7 @@ const myStyles = StyleSheet.create({
         textAlign: 'center',
     },
     termsofservice: {
-        fontSize: 4,
+        fontSize: 12,
         padding: 10,
         textAlign: 'center',
         marginLeft: 25,
@@ -79,10 +87,11 @@ const myStyles = StyleSheet.create({
         textAlign: 'center',
         marginRight: 15,
         marginBottom: 25,
-
+        alignContent: 'center', 
+        alignItems: 'center', 
+        alignSelf: 'center'
     }, 
     urlLinking: {
-        backgroundColor : "#26B9B6",
         color: "#26B9B6",
         fontSize: 12
     }, 

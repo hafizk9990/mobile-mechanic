@@ -75,9 +75,9 @@ const ConfirmCustOrder = ( navigationProps ) => {
     }
 
     firebase.database().ref(`mobileMechanic/userRequests/${ userEmail }`).on('value', (data) => {
-        console.log('Something changed in the DB in realtime');
-        console.log('User for which we check:', userEmail);
-        console.log(data);
+        // console.log('Something changed in the DB in realtime');
+        // console.log('User for which we check:', userEmail);
+        // console.log(data);
 
         let firebaseDataString = JSON.stringify(data); // JavaScript object to string
         let firebaseDataJSON = JSON.parse(firebaseDataString); // String to JSON
@@ -103,7 +103,7 @@ const ConfirmCustOrder = ( navigationProps ) => {
     return(
         <React.Fragment> 
             <Text style = { styles.title }> Confirm Your Order </Text>
-            <ScrollView> 
+            <ScrollView style = { {marginBottom: -10} }> 
                 <View style = {styles.header}>
                 <Text style = { styles.title1 }> Order Details </Text>
                 
@@ -144,7 +144,7 @@ const ConfirmCustOrder = ( navigationProps ) => {
                         else {
                             return(
                                 <View style = {styles.item}> 
-                                    <Text style = {styles.title2}> Service#{ index + 1 }</Text>
+                                    <Text style = {styles.title2}> Service # { index + 1 }</Text>
                                     <Text style = {styles.title3}> { data.service }  </Text>
                                     <Text style = {styles.title2}> Description:</Text> 
                                     <Text style = {styles.title3}> { data.description }  </Text>
@@ -232,9 +232,9 @@ const styles = StyleSheet.create({
         borderStyle: 'solid',
         borderRadius: 10,
         borderColor: '#bbb',
-        backgroundColor: '#fff'
+        backgroundColor: '#fff', 
+        marginBottom: 20
     },
-
 });
 
 export default ConfirmCustOrder

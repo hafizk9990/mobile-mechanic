@@ -25,7 +25,7 @@ const SignUp = (navigationProps) => {
                     TERMS OF SERVICE
                 </Text> 
             </Text>
-            <View > 
+            <View> 
                 <Text style = { myStyles.pageBottom }> Already Have an Account? <Text style = { {color: '#35b8b6'} } onPress = { () => navigationProps.navigation.navigate('PreSignIn') }> SIGN IN </Text> </Text>
             </View>
         </React.Fragment>
@@ -65,10 +65,9 @@ const myStyles = StyleSheet.create({
         paddingLeft:20,
         paddingRight:20,
         paddingTop:20,
-
     },
     pageBottom: {
-        paddingTop:20,
+        paddingTop:60,
         fontSize: 12,
         paddingBottom: 10,
         textAlign: 'center',

@@ -1,5 +1,5 @@
 import React from 'react' 
-import { View, StyleSheet, Text, Button,Dimensions,TouchableOpacity } from 'react-native' 
+import { View, StyleSheet, Text, Button, Dimensions, TouchableOpacity } from 'react-native' 
 
 var windowHeight = Dimensions.get('window').height;
 var windowWidth = Dimensions.get('window').width;
@@ -9,11 +9,9 @@ const PreSignUp = (navigationProps) => {
         <React.Fragment> 
             <View style = { myStyles.pageTop }> 
                 <Text  style = { myStyles.title }> MobileMechanic </Text>
-
             </View>
             <View style = { myStyles.signUp }> 
                 <Text style = { myStyles.signin  } > Sign Up </Text>
-                <Text style = { myStyles.useyouraccount  }> Choose your role </Text>
             </View>
             <View> 
                 <TouchableOpacity
@@ -30,7 +28,7 @@ const PreSignUp = (navigationProps) => {
                 </TouchableOpacity>
             </View>
             <Text style = { myStyles.pageBottom }> 
-                Already Have an Account? <Text style = { {color: '#35b8b6'} } onPress = { () => navigationProps.navigation.navigate('PreSignIn') }> SIGN IN </Text>
+            <Text style = { {fontSize: 12} }> Do not Have an Account? <Text style = { {color:"#35b8b6", fontSize: 14} } onPress = { () => navigationProps.navigation.navigate('PreSignIn') }> SIGN IN </Text> </Text>
             </Text>
         </React.Fragment>
     );
@@ -87,7 +85,7 @@ const myStyles = StyleSheet.create({
   },
   pageBottom: {
     fontSize: 10,
-    paddingTop: 150,
+    paddingTop: windowHeight * 0.5,
     paddingBottom: 150,
     textAlign:'center',
 

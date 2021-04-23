@@ -18,6 +18,7 @@ var windowWidth = Dimensions.get('window').width;
 const ProfileCustForm = (props) => {
     let userEmail = props.userEmail;
     userEmail = userEmail.replace(/\./g, ',');
+    let currentBalance = 0;
     
     const [firstNameToShow, setFirstName] = useState('Enter Your First Name');
     const [lastNameToShow, setLastName] = useState('Enter Your Last Name');
@@ -65,7 +66,6 @@ const ProfileCustForm = (props) => {
                     let age = submittedData.age;
                     let creditCardNumb = submittedData.creditCard;
                     let walletMoney = submittedData.wallet;
-
 
                     firebase.database().ref(`mobileMechanic/Clients/${userEmail}`).update({
                         firstName: firstName, 

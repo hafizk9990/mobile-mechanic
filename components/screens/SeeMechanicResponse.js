@@ -1,7 +1,6 @@
 import React from 'react' 
-import { Text, View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native' 
+import { Text, View, StyleSheet, TouchableOpacity, ScrollView, Dimensions, Alert } from 'react-native' 
 import firebase from '../screenSnippets/FirebaseInit'
-// var wallet;
 
 const SeeMechanicResponse = ( navigationProps ) => {
     let displayArray = [];
@@ -9,18 +8,21 @@ const SeeMechanicResponse = ( navigationProps ) => {
     let userEmail = navigationProps.navigation.getParam('userEmailToPass');
     let wallet = navigationProps.navigation.getParam('wallet');
     userEmail = userEmail.replace(/\./g, ',');
-    console.log('Wallet in see response file: ', wallet);
-    
+
     const displayData = (dataResponse, dataProfile) => {
         if (dataResponse && dataProfile) {
             let name = dataProfile.firstName + ' ' + dataProfile.lastName;
+            let rating = dataProfile.rating;
             let cnic = dataProfile.cnic;
             let charges = dataResponse.charges;
+            let comments = dataResponse.mechanicComments;
 
             displayArray.push({
                 mechanicName: name, 
                 mechanicCNIC: cnic, 
-                mechanicCharges: charges
+                mechanicCharges: charges,
+                rating: rating,
+                comments: comments
             });
         }
     }
@@ -50,7 +52,7 @@ const SeeMechanicResponse = ( navigationProps ) => {
 
     return(
         <React.Fragment> 
-            <Text style = { {marginTop: 30, textAlign: 'center'} }> See Mechanic Responses </Text>
+            <Text style = { {marginTop: 50, marginBottom: 20, textAlign: 'center', fontSize: 25} }> Available Mechanics </Text>
             <ScrollView> 
                 {
                     displayArray.map( (dataObject, index) => {
@@ -59,14 +61,42 @@ const SeeMechanicResponse = ( navigationProps ) => {
                         if (parseInt(JSON.stringify(wallet)) >= dataObject.mechanicCharges) {
                             return(
                                 <React.Fragment>
-                                    <View style = { {borderBottomColor: 'gray', borderBottomWidth: 1} } key = {index}>
-                                        <View style = { {flexDirection: 'row'} }>
-                                            <Text> { dataObject.mechanicName } { dataObject.mechanicCharges } </Text>  
-                                        </View>
-                                        <View style = { {flexDirection: 'row'} }>
-                                            <TouchableOpacity onPress = { () => navigationProps.navigation.navigate('Payments', {userEmail: userEmail, cnic: dataObject.mechanicCNIC, array: responsesArray, charges: dataObject.mechanicCharges, wallet: wallet}) }>
-                                                <Text style = { {color: 'green'} }> Accept </Text>
-                                            </TouchableOpacity>
+                                    <View style = { myStyles.item }>
+                                        <View key = {index}>
+                                            <View>
+                                                <Text style = { myStyles.name }> { dataObject.mechanicName } </Text>  
+                                                <Text style = { myStyles.chargesDemanded }> { dataObject.mechanicCharges } Rs </Text>
+                                                <Text style = { myStyles.rating }> { dataObject.rating } </Text>
+                                                <Text style = { myStyles.rating }> { dataObject.comments } </Text>
+                                            </View>
+                                            <View style = { {flexDirection: 'row'} }>
+                                                <View style = { {marginTop: 20, marginLeft: 50} }>
+                                                    <TouchableOpacity
+                                                        style = { myStyles.loginScreenButton }
+                                                        onPress = { () => { 
+                                                            Alert.alert(
+                                                                'Accept Mechanic?',
+                                                                `Are you sure you want to proceed with this mechanic? If you select yes, they will be notified that you have accepted them. Else, no changes will be made`,
+                                                                [ 
+                                                                    { text: 'No' },
+                                                                    { 
+                                                                        text: "Yes", 
+                                                                        onPress: () =>  navigationProps.navigation.navigate('Payments', {
+                                                                            userEmail: userEmail, 
+                                                                            cnic: dataObject.mechanicCNIC, 
+                                                                            array: responsesArray, 
+                                                                            charges: dataObject.mechanicCharges, 
+                                                                            wallet: wallet
+                                                                        })
+                                                                    }
+                                                                ],
+                                                            );
+                                                        }}
+                                                        underlayColor = '#fff'>
+                                                        <Text style = { myStyles.loginText }> Accept Bid </Text>
+                                                    </TouchableOpacity>
+                                                </View>
+                                            </View>
                                         </View>
                                     </View>
                                 </React.Fragment>
@@ -77,13 +107,31 @@ const SeeMechanicResponse = ( navigationProps ) => {
                             let toReturn = `Bid too expensive!. Balance: ${ parseInt(JSON.stringify(wallet)) } Rs`;
                             return(
                                 <React.Fragment>
-                                    <View style = { {borderBottomColor: 'gray', borderBottomWidth: 1} } key = {index}>
-                                        <View style = { {flexDirection: 'row'} }>
-                                            <Text> { dataObject.mechanicName } { dataObject.mechanicCharges } </Text>  
+                                    <View style = { myStyles.item }>
+                                        <View key = {index}>
+                                            <View>
+                                                <Text style = { myStyles.name }> { dataObject.mechanicName } </Text>  
+                                                <Text style = { myStyles.chargesDemanded }> { dataObject.mechanicCharges } Rs </Text>
+                                                <Text style = { myStyles.rating }> { dataObject.rating } </Text>
+                                                <Text style = { myStyles.rating }> { dataObject.comments } </Text>
+                                            </View>
+                                            <View style = { {flexDirection: 'row'} }>
+                                                <View style = { {marginTop: 20, marginLeft: 50} }>
+                                                    <TouchableOpacity
+                                                        style = { myStyles.rejectButton }
+                                                        onPress = { () => { 
+                                                            Alert.alert(
+                                                                'Warning! Short on Cash',
+                                                                `This mechanic demands ${ dataObject.mechanicCharges } Rs. You only have ${ JSON.stringify(wallet) } Rs in your wallet. Please select another mechanic. Thank you!`,
+                                                                [ { text: "OK" } ],
+                                                            );
+                                                        }}
+                                                        underlayColor = '#fff'>
+                                                        <Text style = { myStyles.loginText }> Bid Too Expensive </Text>
+                                                    </TouchableOpacity>
+                                                </View>
+                                            </View>
                                         </View>
-                                        <View style = { {flexDirection: 'row'} }>
-                                             <Text style = { { color: 'red'} }> { toReturn } </Text>
-                                         </View>
                                     </View>
                                 </React.Fragment>
                             );
@@ -96,3 +144,67 @@ const SeeMechanicResponse = ( navigationProps ) => {
 }
 
 export default SeeMechanicResponse
+
+const myStyles = StyleSheet.create({
+    item: {
+        paddingLeft: 5,
+        marginTop: 15,
+        marginLeft: 10,
+        marginRight: 10,
+        borderWidth: 2,
+        borderStyle: 'solid',
+        borderRadius: 10,
+        borderColor: '#bbb',
+        backgroundColor: '#fff', 
+        marginBottom: 20, 
+    }, 
+    loginScreenButton: {
+        marginRight:40,
+        marginLeft:40,
+        marginBottom:20,
+        paddingTop:10,
+        paddingBottom:10,
+        backgroundColor:"#35b8b6",
+        borderRadius:10,
+        borderWidth: 1,
+        borderColor: '#fff',
+        position: 'relative', 
+        width: Dimensions.get('window').width * 0.5,
+    }, 
+    loginText: {
+        color:'#fff',
+        textAlign:'center',
+        paddingLeft : 10,
+        paddingRight : 10
+    },
+    rejectButton: {
+        marginLeft:40,
+        marginBottom:20,
+        paddingTop:10,
+        paddingBottom:10,
+        backgroundColor:"red",
+        borderRadius:10,
+        borderWidth: 1,
+        borderColor: '#fff',
+        position: 'relative',
+        alignContent: 'center', 
+        alignItems: 'center', 
+        alignSelf: 'center',
+        width: Dimensions.get('window').width * 0.5,
+    }, 
+    name: {
+        fontSize: 23,
+        textAlign: 'center', 
+        paddingTop: 5
+    },
+    chargesDemanded: {
+        fontSize: 17,
+        textAlign: 'center', 
+        paddingTop: 15
+    },
+    rating: {
+        fontSize: 13,
+        textAlign: 'center', 
+        paddingTop: 15
+    }
+});

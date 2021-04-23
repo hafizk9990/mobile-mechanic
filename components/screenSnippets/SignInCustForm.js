@@ -1,5 +1,5 @@
 import React from 'react' 
-import { View, Text, StyleSheet, TextInput, Button,TouchableOpacity } from 'react-native' 
+import { View, Text, StyleSheet, TextInput, Button,TouchableOpacity, Dimensions } from 'react-native' 
 import { Formik } from 'formik'
 import firebase from './FirebaseInit'
 
@@ -73,7 +73,10 @@ const myStyles = StyleSheet.create({
     },
     inputField: {
         padding: 6,
-        textAlign: 'center'
+        textAlign: 'center', 
+        borderBottomColor: '#35b8b6',
+        borderBottomWidth: 1.25,
+        width: Dimensions.get('window').width * 0.7, 
     },
     continueButton: {
         backgroundColor:"red",

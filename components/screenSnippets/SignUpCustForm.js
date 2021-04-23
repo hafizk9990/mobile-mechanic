@@ -1,5 +1,5 @@
 import React from 'react' 
-import { View, Text, StyleSheet, TextInput, Button, Alert,TouchableOpacity } from 'react-native' 
+import { View, Text, StyleSheet, TextInput, Button, Alert,TouchableOpacity, Dimensions } from 'react-native' 
 import { Formik } from 'formik'
 import * as yup from 'yup'
 import firebase from './FirebaseInit'
@@ -73,9 +73,9 @@ const SignUpForm = (props) => {
                             <Text style = { myStyles.formError }> {  formikProps.touched.pass && formikProps.errors.pass } </Text>
 
                             <TextInput 
-                                style = { { textAlign: 'center' } }
+                                style = { myStyles.inputField }
                                 placeholder = "Confirm Password"
-                                secureTextEntry = {true}
+                                secureTextEntry = { true }
                                 onChangeText = { formikProps.handleChange('confirm') }
                                 value = { formikProps.values.confirm }
                             />
@@ -101,7 +101,13 @@ const myStyles = StyleSheet.create({
     },
     inputField: {
         padding: 6,
-        textAlign: 'center'
+        textAlign: 'center',
+        alignContent: 'center',
+        alignItems: 'center',
+        alignSelf: 'center',
+        borderBottomColor: '#35b8b6',
+        borderBottomWidth: 1.25,
+        width: Dimensions.get('window').width * 0.7,
     },
     continueButton: {
         backgroundColor:"red",

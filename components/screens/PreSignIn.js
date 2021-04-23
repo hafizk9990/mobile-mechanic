@@ -29,7 +29,7 @@ const PreSignUp = (navigationProps) => {
                             </TouchableOpacity>
             </View>
             <Text style = { myStyles.pageBottom }> 
-            <Text> Do not Have an Account? <Text style = { {color:"#35b8b6"} } onPress = { () => navigationProps.navigation.navigate('PreSignUp') }> SIGN UP </Text> </Text>
+            <Text style = { {fontSize: 12} }> Do not Have an Account? <Text style = { {color:"#35b8b6", fontSize: 14} } onPress = { () => navigationProps.navigation.navigate('PreSignUp') }> SIGN UP </Text> </Text>
             </Text>
         </React.Fragment>
     );
@@ -56,7 +56,6 @@ const myStyles = StyleSheet.create({
 
     useyouraccount: {
         fontSize: 9,
-        
         textAlign: 'center',
     },
 
@@ -87,11 +86,9 @@ const myStyles = StyleSheet.create({
   },
   pageBottom: {
     fontSize: 10,
-    paddingTop: 150,
-    paddingBottom: 150,
+    paddingTop: windowHeight * 0.5,
+    paddingBottom: 15,
     textAlign:'center',
-
-
 }, 
     signUp: {
 
