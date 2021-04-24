@@ -1,6 +1,12 @@
 import React from 'react' 
 import { Text, View, StyleSheet, TouchableOpacity, ScrollView, Dimensions, Alert } from 'react-native' 
 import firebase from '../screenSnippets/FirebaseInit'
+import { Ionicons } from '@expo/vector-icons'
+import { Fontisto } from '@expo/vector-icons'
+import { FontAwesome } from '@expo/vector-icons'
+import { FontAwesome5 } from '@expo/vector-icons'
+import { AntDesign } from '@expo/vector-icons'
+
 
 const SeeMechanicResponse = ( navigationProps ) => {
     let displayArray = [];
@@ -63,10 +69,23 @@ const SeeMechanicResponse = ( navigationProps ) => {
                                 <React.Fragment>
                                     <View style = { myStyles.item }>
                                         <View key = {index}>
+                                            <View style = { {marginLeft: Dimensions.get('window').width * 0.84} }> 
+                                                <Ionicons name = "md-arrow-redo-sharp" size = { 24 } color = "#35b8b6" onPress = {() => navigationProps.navigation.navigate('SeeMechanicFullProfile')} />
+                                                <Text style = { {fontSize: 10, color: '#35b8b6'} }> Profile </Text>
+                                            </View>
                                             <View>
-                                                <Text style = { myStyles.name }> { dataObject.mechanicName } </Text>  
-                                                <Text style = { myStyles.chargesDemanded }> { dataObject.mechanicCharges } Rs </Text>
-                                                <Text style = { myStyles.rating }> { dataObject.rating } </Text>
+                                                <View style = { myStyles.star }> 
+                                                    <AntDesign  style = { {marginTop: 5} }name = "user" size = { 19 } color = "#35b8b6" />  
+                                                    <Text style = { myStyles.name }> { dataObject.mechanicName } </Text>  
+                                                </View>
+                                                <View style = { myStyles.star }> 
+                                                    <FontAwesome5 style = { {marginTop: 15} }  name = "money-bill-alt" size = { 16 } color = "#35b8b6" />
+                                                    <Text style = { myStyles.chargesDemanded }> { dataObject.mechanicCharges } Rs </Text>
+                                                </View>
+                                                <View style = { myStyles.star }> 
+                                                    <FontAwesome style = { {marginTop: 15} } name = "star" size = { 16 } color = "#35b8b6" />
+                                                    <Text style = { myStyles.rating }> { dataObject.rating } </Text>
+                                                </View>
                                                 <Text style = { myStyles.rating }> { dataObject.comments } </Text>
                                             </View>
                                             <View style = { {flexDirection: 'row'} }>
@@ -109,10 +128,30 @@ const SeeMechanicResponse = ( navigationProps ) => {
                                 <React.Fragment>
                                     <View style = { myStyles.item }>
                                         <View key = {index}>
+                                            <View style = { {marginLeft: Dimensions.get('window').width * 0.84, marginTop: 5} }> 
+                                                <Fontisto name = "ban" size = { 18 } color = 'red' onPress = { () => { 
+                                                    Alert.alert(
+                                                        'Profile Unavailable',
+                                                        `You cannot afford this mechanic. Therefore, their profile is not available to you. Please select a mechanic that you can afford. Thank you!`,
+                                                        [ { text: "OK" } ],
+                                                    )}} 
+                                                />
+                                                <Text style = { {fontSize: 10, color: 'red'} }> Profile </Text>
+                                            </View>
                                             <View>
-                                                <Text style = { myStyles.name }> { dataObject.mechanicName } </Text>  
-                                                <Text style = { myStyles.chargesDemanded }> { dataObject.mechanicCharges } Rs </Text>
-                                                <Text style = { myStyles.rating }> { dataObject.rating } </Text>
+                                                <View style = { myStyles.star }> 
+                                                    <AntDesign style = { {marginTop: 5} } name = "user" size = { 19 } color = "red" />  
+                                                    <Text style = { myStyles.name }> { dataObject.mechanicName } </Text>  
+                                                </View>  
+                                                <View style = { myStyles.star }> 
+                                                    <FontAwesome5 style = { {marginTop: 15} } name = "money-bill-alt" size = { 16 } color = "red" />
+                                                    <Text style = { myStyles.chargesDemanded }> { dataObject.mechanicCharges } Rs </Text>
+                                                </View>
+                                                <View style = { myStyles.star }> 
+                                                    
+                                                    <FontAwesome style = { {marginTop: 15} } name = "star" size = { 16 } color = "red" />
+                                                    <Text style = { myStyles.rating }> { dataObject.rating } </Text>
+                                                </View>
                                                 <Text style = { myStyles.rating }> { dataObject.comments } </Text>
                                             </View>
                                             <View style = { {flexDirection: 'row'} }>
@@ -206,5 +245,12 @@ const myStyles = StyleSheet.create({
         fontSize: 13,
         textAlign: 'center', 
         paddingTop: 15
+    }, 
+    star: {
+        flexDirection: 'row', 
+        textAlign: 'center', 
+        alignContent: 'center', 
+        alignItems: 'center', 
+        alignSelf: 'center'
     }
 });

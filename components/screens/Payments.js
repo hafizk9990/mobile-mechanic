@@ -84,11 +84,13 @@ const Payments = (navigationProps) => {
 
     array.map( (mechanicCNIC) => {
         if (mechanicCNIC != acceptedCNIC) {
+            console.log('Making bidAcceptance -1 for', acceptedCNIC);
             return(
                 firebase.database().ref(`mobileMechanic/mechanicResponse/${ userEmail }/${ mechanicCNIC }`).update({ bidAcceptance: -1 })
             );
         }
         else {
+            console.log('Removing and changing bidAcceptance to +1');
             // firebase.database().ref(`mobileMechanic/userRequests/${ userEmail }`).remove(); ////////////////////////////////////////////////////////////////////////////////////////////////////////////// re do this!!!!
             return(
                 firebase.database().ref(`mobileMechanic/mechanicResponse/${ userEmail }/${ acceptedCNIC }`).update({

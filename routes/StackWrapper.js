@@ -35,7 +35,7 @@ import Payments from '../components/screens/Payments'
 import RatingReviews from '../components/screens/RatingReviews'
 import WorkUnderProcess from '../components/screens/WorkUnderProcess'
 import MechanicOtp from '../components/screens/MechanicOtp'
-
+import SeeMechanicFullProfile from '../components/screens/SeeMechanicFullProfile'
 
 
 const screens = {
@@ -234,6 +234,12 @@ const screens = {
     },
     MechanicOtp: {
         screen: MechanicOtp, 
+        navigationOptions: {
+            headerShown: false
+        }
+    },
+    SeeMechanicFullProfile: {
+        screen: SeeMechanicFullProfile, 
         navigationOptions: {
             headerShown: false
         }
