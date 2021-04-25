@@ -2,6 +2,7 @@ import { Formik } from 'formik'
 import React from 'react' 
 import { Text, View, StyleSheet, TouchableOpacity, TextInput, Alert } from 'react-native' 
 import firebase from "../../components/screenSnippets/FirebaseInit";
+import StarRating from 'react-native-star-rating'
 
 
 const RatingReviews = (navigationProps) => {
@@ -10,7 +11,7 @@ const RatingReviews = (navigationProps) => {
     const userLabel = navigationProps.navigation.getParam('userLabel')
     const reviewBy = navigationProps.navigation.getParam('reviewBy')
     const nextScreen = navigationProps.navigation.getParam('nextScreen')
-    
+
     const path = `mobileMechanic/${userLabel}/${userId}`
     let userRating = 0
     let numRatedBy = 0
@@ -46,7 +47,8 @@ const RatingReviews = (navigationProps) => {
         }).then( () => {
             firebase.database().ref(`${path}/reviews`).push({   //if rating successfuly updated, push review
                 date: today,
-                text: review,
+                value: rating,
+                text: review.trim(),
                 by: reviewBy
             }).then( () => {    //if review successfuly pushed, notify user
                 Alert.alert(
@@ -63,12 +65,29 @@ const RatingReviews = (navigationProps) => {
                         }
                     ]
                 )
-            }).catch((error) => console.log(error))
+            }).catch((error) => console.log(error)) //todo: handle errors
         }).catch((error)=>console.log(error))
     }
+
+    const handleCancel = () => {
+      Alert.alert(
+        'Are you sure you want to cancel review?',
+        'This action is not reversible.',
+        [ 
+            { 
+                text: "Yes", 
+                onPress: () => navigationProps.navigation.navigate(nextScreen)
+            },
+            {
+                text: "No",
+            }
+        ]
+    )
+    }
+
     return(
         <Formik
-        initialValues={{ review: "", rate: "" }}
+        initialValues={{ review: "", rate: 0 }}
         onSubmit={(formData, actions) => {
           console.log("Form Data:", formData);
           updateDataBase(formData.rate, formData.review)
@@ -81,14 +100,15 @@ const RatingReviews = (navigationProps) => {
               <Text style = { myStyles.subtitle  }> Rate & Review </Text>
 
               {/* Star Rating */}
-              <TextInput
-               style = { myStyles.starRating }  //change to star rating
-               placeholder = "Enter Your Rating"
-               onChangeText = { formikProps.handleChange('rate') }
-               value = { formikProps.values.rate }
-               keyboardType = 'numeric'
+              <StarRating
+                disabled={false}
+                disabled={false}
+                halfStarEnabled = {true}
+                maxStars={5}
+                rating={formikProps.values.rate}
+                selectedStar = {(rating)=>{formikProps.setFieldValue("rate", rating)}}
               />
-
+              
               {/* reviewBox */}
               <TextInput
                 multiline
@@ -104,10 +124,11 @@ const RatingReviews = (navigationProps) => {
               >
                 <Text style={myStyles.loginText}>Post Review</Text>
               </TouchableOpacity>
+
               {/* add cancel button */}
               <TouchableOpacity
                 style={myStyles.cancelButton}
-                onPress={formikProps.handleSubmit}
+                onPress={()=>{handleCancel()}}
                 underlayColor="#fff"
               >
                 <Text style={myStyles.loginText}>Cancel</Text>
