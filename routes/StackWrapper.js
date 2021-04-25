@@ -36,6 +36,8 @@ import RatingReviews from '../components/screens/RatingReviews'
 import WorkUnderProcess from '../components/screens/WorkUnderProcess'
 import MechanicOtp from '../components/screens/MechanicOtp'
 import SeeMechanicFullProfile from '../components/screens/SeeMechanicFullProfile'
+import MechanicLocation from '../components/screens/MechanicLocationTracking'
+
 
 
 const screens = {
@@ -240,6 +242,12 @@ const screens = {
     },
     SeeMechanicFullProfile: {
         screen: SeeMechanicFullProfile, 
+        navigationOptions: {
+            headerShown: false
+        }
+    },
+    MechanicLocation: {
+        screen: MechanicLocation, 
         navigationOptions: {
             headerShown: false
         }
