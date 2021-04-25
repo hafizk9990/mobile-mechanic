@@ -37,7 +37,11 @@ import WorkUnderProcess from '../components/screens/WorkUnderProcess'
 import MechanicOtp from '../components/screens/MechanicOtp'
 import SeeMechanicFullProfile from '../components/screens/SeeMechanicFullProfile'
 import MechanicLocation from '../components/screens/MechanicLocationTracking'
-
+import PaymentMech from "../components/screens/PaymentMech";
+import SignUpMechFormStep3 from "../components/screens/SignUpMechFormStep3";
+import UploadPhotoSignIn from "../components/screens/UploadPhotoSignIn";
+import CustomerResponses from "../components/screens/CustomerResponses";
+import ServiceRequests from "../components/screens/ServiceRequests";
 
 
 const screens = {
@@ -250,6 +254,27 @@ const screens = {
         screen: MechanicLocation, 
         navigationOptions: {
             headerShown: false
+        }
+    },
+      PaymentMech: {
+        screen: PaymentMech, 
+        navigationOptions: {
+            title: 'Payment Request',
+            headerShown: true
+        }
+    },
+    SignUpMechFormStep3: {
+        screen: SignUpMechFormStep3, 
+        navigationOptions: {
+            title: 'Step 3 of 4',
+            headerShown: true
+        }
+    },
+    UploadPhotoSignIn: {
+        screen: UploadPhotoSignIn, 
+        navigationOptions: {
+            title: 'Step 4 of 4',
+            headerShown: true
         }
     },
 }

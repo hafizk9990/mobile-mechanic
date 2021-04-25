@@ -8,18 +8,17 @@ import OTPInputView from '@twotalltotems/react-native-otp-input'
 
 const SignUpForm = (props) => {
 
-
-
-
+  let usercnic = props.navigation.getParam('usercnic');
   const AcceptPressHandler = () => {
-  
-    Alert.alert(
-    'Congratulations!',
-    "Your account is created successfully. Use your phone number and password to login!",
-    [ { text: "OK" } ],
-  );
 
-  props.navigation.navigate('SignInMech');
+    Alert.alert(
+      'Congratulationss!',
+      "Your number is verified successfully. Upload your documents to complete the process of interview registration!",
+      [ { text: "OK" } ],
+    );
+
+
+    props.navigation.navigate('SignUpMechFormStep3',{usercnic:usercnic});
 
   };
 
@@ -40,6 +39,15 @@ const SignUpForm = (props) => {
     codeInputHighlightStyle={styles.underlineStyleHighLighted}
     onCodeFilled = {(code) => {
         console.log(`Code is ${code}, you are good to go!`)
+        Alert.alert(
+          'Congratulationss!',
+          "Your number is verified successfully. Upload your documents to complete the process of interview registration!",
+          [ { text: "OK" } ],
+        );
+    
+    
+        props.navigation.navigate('SignUpMechFormStep3',{usercnic:usercnic});
+    
     }}
 />
       </View>

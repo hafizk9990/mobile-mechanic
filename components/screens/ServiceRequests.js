@@ -8,7 +8,8 @@ import {
   SafeAreaView,
   StyleSheet,
   Dimensions,
-  TouchableOpacity,CheckBox
+  TouchableOpacity,
+  CheckBox,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 
@@ -21,153 +22,161 @@ var windowHeight = Dimensions.get("window").height;
 var windowWidth = Dimensions.get("window").width;
 
 const SettingsCust = (tabsNavigationProps) => {
-  let cnic_mechanic=tabsNavigationProps.navigation.getParam('usercnic');
+  const [isSelected, setSelection] = React.useState(null);
+  const [state, setState] = React.useState({ count: 0, count2: 100 });
 
-  const [isSelected, setSelection] = React.useState(false);
-
-  let name = "Ford Mustang, 2017";
-  let image = require("../../assets/icons/car-cleaning.png");
-  let image1 = require("../../assets/icons/airbrush.png");
-  let image2 = require("../../assets/icons/radiator.png");
-  let image3 = require("../../assets/icons/brakes.png");
-  let image4 = require("../../assets/icons/bookmard.png");
-
-  let obtainedEmail = tabsNavigationProps.navigation
-    .dangerouslyGetParent()
-    .getParam("usercnic");
-  console.log(obtainedEmail);
-  obtainedEmail = obtainedEmail.replace(/\./g, ",");
+  function handleClick() {
+    forceUpdate();
+  }
+  let cnic_mechanic = tabsNavigationProps.navigation.getParam("usercnic");
+  var service_requests = [];
+  var customers_status = {};
 
   const handleTextChange = () => {
     console.log(`You wrote something in the input text field ...`);
   };
 
- let firebaseDataJSON_entries="";
-  firebase.database().ref(`mobileMechanic/userRequests/`).on('value', (data) => {
-    let firebaseDataString = JSON.stringify(data); // JavaScript object to string
-    let firebaseDataJSON = JSON.parse(firebaseDataString); // String to JSON
-    let customer_keys= Object.keys(firebaseDataJSON);
-     firebaseDataJSON_entries= Object.entries(firebaseDataJSON);
-
-})
+  let firebaseDataJSON_entries = "";
+  firebase
+    .database()
+    .ref(`mobileMechanic/userRequests/`)
+    .on("value", (data) => {
 
 
+      let firebaseDataString = JSON.stringify(data); // JavaScript object to string
+      let firebaseDataJSON = JSON.parse(firebaseDataString); // String to JSON
+      firebaseDataJSON_entries = Object.entries(firebaseDataJSON);
 
-let Images_list=[]
-for(let x = 0; x < firebaseDataJSON_entries.length; x++){
-  let temp_images=[]
-  let shopping_cart=firebaseDataJSON_entries[x][1].customerShoppingCart; 
-  let keys =Object.keys(firebaseDataJSON_entries[x][1] .customerShoppingCart);
-  let enteries_item= Object.entries(shopping_cart);
-  let length_items= enteries_item.length;
-  for(let y = 0; y < length_items; y++){
-   
-    temp_images.push( enteries_item[y][1].carImageKey   )
+    });
+
+
+
+
+  let Images_list = [];
+  for (let x = 0; x < firebaseDataJSON_entries.length; x++) {
+    let temp_images = [];
+    let shopping_cart = firebaseDataJSON_entries[x][1].customerShoppingCart;
+    let keys = Object.keys(firebaseDataJSON_entries[x][1].customerShoppingCart);
+    let enteries_item = Object.entries(shopping_cart);
+    let length_items = enteries_item.length;
+    for (let y = 0; y < length_items; y++) {
+      temp_images.push(enteries_item[y][1].carImageKey);
+    }
+    Images_list.push(temp_images);
   }
-  Images_list.push(temp_images)
-}
+
+  const pressHandler = (object) => {
+    tabsNavigationProps.navigation.navigate("ProfileMech", {
+      customer_object: object,
+      cnicMechanic: cnic_mechanic,
+    });
+  };
+  for (let i = 0; i < firebaseDataJSON_entries.length; i++) {
+    //let status= (firebaseDataJSON_entries[i][1].mechanicCNIC)
+    let status="Pending";
+    firebase
+      .database()
+      .ref(`mobileMechanic/mechanicResponse/${firebaseDataJSON_entries[i][0]}`)
+      .on("value", (data) => {
+
+        let firebaseDataString = JSON.stringify(data); // JavaScript object to string
+        let setMechanicResponse = JSON.parse(firebaseDataString); // String to JSON
+
+        try {
+          if(setMechanicResponse[cnic_mechanic]) {
+            status="Placed"
+          }
+        }
+        catch(err) {
+          console.log("Not founded")
+        }
 
 
-
-const pressHandler = (object) => {
-  tabsNavigationProps.navigation.navigate("ProfileMech",  {customer_object:object,cnicMechanic:cnic_mechanic}  );
-
-
-};
-var service_requests = [];
-for(let i = 0; i < firebaseDataJSON_entries.length; i++){
- // console.log( "staaaart", firebaseDataJSON_entries[0][i])
- service_requests.push(
-
-<View  key = {i}
-style={{
-  marginTop: windowHeight * 0.03,
-  marginBottom: windowHeight * 0.03,
-}}
->
-<TouchableOpacity onPress={() => pressHandler(firebaseDataJSON_entries[i])}  >
-  <BoxContainer style={myStyles.container1}>
-    <View style={{ flexDirection: "row" }}>
-      <Image
-        style={{ marginBottom: windowHeight * 0.06 ,width:50,height:50}}
-        source={ navigationObject[firebaseDataJSON_entries[i][1].customerCarImageKey]}
-      />
-      <Text
+         });
+    service_requests.push(
+      <View
+        key={i}
         style={{
-          paddingLeft: windowHeight * 0.01,
-          fontWeight: "bold",
-          fontSize: 15,
+          marginTop: windowHeight * 0.03,
+          marginBottom: windowHeight * 0.03,
         }}
       >
-        {" "}
-        {firebaseDataJSON_entries[i][1].customerCarName}{" "}
-      </Text>
-      
-      <Text
-        style={{
-          alignItems: "flex-end",
-          color: "#35b8b6",
-          paddingLeft: windowHeight * 0.01,
-          fontWeight: "bold",
-          fontSize: 20,
-          position:'absolute',
-          left:windowWidth * 0.6,
-          
-        }}
-      >
-        {" "}
-        Pending{" "}
-      </Text>
-    </View>
+        <TouchableOpacity
+          onPress={() => pressHandler(firebaseDataJSON_entries[i])}
+        >
+          <BoxContainer style={myStyles.container1}>
+            <View style={{ flexDirection: "row" }}>
+              <Image
+                style={{
+                  marginBottom: windowHeight * 0.06,
+                  width: 50,
+                  height: 50,
+                }}
+                source={
+                  navigationObject[
+                    firebaseDataJSON_entries[i][1].customerCarImageKey
+                  ]
+                }
+              />
+              <Text
+                style={{
+                  paddingLeft: windowHeight * 0.01,
+                  fontWeight: "bold",
+                  fontSize: 15,
+                }}
+              >
+                {" "}
+                {firebaseDataJSON_entries[i][1].customerCarName}{" "}
+              </Text>
 
-    {Images_list[i].map((img, index) => <Image  style={{
-        left: 90+  index*35,
-        position: "absolute",
-        width: 25,
-        height: 25,
-      }} source={ myStyles[img]   } />)}
+              <Text
+                style={{
+                  alignItems: "flex-end",
+                  color: "#35b8b6",
+                  paddingLeft: windowHeight * 0.01,
+                  fontWeight: "bold",
+                  fontSize: 20,
+                  position: "absolute",
+                  left: windowWidth * 0.6,
+                }}
+              >
+                {" "}
+                {status}{" "}
+              </Text>
+            </View>
 
+            {Images_list[i].map((img, index) => (
+              <Image
+                style={{
+                  left: 90 + index * 35,
+                  position: "absolute",
+                  width: 25,
+                  height: 25,
+                }}
+                source={myStyles[img]}
+              />
+            ))}
 
-
-
-<CheckBox style={{
-        right: 45,
-        position: "absolute",
-        width: 25,
-        height: 25,
-      }} 
-      value={isSelected}
-      onValueChange={setSelection}/>
-
-
-  </BoxContainer>
-</TouchableOpacity>
-
-
-
-
-</View>
-
-
-
-
-
-
-
-
-
-
-
-)
-}
-
+            <CheckBox
+              style={{
+                top:40,
+                right: 45,
+                position: "absolute",
+                width: 25,
+                height: 25,
+              }}
+              value={isSelected}
+              onValueChange={setSelection}
+            />
+          </BoxContainer>
+        </TouchableOpacity>
+      </View>
+    );
+  }
 
   return (
     <ScrollView behavior="padding">
       <SafeAreaView style={{ flex: 1 }}>
-
-     
-
         <View style={myStyles.pageTop}>
           <Text style={myStyles.title}> Service Requests </Text>
         </View>
@@ -177,59 +186,59 @@ style={{
             style={myStyles.containerinner}
             round
             searchIcon={{ size: 24 }}
-            onChangeText=       {handleTextChange}
+            onChangeText={handleTextChange}
             placeholder="  Search Requests..."
           />
         </View>
 
-        <View><Text>{service_requests}</Text></View>
-
-
+        <View>
+          <Text>{service_requests}</Text>
+        </View>
       </SafeAreaView>
     </ScrollView>
   );
 };
 const navigationObject = {
-    0: require('../../assets/car-images/civic.png'), 
-    1: require('../../assets/car-images/city.png'),
-    2: require('../../assets/car-images/corolla.png'),
-    3: require('../../assets/car-images/mehran.png'),
-    4: require('../../assets/car-images/alto.png'),
-    5: require('../../assets/car-images/vitz.png'),
-    6: require('../../assets/car-images/lexus.png'),
-    7: require('../../assets/car-images/bmw.png'),
-    8: require('../../assets/car-images/bolan.png'),
-    9: require('../../assets/car-images/accord.png'), 
-    10: require('../../assets/car-images/every.png'),   
-    11: require('../../assets/car-images/swift.png'), 
-    // Repearing a few cars for now
-    12: require('../../assets/car-images/civic.png'), 
-    13: require('../../assets/car-images/city.png'),
-    14: require('../../assets/car-images/corolla.png'),
-    15: require('../../assets/car-images/mehran.png'),
-    16: require('../../assets/car-images/alto.png'),
-    17: require('../../assets/car-images/vitz.png'),
-}
+  0: require("../../assets/car-images/civic.png"),
+  1: require("../../assets/car-images/city.png"),
+  2: require("../../assets/car-images/corolla.png"),
+  3: require("../../assets/car-images/mehran.png"),
+  4: require("../../assets/car-images/alto.png"),
+  5: require("../../assets/car-images/vitz.png"),
+  6: require("../../assets/car-images/lexus.png"),
+  7: require("../../assets/car-images/bmw.png"),
+  8: require("../../assets/car-images/bolan.png"),
+  9: require("../../assets/car-images/accord.png"),
+  10: require("../../assets/car-images/every.png"),
+  11: require("../../assets/car-images/swift.png"),
+  // Repearing a few cars for now
+  12: require("../../assets/car-images/civic.png"),
+  13: require("../../assets/car-images/city.png"),
+  14: require("../../assets/car-images/corolla.png"),
+  15: require("../../assets/car-images/mehran.png"),
+  16: require("../../assets/car-images/alto.png"),
+  17: require("../../assets/car-images/vitz.png"),
+};
 
 const myStyles = StyleSheet.create({
   checkbox: {
-    position: 'absolute',
+    position: "absolute",
     marginLeft: windowWidth * 0.65,
-    left:200
-},
-  0: require('../../assets/icons/oil-change.png'), 
-  1: require('../../assets/icons/battery-check.png'),
-  2: require('../../assets/icons/automotive.png'),
-  3: require('../../assets/icons/car-washing.png'),
-  4: require('../../assets/icons/tyre-changing.png'),
-  5: require('../../assets/icons/delivery-inspection.png'),
-  6: require('../../assets/icons/car-cleaning.png'),
-  7: require('../../assets/icons/conditioner-system-repair.png'),
-  8: require('../../assets/icons/airbrush.png'),
-  9: require('../../assets/icons/radiator.png'), 
-  10: require('../../assets/icons/brakes.png'),   
-  11: require('../../assets/icons/car-repair.png'),
-  12: require('../../assets/icons/service.png'), 
+    left: 200,
+  },
+  0: require("../../assets/icons/oil-change.png"),
+  1: require("../../assets/icons/battery-check.png"),
+  2: require("../../assets/icons/automotive.png"),
+  3: require("../../assets/icons/car-washing.png"),
+  4: require("../../assets/icons/tyre-changing.png"),
+  5: require("../../assets/icons/delivery-inspection.png"),
+  6: require("../../assets/icons/car-cleaning.png"),
+  7: require("../../assets/icons/conditioner-system-repair.png"),
+  8: require("../../assets/icons/airbrush.png"),
+  9: require("../../assets/icons/radiator.png"),
+  10: require("../../assets/icons/brakes.png"),
+  11: require("../../assets/icons/car-repair.png"),
+  12: require("../../assets/icons/service.png"),
 
   pageTop: {
     marginTop: windowHeight * 0.01,
