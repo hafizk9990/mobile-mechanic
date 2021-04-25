@@ -96,18 +96,26 @@ const RatingReviews = (navigationProps) => {
         {(formikProps) => {
           return (
             <View style={myStyles.form}>
-              <Text style = { myStyles.title  }> Review </Text>
-              <Text style = { myStyles.subtitle  }> Rate & Review </Text>
+              <Text style = { myStyles.title  }> Rate & Review </Text>
 
               {/* Star Rating */}
               <StarRating
+                buttonStyle = {myStyles.starRating}
+                containerStyle = {myStyles.starRatingContainer}
                 disabled={false}
                 disabled={false}
                 halfStarEnabled = {true}
                 maxStars={5}
                 rating={formikProps.values.rate}
+                fullStarColor={'orange'}
+                emptyStarColor={'black'}
+                starSize= {40}
+                starStyle = {myStyles.starStyle}
                 selectedStar = {(rating)=>{formikProps.setFieldValue("rate", rating)}}
               />
+
+              
+              <Text style = { myStyles.subtitle  }> Review </Text>
               
               {/* reviewBox */}
               <TextInput
@@ -145,12 +153,20 @@ const myStyles = StyleSheet.create({
       textAlign: "center",
     },
     starRating: {
-      padding: 6,
-      textAlign: "center",
-      color: "red"
+      marginRight: '4%',
+      marginLeft: '6%',
+      height: 40,
+      width: 40,
+    },
+    starRatingContainer: {
+      margin: '10%',
+      alignContent: 'center',
+    },
+    starStyle: {
+      margin: '2%',
     },
     reviewBox: {
-      marginTop: 20,
+      marginTop: '3%',
       height: 120,
       width: '86%',
       margin: 2,
@@ -204,14 +220,17 @@ const myStyles = StyleSheet.create({
       fontSize: 35,
       marginTop: '12%',
       textAlign: 'center',
-      padding: 15
+      padding: 15,
+      paddingBottom: '10%',
+      borderBottomWidth: 1,
+      marginBottom: '5%',
     },
     subtitle: {
-      borderTopWidth: 1,
-      fontSize: 25,
-      marginTop: '4%',
+      fontSize: 23,
       textAlign: 'left',
-      padding: 15
+      padding: 15,
+      paddingLeft: 0,
+      marginLeft: '7%',
     },
     button: {
       backgroundColor: "#00aeef",
