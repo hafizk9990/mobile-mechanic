@@ -10,6 +10,8 @@ const delay = 5
 
 const MechanicLocation = (navigationProps) => {
     const userCNIC = (navigationProps.navigation.getParam('usercnic'));
+    const userId = (navigationProps.navigation.getParam('customer_object'))[0];
+
     const path = `mobileMechanic/mechanicLocations/${userCNIC}`
     const [update, setUpdate] = useState(false)
     let customerLocation = {
@@ -18,15 +20,8 @@ const MechanicLocation = (navigationProps) => {
         latitudeDelta: 0.015,
         longitudeDelta: 0.0121,
     }
-    const userId = `uzair9990@gmail,com`    //to fetch from previous screen
+    //const userId = `uzair9990@gmail,com`    //to fetch from previous screen
     let userLocRead = useRef(null)
-    firebase.database().ref(`mobileMechanic/userRequests/${userId}/customerLocation`).once('value', (data) => {
-        if(data){
-            customerLocation = JSON.parse(JSON.stringify(data));
-            console.log("customer at",customerLocation)
-            userLocRead.current = true
-        }
-    });
 
     let test = useRef(null)
     let updateDb = useRef(null)
@@ -52,9 +47,11 @@ const MechanicLocation = (navigationProps) => {
         return () => {
             clearTimeout(timer1)
             test.current = false
+            updateDb.current = false
         }
       }, [update])
 
+    
     const getCurrentPosition = () => {
         navigator.geolocation.getCurrentPosition((position) => {
             var lat = parseFloat(position.coords.latitude)
@@ -74,8 +71,28 @@ const MechanicLocation = (navigationProps) => {
         {enableHighAccuracy: true, timeout: 20000});        
     }
 
+    useEffect(() => {
+        getCustomerPosition()
+        return () => {
+            userLocRead.current = true
+        }
+    }, [])
+    
+    const getCustomerPosition = () => {
+        firebase.database().ref(`mobileMechanic/userRequests/${userId}/customerLocation`).once('value', (data) => {
+            if(data){
+                customerLocation = JSON.parse(JSON.stringify(data));
+                console.log("customer at",customerLocation)
+                userLocRead.current = true
+            }
+        });
+        
+    }
+
     const showCustomer = () => {
+        console.log("userLocRead has value:", userLocRead.current)
         if (userLocRead.current){
+            console.log('customer read');
             <MapView.Marker
                     coordinate={customerLocation}
                     title="Customer Location"
@@ -117,7 +134,10 @@ const MechanicLocation = (navigationProps) => {
                 <View style = {styles.heading4}>
                     <TouchableOpacity
                         style={styles.loginScreenButton}
-                        onPress={ () => { navigationProps.navigation.navigate('SignInMech', {})}}
+                        onPress={ () => { navigationProps.navigation.navigate('WorkUnderProcess', {
+                            customer_object : navigationProps.navigation.getParam('customer_object'),
+                            cnic_mechanic : userCNIC
+                        })}}
                         underlayColor='#fff'>
                         <Text style={styles.loginText}> {'Arrived'} </Text>
                     </TouchableOpacity>

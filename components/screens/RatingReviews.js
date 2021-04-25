@@ -11,6 +11,7 @@ const RatingReviews = (navigationProps) => {
     const userLabel = navigationProps.navigation.getParam('userLabel')
     const reviewBy = navigationProps.navigation.getParam('reviewBy')
     const nextScreen = navigationProps.navigation.getParam('nextScreen')
+    const params = navigationProps.navigation.getParam('params')
 
     const path = `mobileMechanic/${userLabel}/${userId}`
     let userRating = 0
@@ -57,7 +58,7 @@ const RatingReviews = (navigationProps) => {
                     [ 
                         { 
                             text: "Done", 
-                            onPress: () => navigationProps.navigation.navigate(nextScreen)
+                            onPress: () => navigationProps.navigation.navigate(nextScreen,params)
                         },
                         {
                             text: "Cancel",
@@ -76,7 +77,7 @@ const RatingReviews = (navigationProps) => {
         [ 
             { 
                 text: "Yes", 
-                onPress: () => navigationProps.navigation.navigate(nextScreen)
+                onPress: () => navigationProps.navigation.navigate(nextScreen,params)
             },
             {
                 text: "No",

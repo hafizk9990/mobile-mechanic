@@ -42,6 +42,7 @@ import SignUpMechFormStep3 from "../components/screens/SignUpMechFormStep3";
 import UploadPhotoSignIn from "../components/screens/UploadPhotoSignIn";
 import CustomerResponses from "../components/screens/CustomerResponses";
 import ServiceRequests from "../components/screens/ServiceRequests";
+import WaitPayment from '../components/screens/WaitPayment'
 
 
 const screens = {
@@ -277,6 +278,13 @@ const screens = {
             headerShown: true
         }
     },
+    WaitPayment: {
+        screen: WaitPayment, 
+        navigationOptions: {
+            title: 'Wait For Payment',
+            headerShown: true
+        }
+    }
 }
 
 const stack = createStackNavigator(screens);

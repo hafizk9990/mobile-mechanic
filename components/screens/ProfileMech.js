@@ -64,19 +64,14 @@ const ProfileView = (navigationProps) => {
 
    
 
-    let setMechanicResponse = "";
-    firebase
-      .database()
-      .ref(`mobileMechanic/mechanicResponse/${customer_object_email}`)
-      .once("value", (data) => {
-        let firebaseDataString = JSON.stringify(data); // JavaScript object to string
-        setMechanicResponse = JSON.parse(firebaseDataString); // String to JSON
-        setMechanicResponse[cnic_mechanic] = {
+    console.log(customer_object_email,cnic_mechanic)
+        let setMechanicResponse = { [cnic_mechanic]:{
           bidAcceptance: 0,
           charges: bidamount,
           payMe: 0,
           mechanicComments:comment
-        };
+        }};
+
 
         firebase
           .database()
@@ -104,8 +99,6 @@ const ProfileView = (navigationProps) => {
           .ref(`mobileMechanic/userRequests/${customer_object_email}`)
           .set(customer_object[1]);
 
-          
-      });
 
       navigationProps.navigation.navigate("MechanicRequests", {
         customer_object: customer_object,

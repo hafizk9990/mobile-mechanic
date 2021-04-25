@@ -95,9 +95,6 @@ const ProfileView = (navigationProps) => {
 
 
   const AcceptPressHandler = () => {
-
-   
-
     let setMechanicResponse = "";
     firebase
       .database()
@@ -106,9 +103,9 @@ const ProfileView = (navigationProps) => {
         let firebaseDataString = JSON.stringify(data); // JavaScript object to string
         setMechanicResponse = JSON.parse(firebaseDataString); // String to JSON
         setMechanicResponse[cnic_mechanic] = {
-          bidAcceptance: 0,
+          bidAcceptance: 1,
           charges: bidamount,
-          payMe: 0,
+          payMe: 1,
           mechanicComments:comment
         };
 
@@ -116,14 +113,6 @@ const ProfileView = (navigationProps) => {
           .database()
           .ref(`mobileMechanic/mechanicResponse/${customer_object_email}`)
           .set(setMechanicResponse)
-          .then(() => {
-            Alert.alert(
-              "Order Confirmed!",
-              "Congratulations! Your order has been placed successfully. Please wait while we connect you to the mechanics near by ",
-              [{ text: "OK" }]
-            );
-            setMsg("Please be patient. We are finding you a mechanic");
-          })
           .catch(() => {
             Alert.alert(
               "Order Confirmed!",
@@ -141,14 +130,26 @@ const ProfileView = (navigationProps) => {
           
       });
 
-      navigationProps.navigation.navigate("MechanicRequests", {
-        customer_object: customer_object,
-        usercnic: cnic_mechanic,
-        
-      });
-  };
+      navigationProps.navigation.navigate("WaitPayment", {
+        customer_email:customer_object_email,
+        mech_cnic : cnic_mechanic
+      })
+      // const payMe = firebase.database().ref(`mobileMechanic/mechanicResponse/${customer_object_email}`).on("value",
+      //   (data) => {if(data){
+      //     let firebaseDataString = JSON.stringify(data); // JavaScript object to string
+      //     mechanicResponse = JSON.parse(firebaseDataString); // String to JSON
+      //     if(mechanicResponse[cnic_mechanic].payMe === -1){
+      //         navigationProps.navigation.navigate("RatingReviews", {
+      //         userId: customer_object_email,
+      //         userLabel: "Clients",
+      //         reviewBy: cnic_mechanic,
+      //         nextScreen:"MechanicRequests",
+      //         params:{
+      //           usercnic:cnic_mechanic
+      //         }
+      //     })}}});
 
-
+        }
 
 
   return (
