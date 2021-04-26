@@ -43,7 +43,8 @@ import UploadPhotoSignIn from "../components/screens/UploadPhotoSignIn";
 import CustomerResponses from "../components/screens/CustomerResponses";
 import ServiceRequests from "../components/screens/ServiceRequests";
 import WaitPayment from '../components/screens/WaitPayment'
-
+import CustMechanicLocationTracking from '../components/screens/CustMechanicLocationTracking'
+import CustWorkUnderProgress from '../components/screens/CustWorkUnderProcess'
 
 const screens = {
     SplashScreen: {
@@ -284,7 +285,19 @@ const screens = {
             title: 'Wait For Payment',
             headerShown: true
         }
-    }
+    },
+    CustMechanicLocationTracking: {
+        screen: CustMechanicLocationTracking,
+        navigationOptions: {
+            headerShown: false
+        }
+    },
+    CustWorkUnderProgress: {
+        screen: CustWorkUnderProgress,
+        navigationOptions: {
+            headerShown: false
+        }
+    },
 }
 
 const stack = createStackNavigator(screens);
