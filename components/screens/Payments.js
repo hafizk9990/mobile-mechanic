@@ -58,7 +58,19 @@ const Payments = (navigationProps) => {
                             [ 
                                 {
                                     text: "OK", 
-                                    onPress: () => navigationProps.navigation.navigate('RatingReviews', {cnic: acceptedCNIC})
+                                    onPress: () => {
+                                        firebase
+                                        .database()
+                                        .ref(`mobileMechanic/mechanicResponse/${userEmail}/${acceptedCNIC}`)
+                                        .update({payMe:-1})
+                                        navigationProps.navigation.navigate('RatingReviews', {
+                                            userId: acceptedCNIC,
+                                            userLabel: "Mechanics",
+                                            reviewBy: userEmail,
+                                            nextScreen: "CustTabsWrapper",
+                                            params: {userEmail: userEmail},
+                                        });
+                                    }
                                 }
                             ],
                         );
@@ -85,23 +97,23 @@ const Payments = (navigationProps) => {
         });
     }
 
-    array.map( (mechanicCNIC) => {
-        if (mechanicCNIC != acceptedCNIC) {
-            console.log('Making bidAcceptance -1 for', acceptedCNIC);
-            return(
-                firebase.database().ref(`mobileMechanic/mechanicResponse/${ userEmail }/${ mechanicCNIC }`).update({ bidAcceptance: -1 })
-            );
-        }
-        else {
-            console.log('Removing and changing bidAcceptance to +1');
-            // firebase.database().ref(`mobileMechanic/userRequests/${ userEmail }`).remove(); ////////////////////////////////////////////////////////////////////////////////////////////////////////////// re do this!!!!
-            return(
-                firebase.database().ref(`mobileMechanic/mechanicResponse/${ userEmail }/${ acceptedCNIC }`).update({
-                    bidAcceptance: 1
-                })
-            );
-        }
-    });
+    // array.map( (mechanicCNIC) => {
+    //     if (mechanicCNIC != acceptedCNIC) {
+    //         console.log('Making bidAcceptance -1 for', acceptedCNIC);
+    //         return(
+    //             firebase.database().ref(`mobileMechanic/mechanicResponse/${ userEmail }/${ mechanicCNIC }`).update({ bidAcceptance: -1 })
+    //         );
+    //     }
+    //     else {
+    //         console.log('Removing and changing bidAcceptance to +1');
+    //         // firebase.database().ref(`mobileMechanic/userRequests/${ userEmail }`).remove(); ////////////////////////////////////////////////////////////////////////////////////////////////////////////// re do this!!!!
+    //         return(
+    //             firebase.database().ref(`mobileMechanic/mechanicResponse/${ userEmail }/${ acceptedCNIC }`).update({
+    //                 bidAcceptance: 1
+    //             })
+    //         );
+    //     }
+    // });
 
     return(
         <React.Fragment> 

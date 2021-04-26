@@ -104,13 +104,33 @@ const SeeMechanicResponse = ( navigationProps ) => {
                                                                     { text: 'No' },
                                                                      { 
                                                                         text: "Yes", 
-                                                                        onPress: () =>  navigationProps.navigation.navigate('CustMechanicLocationTracking', {
+                                                                        onPress: () =>  {
+                                                                            responsesArray.map( (mechanicCNIC) => {
+                                                                                if (mechanicCNIC != dataObject.mechanicCNIC) {
+                                                                                    console.log('Making bidAcceptance -1 for', mechanicCNIC);
+                                                                                    return(
+                                                                                        firebase.database().ref(`mobileMechanic/mechanicResponse/${ userEmail }/${ mechanicCNIC }`).update({ bidAcceptance: -1 })
+                                                                                    );
+                                                                                }
+                                                                                else {
+                                                                                    console.log('Removing and changing bidAcceptance to +1');
+                                                                                    // firebase.database().ref(`mobileMechanic/userRequests/${ userEmail }`).remove(); ////////////////////////////////////////////////////////////////////////////////////////////////////////////// re do this!!!!
+                                                                                    return(
+                                                                                        firebase.database().ref(`mobileMechanic/mechanicResponse/${ userEmail }/${ dataObject.mechanicCNIC }`).update({
+                                                                                            bidAcceptance: 1
+                                                                                        })
+                                                                                    );
+                                                                                }
+                                                                            });
+                                                                            navigationProps.navigation.navigate('CustMechanicLocationTracking', {
                                                                             userEmail: userEmail, 
                                                                             cnic: dataObject.mechanicCNIC, 
                                                                             array: responsesArray, 
                                                                             charges: dataObject.mechanicCharges, 
                                                                             wallet: wallet
-                                                                        })
+                                                                            });
+                                                                            
+                                                                        }
                                                                     }
                                                                 ],
                                                             );

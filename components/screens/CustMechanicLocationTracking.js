@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react' 
 import { Text, StyleSheet, View, Dimensions, TouchableOpacity } from 'react-native' 
 import MapView from 'react-native-maps'
+import { bool } from 'yup';
 import { array } from 'yup/lib/locale';
 import firebase from "../../components/screenSnippets/FirebaseInit";
 
@@ -45,20 +46,37 @@ const CustMechanicLocation = (navigationProps) => {
     //     console.log("arrived :",arrived)
     // });
 
+    // tempArray.map( (mechanicCNIC) => {
+    //     if (mechanicCNIC != cnic) {
+    //         console.log('Making bidAcceptance -1 for', cnic);
+    //         return(
+    //             firebase.database().ref(`mobileMechanic/mechanicResponse/${ userEmail }/${ mechanicCNIC }`).update({ bidAcceptance: -1 })
+    //         );
+    //     }
+    //     else {
+    //         console.log('Removing and changing bidAcceptance to +1');
+    //         // firebase.database().ref(`mobileMechanic/userRequests/${ userEmail }`).remove(); ////////////////////////////////////////////////////////////////////////////////////////////////////////////// re do this!!!!
+    //         return(
+    //             firebase.database().ref(`mobileMechanic/mechanicResponse/${ userEmail }/${ acceptedCNIC }`).update({
+    //                 bidAcceptance: 1
+    //             })
+    //         );
+    //     }
+    // });
+    
+    console.log(check);
     useEffect(() => {
-        let boolVariable = 0;
+        firebase.database().ref(path).once('value', (data) => {
+            if (data) {
+                let firebaseDataString = JSON.stringify(data); // JavaScript object to string
+                let firebaseDataJSON = JSON.parse(firebaseDataString); // String to JSON
+                setmechanicLocation(firebaseDataJSON)
+                //console.log("mechanic at",mechanicLocation)
+                //console.log("array at : ", array)
+            }
+        });
+        console.log(check);
         if (check) {
-            firebase.database().ref(path).once('value', (data) => {
-                if (data) {
-                    boolVariable = 1;
-                    let firebaseDataString = JSON.stringify(data); // JavaScript object to string
-                    let firebaseDataJSON = JSON.parse(firebaseDataString); // String to JSON
-                    setmechanicLocation(firebaseDataJSON)
-                    console.log("mechanic at",mechanicLocation)
-                    console.log("array at : ", array)
-                }
-            });
-        if (boolVariable) {
             const listener = firebase.database().ref(`mobileMechanic/mechanicLocations/${mechanicCNIC}/arrived`).once('value', (data) => {
                 let firebaseDataString = JSON.stringify(data); // JavaScript object to string
                 let arrived = JSON.parse(firebaseDataString); // String to JSON
@@ -75,16 +93,10 @@ const CustMechanicLocation = (navigationProps) => {
                 }
                 
             });
-        }
-        }   
+        }  
         let timer1 = setTimeout(()=>{setUpdate(!update)}, delay*1000)
         return () => {
             clearTimeout(timer1);
-            // firebase.database()
-            // .ref(`mobileMechanic/mechanicLocations/${mechanicCNIC}/arrived`)
-            // .off('value', listener);
-
-            console.log('---------------returned-----------------')
 
         }
       }, [update, 0]);

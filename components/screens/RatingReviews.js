@@ -23,11 +23,11 @@ const RatingReviews = (navigationProps) => {
             userRating = parseFloat(JSON.stringify(data));
         }
     });
-    firebase.database().ref(`${path}/rating/count`).once('value', (data) => {
-        if(data){
-            numRatedBy = parseInt(JSON.stringify(data));
-        }
-    });
+    // firebase.database().ref(`${path}/rating/count`).once('value', (data) => {
+    //     if(data){
+    //         numRatedBy = parseInt(JSON.stringify(data));
+    //     }
+    // });
 
     const updateDataBase = (rating, review) =>{
         let date = new Date().getDate();
@@ -42,9 +42,8 @@ const RatingReviews = (navigationProps) => {
             newRating = rating
         }
         console.log(`newRating ${newRating}`)
-        firebase.database().ref(`${path}/rating`).update({
-            value: newRating,
-            count: numRatedBy + 1   //increment number of ratings
+        firebase.database().ref(`${path}`).update({
+          rating : newRating  //increment number of ratings
         }).then( () => {
             firebase.database().ref(`${path}/reviews`).push({   //if rating successfuly updated, push review
                 date: today,
