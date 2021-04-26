@@ -1,10 +1,10 @@
 import React from "react";
 import { createBottomTabNavigator } from "react-navigation-tabs";
 import { createAppContainer } from "react-navigation";
-import SettingsCust from "../components/screens/SettingsCust";
-import ProfileCust from "../components/screens/ProfileCust";
+import SettingsMech from "../components/screens/SettingsMech";
+import ProfileMechanic from "../components/screens/ProfileMechanic";
 import ServiceRequests from "../components/screens/ServiceRequests";
-import ProfileMech from "../components/screens/ProfileMech";
+import CustomerResponses from "../components/screens/CustomerResponses";
 
 import { Feather, TextInput, Ionicons, FontAwesome5 } from "@expo/vector-icons";
 
@@ -19,8 +19,19 @@ const screens = {
       },
     },
   },
+
+  Responses: {
+    screen: CustomerResponses,
+    navigationOptions: {
+      tabBarIcon: (iconProps) => {
+        return (
+          <FontAwesome5 name="user-check" size={23} color={iconProps.tintColor} />
+        );
+      },
+    },
+  },
   Settings: {
-    screen: SettingsCust,
+    screen: SettingsMech,
     navigationOptions: {
       tabBarIcon: (iconProps) => {
         return (
@@ -30,7 +41,7 @@ const screens = {
     },
   },
   Profile: {
-    screen: ProfileCust,
+    screen: ProfileMechanic,
     navigationOptions: {
       tabBarIcon: (iconProps) => {
         return <Ionicons name="person" size={25} color={iconProps.tintColor} />;

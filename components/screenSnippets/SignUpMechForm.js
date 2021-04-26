@@ -34,7 +34,7 @@ const SignUpForm = (props) => {
                     password: userPass
                 }).then( () => { 
                     console.log(`Customer Sign Up Successful`);
-                    props.navigateTo('MechanicOtp')
+                    props.navigateTo('MechanicOtp',{usercnic:usercnic})
                 })
                 .catch( () => { 
                     console.log(`Oho! Customer Sign Up Failed ...`);

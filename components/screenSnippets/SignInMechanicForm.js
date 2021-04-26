@@ -14,7 +14,7 @@ import { NavigationActions } from "react-navigation";
 const SignInCustForm = (props) => {
   return (
     <Formik
-      initialValues={{ cnic: "111", pass: "" }}
+      initialValues={{ cnic: "3630250442967", pass: "1200inABC!!" }}
       onSubmit={(formData, actions) => {
         console.log("Form Data:", formData);
         let usercnic = formData.cnic;

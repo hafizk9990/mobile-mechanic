@@ -7,13 +7,16 @@ import { FontAwesome } from '@expo/vector-icons'
 import { FontAwesome5 } from '@expo/vector-icons'
 import { AntDesign } from '@expo/vector-icons'
 
-
 const SeeMechanicResponse = ( navigationProps ) => {
     let displayArray = [];
     let responsesArray = navigationProps.navigation.getParam('mechanics');
     let userEmail = navigationProps.navigation.getParam('userEmailToPass');
     let wallet = navigationProps.navigation.getParam('wallet');
     userEmail = userEmail.replace(/\./g, ',');
+
+// setTimeout(() => {
+    
+// }, 2000);
 
     const displayData = (dataResponse, dataProfile) => {
         if (dataResponse && dataProfile) {
@@ -23,7 +26,7 @@ const SeeMechanicResponse = ( navigationProps ) => {
             let charges = dataResponse.charges;
             let comments = dataResponse.mechanicComments;
 
-            displayArray.push({
+            displayArray.push({ 
                 mechanicName: name, 
                 mechanicCNIC: cnic, 
                 mechanicCharges: charges,
@@ -43,6 +46,7 @@ const SeeMechanicResponse = ( navigationProps ) => {
             let firebaseDataString = JSON.stringify(dataResponse);
             dataResponse = JSON.parse(firebaseDataString);
             responseData = dataResponse;
+            //console.log('--------SeeMechanicResponse-------------')
             
             // get their profile data like this
 
@@ -96,11 +100,11 @@ const SeeMechanicResponse = ( navigationProps ) => {
                                                             Alert.alert(
                                                                 'Accept Mechanic?',
                                                                 `Are you sure you want to proceed with this mechanic? If you select yes, they will be notified that you have accepted them. Else, no changes will be made`,
-                                                                [ 
+                                                                [  
                                                                     { text: 'No' },
-                                                                    { 
+                                                                     { 
                                                                         text: "Yes", 
-                                                                        onPress: () =>  navigationProps.navigation.navigate('Payments', {
+                                                                        onPress: () =>  navigationProps.navigation.navigate('CustMechanicLocationTracking', {
                                                                             userEmail: userEmail, 
                                                                             cnic: dataObject.mechanicCNIC, 
                                                                             array: responsesArray, 
