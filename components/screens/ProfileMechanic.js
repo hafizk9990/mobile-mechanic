@@ -1,6 +1,5 @@
 import React from 'react' 
 import { View, Text, Dimensions, Image, StyleSheet } from 'react-native'
-import ProfileCustForm from '../screenSnippets/ProfileCustForm'
 import { FontAwesome5 } from '@expo/vector-icons'; 
 // import * as fs from 'react-native-fs'
 
@@ -27,9 +26,6 @@ const ProfileCust = (tabsNavigationProps) => {
                     onPress = { () => console.log('You Pressed the Plus Icon ...') }
                 />
             </View>
-            <ProfileCustForm 
-                userEmail = {obtainedEmail}
-            />
         </React.Fragment>
     );
 }
