@@ -42,25 +42,10 @@ const RatingReviews = (navigationProps) => {
         } else{
             newRating = rating
         }
-<<<<<<< HEAD
-        
-
-          numRatedBy=0;
-
-        
-
-        console.log(`newRating ${newRating}` ,path,numRatedBy)
-
-        firebase.database().ref(`${path}`).update({
-            rating: {value: newRating,
-            count: 0 + 1}   //increment number of ratings
-        }) .then( () => {
-=======
         console.log(`newRating ${newRating}`)
         firebase.database().ref(`${path}`).update({
           rating : newRating  //increment number of ratings
         }).then( () => {
->>>>>>> 66a11837bb547ae11931cd58899def3a28783bdf
             firebase.database().ref(`${path}/reviews`).push({   //if rating successfuly updated, push review
                 date: today,
                 value: rating,

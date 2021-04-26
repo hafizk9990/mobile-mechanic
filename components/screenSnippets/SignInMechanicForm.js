@@ -14,7 +14,7 @@ import { NavigationActions } from "react-navigation";
 const SignInCustForm = (props) => {
   return (
     <Formik
-      initialValues={{ cnic: "3630250442967", pass: "1200inABC!!" }}
+      initialValues={{ cnic: "", pass: "" }}
       onSubmit={(formData, actions) => {
         console.log("Form Data:", formData);
         let usercnic = formData.cnic;
@@ -29,7 +29,7 @@ const SignInCustForm = (props) => {
             let firebaseDataJSON = JSON.parse(firebaseDataString); // String to JSON
             
             if (firebaseDataJSON) {
-              if (true) {
+                if (firebaseDataJSON.password === userPassword) {
                 console.log(
                   `Login Successful .... CNIC and password both match`
                 );

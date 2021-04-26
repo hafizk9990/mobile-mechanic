@@ -43,7 +43,15 @@ const SettingsCust = (tabsNavigationProps) => {
       .once("value", (data) => {
         let firebaseDataString_response = JSON.stringify(data); // JavaScript object to string
         let firebaseDataJSON_response = JSON.parse(firebaseDataString_response); // String to JSON
-        responses_entries = Object.entries(firebaseDataJSON_response);
+        
+        try{
+          responses_entries = Object.entries(firebaseDataJSON_response);
+
+        }catch(err){
+          console.log("No Response")
+        }
+        
+        
   
         for (let x = 0; x < responses_entries.length; x++) {
           try {
@@ -66,8 +74,16 @@ const SettingsCust = (tabsNavigationProps) => {
           let firebaseDataJSON = JSON.parse(firebaseDataString); // String to JSON
           let response_email = customer_responses_email_keys[t];
   
+          try{
             dummy[[response_email]]= Object.entries({ [response_email]: firebaseDataJSON });
             setFirebaseData(dummy)
+          }catch(err){
+            console.log("No Response")
+          }
+
+
+
+            
         });
     }
     
@@ -105,6 +121,16 @@ const SettingsCust = (tabsNavigationProps) => {
   };
 
   const pressHandler = (object) => {
+
+
+
+    firebase
+      .database()
+      .ref(`mobileMechanic/mechanicResponse/${object[0]}/${cnic_mechanic}`)
+      .update({mechanicStartWorking:1})
+
+
+
     tabsNavigationProps.navigation.navigate("MechanicLocation", {
       customer_object: object,
       usercnic: cnic_mechanic,
@@ -143,30 +169,32 @@ try{
 
 
   for (let i = 0; i < lengthEntries; i++) {
-    let status = "Pending";
+    let status = "Accepted";
     let tempJsonEntries=  Object.entries (firebaseDataJSON_entries);
-    // firebase
-    //   .database()
-    //   .ref(
-    //     `mobileMechanic/mechanicResponse/${firebaseDataJSON_entries[i][0][0]}`
-    //   )
-    //   .on("value", (data) => {
-    //     let firebaseDataString = JSON.stringify(data); // JavaScript object to string
-    //     let setMechanicResponse = JSON.parse(firebaseDataString); // String to JSON
 
-    //     try {
-    //       if (setMechanicResponse[cnic_mechanic].bidAcceptance == 1) {
-    //         status = "Accepted";
-    //       } else if (setMechanicResponse[cnic_mechanic].bidAcceptance == -1) {
-    //         status = "Rejected";
-    //       } else {
-    //         status = "Pending";
-    //       }
-    //     } catch (err) {
-    //       console.log("Not founded");
-    //     }
-    //   });
-      //[...service_requests, this_request]
+    
+    firebase
+      .database()
+      .ref(
+        `mobileMechanic/mechanicResponse/${tempJsonEntries[i][0]}`
+      )
+      .on("value", (data) => {
+        let firebaseDataString = JSON.stringify(data); // JavaScript object to string
+        let setMechanicResponse = JSON.parse(firebaseDataString); // String to JSON
+        try {
+          if (setMechanicResponse[cnic_mechanic].bidAcceptance == 1) {
+            status = "Accepted";
+          } else if (setMechanicResponse[cnic_mechanic].bidAcceptance == -1) {
+            status = "Rejected";
+          } else {
+            status = "Pending";
+          }
+        } catch (err) {
+          console.log("Not founded");
+        }
+      });
+
+
     service_requests.push(
       <View
         key={i}
@@ -266,7 +294,7 @@ catch(err){
     <ScrollView behavior="padding">
       <SafeAreaView style={{ flex: 1 }}>
         <View style={myStyles.pageTop}>
-          <Text style={myStyles.title}> Service Requests </Text>
+          <Text style={myStyles.title}> Customer Responses </Text>
         </View>
 
         <View style={myStyles.container}>

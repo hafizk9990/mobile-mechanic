@@ -6,7 +6,7 @@ import firebase from './FirebaseInit'
 const SignInCustForm = (props) => {
     return(
         <Formik 
-            initialValues = { {email: 'uzair9990@gmail.com', pass: '1200inABC!!'} }
+            initialValues = { {email: '', pass: ''} }
             onSubmit = { (formData, actions) => {
                 console.log('Form Data:', formData);
                 let userEmail = formData.email;
