@@ -18,6 +18,7 @@ import StarRating from "react-native-star-rating";
 import { Divider } from "react-native-elements";
 import { acc } from "react-native-reanimated";
 import { Stopwatch, Timer } from "react-native-stopwatch-timer";
+import firebase from "../screenSnippets/FirebaseInit";
 
 var windowHeight = Dimensions.get("window").height;
 var windowWidth = Dimensions.get("window").width;
@@ -30,6 +31,7 @@ const ProfileView = (navigationProps) => {
   const [finishedStopwatch, setResetfinished] = useState(false);
   let customer_object = navigationProps.navigation.getParam("customer_object");
   let cnic_mechanic = navigationProps.navigation.getParam("cnic_mechanic");
+  const path = `mobileMechanic/mechanicLocations/${cnic_mechanic}`
   let customer_object_email = customer_object[0];
   let customer_object_info = customer_object[1];
   let customer_object_entries = Object.entries(customer_object[0]);
@@ -310,6 +312,15 @@ const ProfileView = (navigationProps) => {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
+
+                firebase
+                .database()
+                .ref(path)
+                .update({
+                  workdone:1,
+                })
+
+
               //  setIsStopwatchStart(false);
              //   setResetStopwatch(true);
 

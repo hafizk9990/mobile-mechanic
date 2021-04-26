@@ -14,6 +14,7 @@ const RatingReviews = (navigationProps) => {
     const params = navigationProps.navigation.getParam('params')
 
     const path = `mobileMechanic/${userLabel}/${userId}`
+    
     let userRating = 0
     let numRatedBy = 0
     
@@ -41,10 +42,25 @@ const RatingReviews = (navigationProps) => {
         } else{
             newRating = rating
         }
+<<<<<<< HEAD
+        
+
+          numRatedBy=0;
+
+        
+
+        console.log(`newRating ${newRating}` ,path,numRatedBy)
+
+        firebase.database().ref(`${path}`).update({
+            rating: {value: newRating,
+            count: 0 + 1}   //increment number of ratings
+        }) .then( () => {
+=======
         console.log(`newRating ${newRating}`)
         firebase.database().ref(`${path}`).update({
           rating : newRating  //increment number of ratings
         }).then( () => {
+>>>>>>> 66a11837bb547ae11931cd58899def3a28783bdf
             firebase.database().ref(`${path}/reviews`).push({   //if rating successfuly updated, push review
                 date: today,
                 value: rating,
@@ -65,8 +81,8 @@ const RatingReviews = (navigationProps) => {
                         }
                     ]
                 )
-            }).catch((error) => console.log(error)) //todo: handle errors
-        }).catch((error)=>console.log(error))
+            }).catch((error) => console.log("hashim")) //todo: handle errors
+        }).catch((error)=>console.log("hashim"))
     }
 
     const handleCancel = () => {

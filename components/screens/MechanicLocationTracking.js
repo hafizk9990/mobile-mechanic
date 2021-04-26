@@ -14,6 +14,7 @@ const MechanicLocation = (navigationProps) => {
     const userId = userObject[0];
 
     const path = `mobileMechanic/mechanicLocations/${userCNIC}`
+    console.log( "userCNIC   ",    userCNIC )
     const [update, setUpdate] = useState(false)
     let customerLocation = {
         latitude: 0,
@@ -40,7 +41,7 @@ const MechanicLocation = (navigationProps) => {
         if (test.current){
             getCurrentPosition()
             if(updateDb.current){
-                firebase.database().ref(path).set({
+                firebase.database().ref(path).update({
                     location: currentLocation
                 }).then(()=>{updateDb.current = false})
             }
@@ -103,7 +104,7 @@ const MechanicLocation = (navigationProps) => {
     }
 
     const pressHandler = () => {
-        firebase.database().ref(path).set({
+        firebase.database().ref(path).update({
             arrived : 1
         }).then(()=>{
             navigationProps.navigation.navigate('WorkUnderProcess', {

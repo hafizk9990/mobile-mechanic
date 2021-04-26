@@ -23,7 +23,7 @@ const SignInCustForm = (props) => {
         let userPassword = formData.pass;
         firebase
           .database()
-          .ref(`mobileMechanic/Users/${usercnic}`)
+          .ref(`mobileMechanic/Mechanics/${usercnic}`)
           .once("value", (data) => {
             let firebaseDataString = JSON.stringify(data); // JavaScript object to string
             let firebaseDataJSON = JSON.parse(firebaseDataString); // String to JSON

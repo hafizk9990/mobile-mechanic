@@ -75,12 +75,14 @@ function onPressRadioButton(radioButtonsArray) {
 
         firebase
           .database()
-          .ref(`mobileMechanic/Users/${usercnic}/personalInformation`)
-          .set({
-            firstname: userfirstname,
-            lastname: userlastname,
+          .ref(`mobileMechanic/Mechanics/${usercnic}`)
+          .update({
+            firstName: userfirstname,
+            lastName: userlastname,
             age: userage,
-            gender:genderCheck
+            gender:genderCheck,
+            rating:0,
+            cnic:usercnic
           })
           .then(() => {
             console.log(`Customer Sign Up Successful`);

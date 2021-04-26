@@ -9,7 +9,7 @@ var windowHeight = Dimensions.get('window').height;
 var windowWidth = Dimensions.get('window').width;
 
 const ProfileCust = (tabsNavigationProps) => {
-    let obtainedEmail = tabsNavigationProps.navigation.dangerouslyGetParent().getParam('usercnic');
+    let obtainedEmail = tabsNavigationProps.navigation.dangerouslyGetParent().getParam('userEmail');
     console.log(obtainedEmail);
     return(
         <React.Fragment> 

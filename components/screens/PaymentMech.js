@@ -103,17 +103,17 @@ const ProfileView = (navigationProps) => {
         console.log(data)
         let firebaseDataString = JSON.stringify(data); // JavaScript object to string
         setMechanicResponse = JSON.parse(firebaseDataString); // String to JSON
-        setMechanicResponse[cnic_mechanic] = {
-          bidAcceptance: 1,
-          charges: bidamount,
-          payMe: 1,
-          mechanicComments:comment
-        };
+        // setMechanicResponse[cnic_mechanic] = {
+        //   bidAcceptance: 1,
+        //   charges: bidamount,
+        //   payMe: 1,
+        //   mechanicComments:comment
+        // };
 
         firebase
           .database()
-          .ref(`mobileMechanic/mechanicResponse/${customer_object_email}`)
-          .set(setMechanicResponse)
+          .ref(`mobileMechanic/mechanicResponse/${customer_object_email}/${cnic_mechanic}`)
+          .update({payMe:1})
           .catch(() => {
             Alert.alert(
               "Order Confirmed!",

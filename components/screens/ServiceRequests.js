@@ -49,11 +49,21 @@ const SettingsCust = (tabsNavigationProps) => {
 
       let firebaseDataString = JSON.stringify(data); // JavaScript object to string
       let firebaseDataJSON = JSON.parse(firebaseDataString); // String to JSON
-      setEntries(Object.entries(firebaseDataJSON))
+      try{
+        setEntries(Object.entries(firebaseDataJSON))
+      }catch(err){
+        console.log("No Requests")
+      }
+      
 
     });
   }
-
+  const pressHandler = (object) => {
+    tabsNavigationProps.navigation.navigate("ProfileMech", {
+      customer_object: object,
+      cnicMechanic: cnic_mechanic,
+    });
+  };
   React.useEffect(()=>{
     getRequests()
     let timer1 = setTimeout(toggleUpdate, 5000)
@@ -64,6 +74,10 @@ const SettingsCust = (tabsNavigationProps) => {
 
 
 
+  if (firebaseDataJSON_entries){
+    try{
+
+   
 
   let Images_list = [];
   for (let x = 0; x < firebaseDataJSON_entries.length; x++) {
@@ -78,12 +92,7 @@ const SettingsCust = (tabsNavigationProps) => {
     Images_list.push(temp_images);
   }
 
-  const pressHandler = (object) => {
-    tabsNavigationProps.navigation.navigate("ProfileMech", {
-      customer_object: object,
-      cnicMechanic: cnic_mechanic,
-    });
-  };
+ 
   for (let i = 0; i < firebaseDataJSON_entries.length; i++) {
     //let status= (firebaseDataJSON_entries[i][1].mechanicCNIC)
     let status="Pending";
@@ -186,7 +195,11 @@ const SettingsCust = (tabsNavigationProps) => {
       </View>
     );
   }
+}catch(err){
 
+  console.log("No Reqeusts")
+}
+}
   return (
     <ScrollView behavior="padding">
       <SafeAreaView style={{ flex: 1 }}>

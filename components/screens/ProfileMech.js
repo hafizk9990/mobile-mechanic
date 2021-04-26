@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useEffect,useState,Component } from "react";
 
 import {
   StyleSheet,
@@ -17,6 +17,9 @@ import BoxContainer1 from "../../components/screenSnippets/BoxContainer";
 import StarRating from "react-native-star-rating";
 import ServiceRequests from "./ServiceRequests";
 
+import MapView from 'react-native-maps'
+
+
 import firebase from "../screenSnippets/FirebaseInit";
 
 var windowHeight = Dimensions.get("window").height;
@@ -24,15 +27,51 @@ var windowWidth = Dimensions.get("window").width;
 let name = "Ford Mustang, 2017";
 
 const ProfileView = (navigationProps) => {
+
+const [currentLocation,setCurrentLocation] = useState({
+  latitude: 0,
+  longitude: 0,
+  latitudeDelta: 0.015,
+  longitudeDelta: 0.0121,
+})
+
+useEffect(() => {
+  getCurrentPosition()
+}, [])
+
+const getCurrentPosition = () => {
+  navigator.geolocation.getCurrentPosition((position) => {
+      var lat = parseFloat(position.coords.latitude)
+      var long = parseFloat(position.coords.longitude)
+
+      var initialRegion = {
+        latitude: lat,
+        longitude: long,
+        latitudeDelta: 0.015,
+        longitudeDelta: 0.0121,
+      }
+
+      setCurrentLocation(initialRegion)
+    },
+  (error) => alert(JSON.stringify(error)),
+  {enableHighAccuracy: true, timeout: 20000});
+}
+
   const [msg, setMsg] = React.useState("");
 
   let customer_object = navigationProps.navigation.getParam("customer_object");
   let cnic_mechanic = navigationProps.navigation.getParam("cnicMechanic");
+  const path = `mobileMechanic/mechanicLocations/${cnic_mechanic}`
+
   let customer_object_email = customer_object[0];
   let customer_object_info = customer_object[1];
   var RandomNumber = Math.floor(Math.random() * 1000000000) + 1;
 
   customer_object[1].mechanicCNIC[RandomNumber] = cnic_mechanic;
+
+
+
+
 
   let customer_object_entries = Object.entries(customer_object[0]);
   let star_gray = require("../../assets/icons/star_gray.png");
@@ -65,18 +104,28 @@ const ProfileView = (navigationProps) => {
    
 
     console.log(customer_object_email,cnic_mechanic)
+
         let setMechanicResponse = { [cnic_mechanic]:{
           bidAcceptance: 0,
           charges: bidamount,
           payMe: 0,
-          mechanicComments:comment
+          mechanicComments:comment,
+          mechanicStartWorking:0
         }};
 
+        firebase
+        .database()
+        .ref(path)
+        .set({
+          location:currentLocation,
+          arrived:0,
+          workdone:0,
+        })
 
         firebase
           .database()
           .ref(`mobileMechanic/mechanicResponse/${customer_object_email}`)
-          .set(setMechanicResponse)
+          .update(setMechanicResponse)
           .then(() => {
             Alert.alert(
               "Order Confirmed!",
@@ -97,8 +146,23 @@ const ProfileView = (navigationProps) => {
         firebase
           .database()
           .ref(`mobileMechanic/userRequests/${customer_object_email}`)
-          .set(customer_object[1]);
+          .set(customer_object[1]) .then(() => {
 
+            setTimeout(() => {
+              console.log("Generated Random")
+
+              let randomNumber1 = Math.floor(Math.random() * 1000000000) + 1;
+          firebase.database().ref(`mobileMechanic/userRequests/${ customer_object_email }/mechanicCNIC`).update({
+              [randomNumber1]: randomNumber1
+          });
+
+            }, 2000); 
+
+          })
+
+
+
+          
 
       navigationProps.navigation.navigate("MechanicRequests", {
         customer_object: customer_object,

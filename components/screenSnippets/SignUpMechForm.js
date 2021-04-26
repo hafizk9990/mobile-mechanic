@@ -29,7 +29,7 @@ const SignUpForm = (props) => {
                 // so to avoid firebase key indexing issues
                 console.log(usercnic);
                 
-                firebase.database().ref(`mobileMechanic/Users/${usercnic}`).set({
+                firebase.database().ref(`mobileMechanic/Mechanics/${usercnic}`).set({
                     phone: userPhone, 
                     password: userPass
                 }).then( () => { 
