@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -23,7 +23,8 @@ var windowWidth = Dimensions.get("window").width;
 
 const SettingsCust = (tabsNavigationProps) => {
   const [isSelected, setSelection] = React.useState(null);
-
+  const [firebaseDataJSON_entries,setFirebaseData] = useState({});
+  let dummy={};
   let cnic_mechanic = tabsNavigationProps.navigation.getParam("usercnic");
   var service_requests = [];
   var customers_status = {};
@@ -33,62 +34,59 @@ const SettingsCust = (tabsNavigationProps) => {
     console.log(`You wrote something in the input text field ...`);
   };
 
-  let responses_entries = "";
-  firebase
-    .database()
-    .ref(`mobileMechanic/mechanicResponse/`)
-    .on("value", (data) => {
-      let firebaseDataString_response = JSON.stringify(data); // JavaScript object to string
-      let firebaseDataJSON_response = JSON.parse(firebaseDataString_response); // String to JSON
-      responses_entries = Object.entries(firebaseDataJSON_response);
-
-      console.log(responses_entries);
-      for (let x = 0; x < responses_entries.length; x++) {
-        try {
-          if (responses_entries[x][1][cnic_mechanic].bidAcceptance) {
-            customer_responses_email[responses_entries[x][0]] =
-              responses_entries[x][1][cnic_mechanic].charges;
-          }
-        } catch (err) {
-          console.log("ERROR");
-        }
-      }
-    });
-
-  let customer_responses_email_keys = Object.keys(customer_responses_email);
-  let firebaseDataJSON_entries = [];
-
-  for (let t = 0; t < customer_responses_email_keys.length; t++) {
+  const fetchData = () => {
+    let responses_entries = "";
+    let customer_responses_email_keys ='';
     firebase
       .database()
-      .ref(`mobileMechanic/userRequests/${customer_responses_email_keys[t]}`)
-      .on("value", (data) => {
-        let firebaseDataString = JSON.stringify(data); // JavaScript object to string
-        let firebaseDataJSON = JSON.parse(firebaseDataString); // String to JSON
-        let response_email = customer_responses_email_keys[t];
-
-        //    firebaseDataJSON[customer_responses_email_keys[t]]=
-        firebaseDataJSON_entries.push(
-          Object.entries({ [response_email]: firebaseDataJSON })
-        );
-      });
-  }
-
-  let Images_list = [];
-  for (let x = 0; x < firebaseDataJSON_entries.length; x++) {
-    let temp_images = [];
-    let shopping_cart = firebaseDataJSON_entries[x][0][1].customerShoppingCart;
-
-    let enteries_item = Object.entries(shopping_cart);
-    let length_items = enteries_item.length;
-
-    for (let y = 0; y < length_items; y++) {
-      temp_images.push(enteries_item[y][1].carImageKey);
+      .ref(`mobileMechanic/mechanicResponse/`)
+      .once("value", (data) => {
+        let firebaseDataString_response = JSON.stringify(data); // JavaScript object to string
+        let firebaseDataJSON_response = JSON.parse(firebaseDataString_response); // String to JSON
+        responses_entries = Object.entries(firebaseDataJSON_response);
+  
+        for (let x = 0; x < responses_entries.length; x++) {
+          try {
+            if (responses_entries[x][1][cnic_mechanic].bidAcceptance) {
+              customer_responses_email[responses_entries[x][0]] =
+                responses_entries[x][1][cnic_mechanic].charges;
+            }
+          } catch (err) {
+            console.log("ERROR");
+          }
+        }
+  
+        customer_responses_email_keys = Object.keys(customer_responses_email);
+    for (let t = 0; t < customer_responses_email_keys.length; t++) {
+      firebase
+        .database()
+        .ref(`mobileMechanic/userRequests/${customer_responses_email_keys[t]}`)
+        .once("value", (data) => {
+          let firebaseDataString = JSON.stringify(data); // JavaScript object to string
+          let firebaseDataJSON = JSON.parse(firebaseDataString); // String to JSON
+          let response_email = customer_responses_email_keys[t];
+  
+            dummy[[response_email]]= Object.entries({ [response_email]: firebaseDataJSON });
+            setFirebaseData(dummy)
+        });
     }
-    Images_list.push(temp_images);
+    
+   
+    
+  });
   }
+ 
+  const [update, setUpdate] = React.useState(false)
+  const toggleUpdate = () => { setUpdate(!update) }
+  
+  React.useEffect(()=>{
+    fetchData()
+    let timer1 = setTimeout(toggleUpdate, 50000)
+    return () => {
+      clearTimeout(timer1)
+    }
+  }, [update])
 
-  console.log(".........", firebaseDataJSON_entries);
 
   const createThreeButtonAlert = (object) => {
     Alert.alert("", "Do you want to start working?", [
@@ -112,29 +110,63 @@ const SettingsCust = (tabsNavigationProps) => {
       usercnic: cnic_mechanic,
     });
   };
-  for (let i = 0; i < firebaseDataJSON_entries.length; i++) {
-    let status = "Pending";
-    firebase
-      .database()
-      .ref(
-        `mobileMechanic/mechanicResponse/${firebaseDataJSON_entries[i][0][0]}`
-      )
-      .on("value", (data) => {
-        let firebaseDataString = JSON.stringify(data); // JavaScript object to string
-        let setMechanicResponse = JSON.parse(firebaseDataString); // String to JSON
 
-        try {
-          if (setMechanicResponse[cnic_mechanic].bidAcceptance == 1) {
-            status = "Accepted";
-          } else if (setMechanicResponse[cnic_mechanic].bidAcceptance == -1) {
-            status = "Rejected";
-          } else {
-            status = "Pending";
-          }
-        } catch (err) {
-          console.log("Not founded");
-        }
-      });
+
+
+  if (firebaseDataJSON_entries){
+
+    
+    console.log( "1---------")
+  //  console.log(Object.entries (firebaseDataJSON_entries)[0][1][0][1].customerShoppingCart )
+  //  console.log( Object.entries (firebaseDataJSON_entries)[0][0])
+  
+try{
+
+  let tempJsonEntries=  Object.entries (firebaseDataJSON_entries);
+  let Images_list = [];
+  let lengthEntries=Object.entries (firebaseDataJSON_entries).length;
+
+  for (let x = 0; x < lengthEntries; x++) {
+    let temp_images = [];
+   
+    let tempJsonEntries=  Object.entries (firebaseDataJSON_entries);
+    let shopping_cart = tempJsonEntries[x][1][0][1] .customerShoppingCart;
+
+    let enteries_item = Object.entries(shopping_cart);
+    let length_items = enteries_item.length;
+
+    for (let y = 0; y < length_items; y++) {
+      temp_images.push(enteries_item[y][1].carImageKey);
+    }
+    Images_list.push(temp_images);
+  }
+
+
+  for (let i = 0; i < lengthEntries; i++) {
+    let status = "Pending";
+    let tempJsonEntries=  Object.entries (firebaseDataJSON_entries);
+    // firebase
+    //   .database()
+    //   .ref(
+    //     `mobileMechanic/mechanicResponse/${firebaseDataJSON_entries[i][0][0]}`
+    //   )
+    //   .on("value", (data) => {
+    //     let firebaseDataString = JSON.stringify(data); // JavaScript object to string
+    //     let setMechanicResponse = JSON.parse(firebaseDataString); // String to JSON
+
+    //     try {
+    //       if (setMechanicResponse[cnic_mechanic].bidAcceptance == 1) {
+    //         status = "Accepted";
+    //       } else if (setMechanicResponse[cnic_mechanic].bidAcceptance == -1) {
+    //         status = "Rejected";
+    //       } else {
+    //         status = "Pending";
+    //       }
+    //     } catch (err) {
+    //       console.log("Not founded");
+    //     }
+    //   });
+      //[...service_requests, this_request]
     service_requests.push(
       <View
         key={i}
@@ -144,7 +176,7 @@ const SettingsCust = (tabsNavigationProps) => {
         }}
       >
         <TouchableOpacity
-          onPress={() => createThreeButtonAlert(firebaseDataJSON_entries[i][0])}
+          onPress={() => createThreeButtonAlert( tempJsonEntries[i][1][0])}
         >
           <BoxContainer style={myStyles.container1}>
             <View style={{ flexDirection: "row" }}>
@@ -156,7 +188,9 @@ const SettingsCust = (tabsNavigationProps) => {
                 }}
                 source={
                   navigationObject[
-                    firebaseDataJSON_entries[i][0][1].customerCarImageKey
+                    tempJsonEntries[i][1][0][1].customerCarImageKey
+                   
+
                   ]
                 }
               />
@@ -168,7 +202,7 @@ const SettingsCust = (tabsNavigationProps) => {
                 }}
               >
                 {" "}
-                {firebaseDataJSON_entries[i][0][1].customerCarName}{" "}
+                {tempJsonEntries[i][1][0][1].customerCarName}{" "}
               </Text>
 
               <Text
@@ -214,6 +248,18 @@ const SettingsCust = (tabsNavigationProps) => {
         </TouchableOpacity>
       </View>
     );
+  }
+
+}
+    
+catch(err){
+  console.log("MYERROR")
+}
+
+
+
+  
+
   }
 
   return (

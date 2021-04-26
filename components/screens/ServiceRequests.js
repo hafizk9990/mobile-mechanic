@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import {
   View,
   Text,
@@ -24,6 +24,8 @@ var windowWidth = Dimensions.get("window").width;
 const SettingsCust = (tabsNavigationProps) => {
   const [isSelected, setSelection] = React.useState(null);
   const [state, setState] = React.useState({ count: 0, count2: 100 });
+  const [update, setUpdate] = React.useState(false)
+  const toggleUpdate = () => { setUpdate(!update) }
 
   function handleClick() {
     forceUpdate();
@@ -36,18 +38,29 @@ const SettingsCust = (tabsNavigationProps) => {
     console.log(`You wrote something in the input text field ...`);
   };
 
-  let firebaseDataJSON_entries = "";
-  firebase
+  const [firebaseDataJSON_entries, setEntries]=React.useState({})
+
+  const getRequests = () =>{
+    firebase
     .database()
     .ref(`mobileMechanic/userRequests/`)
-    .on("value", (data) => {
+    .once("value", (data) => {
 
 
       let firebaseDataString = JSON.stringify(data); // JavaScript object to string
       let firebaseDataJSON = JSON.parse(firebaseDataString); // String to JSON
-      firebaseDataJSON_entries = Object.entries(firebaseDataJSON);
+      setEntries(Object.entries(firebaseDataJSON))
 
     });
+  }
+
+  React.useEffect(()=>{
+    getRequests()
+    let timer1 = setTimeout(toggleUpdate, 5000)
+    return () => {
+      clearTimeout(timer1)
+    }
+  }, [update])
 
 
 

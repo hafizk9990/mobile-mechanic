@@ -100,6 +100,7 @@ const ProfileView = (navigationProps) => {
       .database()
       .ref(`mobileMechanic/mechanicResponse/${customer_object_email}`)
       .once("value", (data) => {
+        console.log(data)
         let firebaseDataString = JSON.stringify(data); // JavaScript object to string
         setMechanicResponse = JSON.parse(firebaseDataString); // String to JSON
         setMechanicResponse[cnic_mechanic] = {
@@ -125,11 +126,14 @@ const ProfileView = (navigationProps) => {
         firebase
           .database()
           .ref(`mobileMechanic/userRequests/${customer_object_email}`)
-          .set(customer_object[1]);
+          .set(customer_object[1]).catch((error)=>{
+            console.log('---------------------',error)
+          });
 
           
       });
 
+      console.log('NAVIGATING TO WAIT PAYMENT NOW')
       navigationProps.navigation.navigate("WaitPayment", {
         customer_email:customer_object_email,
         mech_cnic : cnic_mechanic

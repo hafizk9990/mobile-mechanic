@@ -10,7 +10,8 @@ const delay = 5
 
 const MechanicLocation = (navigationProps) => {
     const userCNIC = (navigationProps.navigation.getParam('usercnic'));
-    const userId = (navigationProps.navigation.getParam('customer_object'))[0];
+    const userObject = (navigationProps.navigation.getParam('customer_object'));
+    const userId = userObject[0];
 
     const path = `mobileMechanic/mechanicLocations/${userCNIC}`
     const [update, setUpdate] = useState(false)
@@ -32,6 +33,8 @@ const MechanicLocation = (navigationProps) => {
         longitudeDelta: 0.0121,
     })
 
+    const toggleUpdate = () => { setUpdate(!update) }
+
     useEffect(() => {
         test.current = true
         if (test.current){
@@ -39,11 +42,11 @@ const MechanicLocation = (navigationProps) => {
             if(updateDb.current){
                 firebase.database().ref(path).set({
                     location: currentLocation
-                })
+                }).then(()=>{updateDb.current = false})
             }
-            updateDb.current=false
+            
         }
-        let timer1 = setTimeout(()=>{setUpdate(!update)}, delay*1000)
+        let timer1 = setTimeout(toggleUpdate, delay*1000)
         return () => {
             clearTimeout(timer1)
             test.current = false
@@ -83,10 +86,9 @@ const MechanicLocation = (navigationProps) => {
             if(data){
                 customerLocation = JSON.parse(JSON.stringify(data));
                 console.log("customer at",customerLocation)
-                userLocRead.current = true
             }
         });
-        
+        userLocRead.current = true
     }
 
     const showCustomer = () => {
@@ -98,6 +100,19 @@ const MechanicLocation = (navigationProps) => {
                     title="Customer Location"
             />
         }
+    }
+
+    const pressHandler = () => {
+        firebase.database().ref(path).set({
+            arrived : 1
+        }).then(()=>{
+            navigationProps.navigation.navigate('WorkUnderProcess', {
+                customer_object : userObject,
+                cnic_mechanic : userCNIC
+            })
+        }).catch((error)=>{
+            console.log(error)
+        })        
     }
     
     return(
@@ -134,10 +149,7 @@ const MechanicLocation = (navigationProps) => {
                 <View style = {styles.heading4}>
                     <TouchableOpacity
                         style={styles.loginScreenButton}
-                        onPress={ () => { navigationProps.navigation.navigate('WorkUnderProcess', {
-                            customer_object : navigationProps.navigation.getParam('customer_object'),
-                            cnic_mechanic : userCNIC
-                        })}}
+                        onPress={ () => { pressHandler() }}
                         underlayColor='#fff'>
                         <Text style={styles.loginText}> {'Arrived'} </Text>
                     </TouchableOpacity>
