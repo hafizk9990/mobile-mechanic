@@ -15,6 +15,9 @@ const Payments = (navigationProps) => {
     let userWallet = navigationProps.navigation.getParam('wallet');
     let place = `You Owe Rs. ${ charges }`;
     let mechanicWallet = '';
+    console.log('userEmail in payment :', userEmail)
+    console.log('array in payment :', array)
+    
 
     firebase.database().ref(`mobileMechanic/Mechanics/${ acceptedCNIC }/wallet`).once('value', (data) => {
         mechanicWallet = parseInt(JSON.stringify(data));
