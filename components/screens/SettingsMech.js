@@ -7,7 +7,7 @@ var windowHeight = Dimensions.get('window').height;
 var windowWidth = Dimensions.get('window').width;
 
 const SettingsCust = (tabsNavigationProps) => {
-    const [name, setName] = useState('Your Name');
+    const [name, setName] = useState('Usama');
     let image = require('../../assets/john-doe.jpg');
     let obtainedEmail = tabsNavigationProps.navigation.dangerouslyGetParent().getParam('usercnic');
     console.log(obtainedEmail);
@@ -18,10 +18,10 @@ const SettingsCust = (tabsNavigationProps) => {
             let firebaseDataString = JSON.stringify(data); // JavaScript object to string
             let firebaseDataJSON = JSON.parse(firebaseDataString); // String to JSON
         
-            if (firebaseDataJSON.firstName && firebaseDataJSON.lastName) {
-                console.log('Got data successfully ...');
-                setName(firebaseDataJSON.firstName + ' ' + firebaseDataJSON.lastName);
-            }
+            // if (firebaseDataJSON.firstName && firebaseDataJSON.lastName) {
+            //     console.log('Got data successfully ...');
+            //     setName(firebaseDataJSON.firstName + ' ' + firebaseDataJSON.lastName);
+            // }
         })
     }
 
