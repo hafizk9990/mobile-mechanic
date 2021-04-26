@@ -70,7 +70,7 @@ const SeeMechanicResponse = ( navigationProps ) => {
                                     <View style = { myStyles.item }>
                                         <View key = {index}>
                                             <View style = { {marginLeft: Dimensions.get('window').width * 0.84} }> 
-                                                <Ionicons name = "md-arrow-redo-sharp" size = { 24 } color = "#35b8b6" onPress = {() => navigationProps.navigation.navigate('SeeMechanicFullProfile')} />
+                                                <Ionicons name = "md-arrow-redo-sharp" size = { 24 } color = "#35b8b6" />     
                                                 <Text style = { {fontSize: 10, color: '#35b8b6'} }> Profile </Text>
                                             </View>
                                             <View>
